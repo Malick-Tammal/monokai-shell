@@ -1,2 +1,2 @@
 # Monokai Shell
-Comming soon!
+Coming soon!
