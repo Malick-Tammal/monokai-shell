@@ -11,6 +11,8 @@ PanelWindow {
     implicitHeight: dockHeight + 10
     color: "transparent"
 
+    WlrLayershell.layer: WlrLayer.Overlay
+
     anchors {
         bottom: true
     }
