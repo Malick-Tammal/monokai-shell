@@ -1,0 +1,106 @@
+import "globals"
+import Quickshell
+import Quickshell.Wayland
+import Quickshell.Io // Required for running commands
+import QtQuick
+import QtQuick.Layouts
+import "components"
+
+PanelWindow {
+    id: barWindow
+    required property var modelData
+    screen: modelData
+
+    anchors {
+        top: true
+        left: true
+        right: true
+    }
+    margins {
+        top: 8
+        left: 12
+        right: 12
+    }
+    implicitHeight: 40
+    color: "transparent"
+
+    // 1. Define a global process runner for simple commands
+    Process {
+        id: commandRunner
+        command: [] // Set this dynamically
+        running: false
+
+        // Helper function to run commands easily
+        function run(cmd) {
+            command = ["sh", "-c", cmd];
+            running = true;
+        }
+    }
+
+    NetworkPopup {
+        id: wifiPopup
+        visible: false
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: Config.bg
+        radius: 12
+        border.color: Config.border
+        border.width: 1
+    }
+
+    RowLayout {
+        anchors.fill: parent
+        anchors.leftMargin: 16
+        anchors.rightMargin: 16
+        spacing: 10
+
+        Workspaces {
+            Layout.alignment: Qt.AlignLeft
+        }
+        Item {
+            Layout.fillWidth: true
+        }
+
+        RowLayout {
+            spacing: 16
+            Layout.alignment: Qt.AlignRight
+
+            // [WIFI]
+            Text {
+                text: "󰤨"
+                color: wifiPopup.visible ? Config.accent : Config.fg
+                font {
+                    family: Config.font
+                    pixelSize: 16
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: wifiPopup.visible = !wifiPopup.visible
+                }
+            }
+
+            // ... (Bluetooth/Audio/Battery skipped for brevity) ...
+
+            // [NOTIFICATIONS] - FIXED
+            Text {
+                text: "󰂚"
+                color: Config.fg
+                font {
+                    family: Config.font
+                    pixelSize: 16
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    // FIX: Use the process runner
+                    onClicked: commandRunner.run("swaync-client -t -sw")
+                }
+            }
+
+            DateTime {}
+        }
+    }
+}

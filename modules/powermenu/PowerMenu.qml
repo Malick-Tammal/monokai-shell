@@ -1,0 +1,163 @@
+import Quickshell
+import QtQuick
+import QtQuick.Layouts
+import Quickshell.Wayland
+import Quickshell.Io
+import "./components"
+import "../../theme/"
+
+PanelWindow {
+    id: window
+
+    WlrLayershell.layer: WlrLayer.Overlay
+    // WlrLayershell.exclusiveZone: -1
+    WlrLayershell.namespace: "powermenu"
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
+    property bool isVisible: false
+
+    IpcHandler {
+        target: "powermenu"
+        function toggle(): void {
+            window.isVisible = !window.isVisible;
+        }
+    }
+
+    visible: isVisible
+
+    anchors {
+        top: true
+        right: true
+        left: true
+        bottom: true
+    }
+
+    color: "transparent"
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: window.visible = false
+    }
+
+    Process {
+        id: runner
+    }
+
+    function exec(cmd) {
+        runner.command = ["bash", "-c", cmd];
+        runner.running = true;
+    }
+
+    Rectangle {
+        implicitWidth: 460
+        implicitHeight: 152
+
+        color: "transparent"
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            topMargin: 5
+            rightMargin: 5
+        }
+
+        Rectangle {
+            id: main
+
+            anchors {
+                fill: parent
+            }
+
+            border.color: Style.dark4
+            border.width: 1
+            antialiasing: true
+
+            color: "#1D1E19"
+            radius: 15
+
+            ColumnLayout {
+                id: col
+                anchors.margins: 10
+                anchors.fill: parent
+
+                RowLayout {
+                    id: header
+                    spacing: 10
+                    Layout.fillWidth: true
+
+                    System {}
+                    User {}
+                }
+
+                RowLayout {
+                    id: powerButtons
+                    spacing: 10
+
+                    PowerBtn {
+                        id: poweroff
+                        prevItem: logout
+                        nextItem: reboot
+                        focus: true
+
+                        activeColor: "#FF6188"
+                        iconName: "poweroff"
+
+                        onActivated: exec("systemctl poweroff")
+                    }
+
+                    PowerBtn {
+                        id: reboot
+                        prevItem: poweroff
+                        nextItem: sleep
+
+                        activeColor: "#A9DC76"
+                        iconName: "reboot"
+
+                        onActivated: exec("systemctl reboot")
+                    }
+
+                    PowerBtn {
+                        id: sleep
+                        prevItem: reboot
+                        nextItem: lock
+
+                        activeColor: "#FFD866"
+                        iconName: "sleep"
+
+                        onActivated: exec("systemctl suspend")
+                    }
+
+                    PowerBtn {
+                        id: lock
+                        prevItem: sleep
+                        nextItem: logout
+
+                        activeColor: "#AB9DF2"
+                        iconName: "lock"
+
+                        onActivated: {
+                            window.isVisible = false;
+                            exec("hyprctl dispatch exec \"sh -c 'sleep 0.1; hyprlock'\"");
+                        }
+                    }
+
+                    PowerBtn {
+                        id: logout
+                        prevItem: lock
+                        nextItem: poweroff
+
+                        activeColor: "#FC9867"
+                        iconName: "logout"
+
+                        onActivated: exec("hyprctl dispatch exit")
+                    }
+                }
+            }
+        }
+    }
+
+    Shortcut {
+        sequences: ["Escape", "Backspace", "q"]
+        onActivated: window.isVisible = false
+    }
+}
