@@ -10,7 +10,6 @@ PanelWindow {
     id: window
 
     WlrLayershell.layer: WlrLayer.Overlay
-    // WlrLayershell.exclusiveZone: -1
     WlrLayershell.namespace: "powermenu"
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
@@ -49,8 +48,8 @@ PanelWindow {
     }
 
     Rectangle {
-        implicitWidth: 460
-        implicitHeight: 152
+        width: 460
+        height: 140
 
         color: "transparent"
 
@@ -64,9 +63,7 @@ PanelWindow {
         Rectangle {
             id: main
 
-            anchors {
-                fill: parent
-            }
+            anchors.fill: parent
 
             border.color: Style.dark4
             border.width: 1
@@ -79,11 +76,13 @@ PanelWindow {
                 id: col
                 anchors.margins: 10
                 anchors.fill: parent
+                spacing: 10
 
                 RowLayout {
                     id: header
                     spacing: 10
                     Layout.fillWidth: true
+                    anchors.top: parent.top
 
                     System {}
                     User {}
@@ -91,6 +90,8 @@ PanelWindow {
 
                 RowLayout {
                     id: powerButtons
+                    Layout.fillWidth: true
+                    anchors.horizontalCenter: parent.horizontalCenter
                     spacing: 10
 
                     PowerBtn {

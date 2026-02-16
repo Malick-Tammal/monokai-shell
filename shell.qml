@@ -6,6 +6,7 @@ import "./modules/walli/"
 import "./modules/cornors/"
 import "./modules/bar/"
 import "./modules/dock/"
+import "./modules/launcher/"
 
 ShellRoot {
     id: root
@@ -14,5 +15,6 @@ ShellRoot {
     Walli {}
     Cornors {}
     Bar {}
-    Dock {}
+    // Dock {}
+    // Launcher {}
 }

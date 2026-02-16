@@ -11,7 +11,6 @@ PanelWindow {
     id: window
 
     WlrLayershell.layer: WlrLayer.Overlay
-    // WlrLayershell.exclusiveZone: -1
     WlrLayershell.namespace: "walli"
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
@@ -25,7 +24,9 @@ PanelWindow {
 
     property bool isVisible: false
     property string currentWall: ""
-    property int padding : 5
+    property int padding: 5
+    readonly property string wallsFolder: Quickshell.env("HOME") + "/Pictures/Wallpapers/"
+    readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/walli_thumbs/"
 
     visible: isVisible
 
@@ -45,41 +46,58 @@ PanelWindow {
 
     onVisibleChanged: {
         if (visible) {
-            if (!thumbGen.running) {
-                thumbGen.running = true;
-            }
-            resetView();
+            wallpapers.forceActiveFocus();
+            refreshTimer.restart();
+        }
+    }
+
+    Timer {
+        id: refreshTimer
+        interval: 10
+        repeat: false
+        onTriggered: {
             window.currentWall = "";
             swwwQuery.running = true;
         }
     }
 
-    function resetView() {
-        if (wallpapers.count > 0) {
-            wallpapers.currentIndex = 0;
-            wallpapers.positionViewAtBeginning();
-            wallpapers.forceActiveFocus();
-        }
-    }
-
+    // --- Helper Functions ---
     function findAndSelect(cleanName) {
-        for (var i = 0; i < wallpapers.count; i++) {
-            var file = wallpapers.model.get(i, "fileName");
-            var dbName = file.replace(/\.[^/.]+$/, "");
+        if (wallpapers.count === 0)
+            return;
 
-            if (dbName === cleanName) {
-                print("Found match at index: " + i);
+        for (let i = 0; i < wallpapers.count; i++) {
+            let file = wallpapers.model.get(i, "fileName");
+            if (file.includes(cleanName)) {
                 wallpapers.currentIndex = i;
                 wallpapers.positionViewAtIndex(i, ListView.Center);
-                wallpapers.forceActiveFocus();
                 return;
             }
         }
+        wallpapers.currentIndex = 0;
+        wallpapers.positionViewAtBeginning();
+    }
 
-        if (wallpapers.count > 0) {
-            print("No match found. Defaulting to first item.");
-            window.resetView();
-        }
+    function activateWall(name): void {
+        const wallName = name.replace(".png", "");
+        const cache = cacheFolder + name;
+        const full = wallsFolder + wallName;
+
+        swwwProc.command[2] = full;
+        cacheWall.command[1] = full;
+        sddmWall.command[1] = full;
+
+        swwwProc.running = true;
+        cacheWall.running = true;
+        sddmWall.running = true;
+
+        notify.send("walli", wallName, cache);
+
+        print(wallName);
+        print("cache : " + cache);
+        print("wall : " + full);
+
+        isVisible = false;
     }
 
     MouseArea {
@@ -87,61 +105,65 @@ PanelWindow {
         onClicked: window.isVisible = false
     }
 
-    // --- Processes ---
+    //  INFO: Processes ---
+
+    // Thumbnail Generator
+    Process {
+        id: thumbGen
+        command: ["bash", Quickshell.env("HOME") + "/.config/quickshell/scripts/walli_thumbs.sh"]
+        running: true
+    }
+
+    // Apply wallpaper
     Process {
         id: swwwProc
         command: ["swww", "img", "", "--transition-type", "grow", "--transition-pos", "0.5,0.5", "--transition-step", "90", "--transition-fps", "60"]
 
         onExited: code => {
-            if (code === 0)
-                print("Wallpaper applied successfully!");
+            if (code === 0) {
+                window.isVisible = false;
+            }
         }
     }
 
-    Process {
-        id: thumbGen
-        command: ["bash", Quickshell.env("HOME") + "/.config/quickshell/scripts/walli_thumbs.sh"]
-        running: false
-    }
-
+    // Helper Processes (Cache & SDDM)
     Process {
         id: cacheWall
         command: ["cp", "", Quickshell.env("HOME") + "/.cache/current-wallpaper.png"]
-        onExited: code => {
-            if (code === 0)
-                print("Wallpaper cached successfully!");
-        }
     }
-
     Process {
         id: sddmWall
         command: ["cp", "", "/usr/share/sddm/themes/sddm-modern/wallpaper.png"]
-        onExited: code => {
-            if (code === 0)
-                print("Wallpaper copied for sddm!");
-        }
     }
 
+    // Notification Helper
+    Notify {
+        id: notify
+    }
+
+    // Active Wallpaper Query
     Process {
         id: swwwQuery
         command: ["swww", "query"]
-        running: false
         stdout: StdioCollector {
             onStreamFinished: {
-                const parts = this.text.trim().split(": ");
+                const output = this.text.trim();
+                if (!output)
+                    return;
+                const parts = output.split(": ");
                 if (parts.length > 1) {
-                    const fullPath = parts[parts.length - 1].trim();
+                    const fullPath = parts[parts.length - 1].trim().split(",")[0];
                     const filename = fullPath.split("/").pop();
                     const cleanName = filename.replace(/\.[^/.]+$/, "");
 
-                    print("Swww active wallpaper : " + filename);
-                    window.currentWall = filename;
-                    window.findAndSelect(filename);
+                    window.currentWall = cleanName;
+                    window.findAndSelect(cleanName);
                 }
             }
         }
     }
 
+    //  INFO: UI
     Rectangle {
         implicitWidth: parent.width
         implicitHeight: 300
@@ -189,38 +211,27 @@ PanelWindow {
                 highlightMoveVelocity: 10
                 flickDeceleration: 1000
                 maximumFlickVelocity: 5000
-
-                function activate(path) {
-                    swwwProc.command[2] = path;
-                    swwwProc.running = true;
-                    cacheWall.command[1] = path;
-                    cacheWall.running = true;
-                    sddmWall.command[1] = path;
-                    sddmWall.running = true;
-                    window.isVisible = false;
-                }
+                cacheBuffer: 1000
 
                 Keys.onPressed: event => {
                     if (event.text === "h" || event.key === Qt.Key_Left) {
-                        wallpapers.decrementCurrentIndex();
+                        decrementCurrentIndex();
                         event.accepted = true;
                     } else if (event.text === "l" || event.key === Qt.Key_Right) {
-                        wallpapers.incrementCurrentIndex();
+                        incrementCurrentIndex();
                         event.accepted = true;
                     } else if (event.text === "k" || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                        let fileName = wallpapers.model.get(wallpapers.currentIndex, "fileName");
-                        const mainFolder = Quickshell.env("HOME") + "/Pictures/Wallpapers/";
-                        const fullPath = mainFolder + fileName;
-                        const wallPath = fullPath.replace(".png", "");
-                        activate(wallPath);
+                        const fileName = wallpapers.model.get(wallpapers.currentIndex, "fileName");
+                        window.activateWall(fileName);
                         event.accepted = true;
                     }
                 }
 
                 model: FolderListModel {
-                    folder: "file://" + Quickshell.env("HOME") + "/.cache/walli_thumbs/"
+                    folder: "file://" + window.cacheFolder
                     nameFilters: ["*.jpg", "*.png", "*.webp", "*.jpeg"]
                     showDirs: false
+                    sortField: FolderListModel.Name
                 }
 
                 delegate: Item {
@@ -228,20 +239,23 @@ PanelWindow {
                     width: (wallpapers.width - (5 * wallpapers.spacing)) / 6
                     height: wallpapers.height
 
-                    Connections {
-                        target: window
+                    property bool isSelected: index === wallpapers.currentIndex
 
-                        function onCurrentWallChanged() {
-                            const myName = fileName.replace(/\.[^/.]+$/, "");
+                    HoverHandler {
+                        id: hoverHandler
+                    }
 
-                            if (window.currentWall === "")
-                                return;
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
 
-                            if (myName === window.currentWall) {
-                                wallpapers.currentIndex = index;
-                                wallpapers.positionViewAtIndex(index, ListView.Center);
-                                wallpapers.forceActiveFocus();
-                            }
+                        onClicked: {
+                            wallpapers.currentIndex = index;
+                            wallpapers.forceActiveFocus();
+                        }
+                        onDoubleClicked: {
+                            window.activateWall(fileName);
                         }
                     }
 
@@ -249,39 +263,25 @@ PanelWindow {
                         id: container
                         anchors.fill: parent
                         radius: 10
-                        color: index === wallpapers.currentIndex ? Style.yellow : Style.dark5
+                        color: isSelected || hoverHandler.hovered ? Style.yellow : Style.dark5
 
                         Inverted {
-                            anchors.bottom: img.bottom
-                            anchors.right: img.right
-                            anchors.rightMargin: 5
-                            anchors.bottomMargin: 47
+                            anchors.bottom: selWallName.top
+                            anchors.right: selWallName.right
                             rounding: 10
                             z: 2
-                            visible: index === wallpapers.currentIndex ? true : false
-
+                            visible: isSelected ? true : false
                             roundingColor: Style.yellow
-                            transform: Scale {
-                                origin.y: 5
-                                yScale: -1
-                            }
+                            rotation: 90
                         }
 
                         Inverted {
-                            anchors.bottom: img.bottom
-                            anchors.left: img.left
-                            anchors.leftMargin: 5
-                            anchors.bottomMargin: 47
+                            anchors.bottom: selWallName.top
+                            anchors.left: selWallName.left
                             rounding: 10
                             z: 2
-
-                            visible: index === wallpapers.currentIndex ? true : false
+                            visible: isSelected ? true : false
                             roundingColor: Style.yellow
-
-                            transform: Scale {
-                                origin.y: 5
-                                yScale: 1
-                            }
                             rotation: 180
                         }
 
@@ -291,6 +291,8 @@ PanelWindow {
                             width: container.width
                             height: container.height
                             fillMode: Image.PreserveAspectCrop
+                            smooth: true
+                            mipmap: true
                             asynchronous: true
                             visible: false
                             sourceSize.width: width
@@ -299,7 +301,7 @@ PanelWindow {
 
                         OpacityMask {
                             anchors.fill: container
-                            anchors.margins: index === wallpapers.currentIndex ? 5 : 2
+                            anchors.margins: isSelected ? 5 : 2
                             source: img
                             maskSource: Rectangle {
                                 width: container.width
@@ -309,9 +311,10 @@ PanelWindow {
                         }
 
                         Rectangle {
+                            id: selWallName
                             height: parent.height / 6
                             color: Style.yellow
-                            visible: index === wallpapers.currentIndex ? true : false
+                            visible: isSelected ? true : false
 
                             anchors {
                                 left: parent.left

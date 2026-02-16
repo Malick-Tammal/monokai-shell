@@ -8,7 +8,7 @@ Rectangle {
     width: 190
     Layout.preferredHeight: 30
     color: "#FFD866"
-    radius: 10
+    radius: 8
 
     property string assetsPath: "../../../assets/"
 
@@ -16,7 +16,7 @@ Rectangle {
         width: parent.width / 2 + 20
         height: parent.height - 2
         color: Style.bg
-        radius: 10
+        radius: 8
 
         anchors {
             verticalCenter: parent.verticalCenter
