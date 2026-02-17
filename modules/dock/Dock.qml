@@ -17,6 +17,19 @@ PanelWindow {
         bottom: true
     }
 
+    mask: Region {
+        x: 0
+        y: window.implicitHeight - height
+        height: window.shouldHide ? hoverRect.height : window.implicitHeight
+        width: hoverRect.width
+    }
+
+    MouseArea {
+        id: gapBridge
+        anchors.fill: parent
+        hoverEnabled: true
+    }
+
     property var windowList: []
     property int dockWidth: 800
     property int dockHeight: 60
@@ -116,7 +129,7 @@ PanelWindow {
     Rectangle {
         id: hoverRect
         width: window.width
-        height: 20
+        height: 5
         color: "transparent"
         anchors.bottom: parent.bottom
 

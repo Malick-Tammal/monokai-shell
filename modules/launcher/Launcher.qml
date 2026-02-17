@@ -88,7 +88,8 @@ PanelWindow {
             highlightMoveDuration: 80
             highlight: Rectangle {
                 radius: 4
-                opacity: 0.45
+                opacity: 1
+                color: Style.dark5
             }
             snapMode: ListView.SnapToItem
             boundsBehavior: Flickable.StopAtBounds

@@ -15,6 +15,6 @@ ShellRoot {
     Walli {}
     Cornors {}
     Bar {}
-    // Dock {}
+    Dock {}
     // Launcher {}
 }
