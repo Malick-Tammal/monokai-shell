@@ -35,7 +35,12 @@ PanelWindow {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: window.visible = false
+        onClicked: window.isVisible = false
+    }
+
+    Shortcut {
+        sequences: ["Escape", "Backspace", "q"]
+        onActivated: window.isVisible = false
     }
 
     Process {
@@ -155,10 +160,5 @@ PanelWindow {
                 }
             }
         }
-    }
-
-    Shortcut {
-        sequences: ["Escape", "Backspace", "q"]
-        onActivated: window.isVisible = false
     }
 }
