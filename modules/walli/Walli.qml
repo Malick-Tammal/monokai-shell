@@ -24,7 +24,7 @@ PanelWindow {
 
     property bool isVisible: false
     property string currentWall: ""
-    property int padding: 5
+    property int padding: 10
     readonly property string wallsFolder: Quickshell.env("HOME") + "/Pictures/Wallpapers/"
     readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/walli_thumbs/"
 
@@ -188,7 +188,7 @@ PanelWindow {
                 fill: parent
             }
 
-            border.color: Style.dark4
+            border.color: Style.border
             border.width: 1
             antialiasing: true
 

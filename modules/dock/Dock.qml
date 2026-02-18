@@ -8,7 +8,7 @@ import "../../theme/"
 PanelWindow {
     id: window
     implicitWidth: dockWidth
-    implicitHeight: dockHeight + 10
+    implicitHeight: dockHeight + 20
     color: "transparent"
 
     WlrLayershell.layer: WlrLayer.Overlay
@@ -102,7 +102,7 @@ PanelWindow {
         height: window.dockHeight
         width: parent.width
         color: Style.bg
-        border.color: Style.dark4
+        border.color: Style.border
         border.width: 1
         radius: 15
         anchors.verticalCenter: parent.verticalCenter
@@ -129,7 +129,7 @@ PanelWindow {
     Rectangle {
         id: hoverRect
         width: window.width
-        height: 5
+        height: 10
         color: "transparent"
         anchors.bottom: parent.bottom
 

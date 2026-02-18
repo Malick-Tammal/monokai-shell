@@ -14,7 +14,7 @@ ShellRoot {
     PowerMenu {}
     Walli {}
     Cornors {}
-    Bar {}
+    // Bar {}
     Dock {}
     // Launcher {}
 }

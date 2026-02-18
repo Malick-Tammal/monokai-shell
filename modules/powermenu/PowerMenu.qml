@@ -56,8 +56,8 @@ PanelWindow {
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: 5
-            rightMargin: 5
+            topMargin: 10
+            rightMargin: 10
         }
 
         Rectangle {
@@ -65,11 +65,11 @@ PanelWindow {
 
             anchors.fill: parent
 
-            border.color: Style.dark4
+            border.color: Style.border
             border.width: 1
             antialiasing: true
 
-            color: "#1D1E19"
+            color: Style.bg
             radius: 15
 
             ColumnLayout {
@@ -100,7 +100,7 @@ PanelWindow {
                         nextItem: reboot
                         focus: true
 
-                        activeColor: "#FF6188"
+                        activeColor: Style.red
                         iconName: "poweroff"
 
                         onActivated: exec("systemctl poweroff")
@@ -111,7 +111,7 @@ PanelWindow {
                         prevItem: poweroff
                         nextItem: sleep
 
-                        activeColor: "#A9DC76"
+                        activeColor: Style.green
                         iconName: "reboot"
 
                         onActivated: exec("systemctl reboot")
@@ -122,7 +122,7 @@ PanelWindow {
                         prevItem: reboot
                         nextItem: lock
 
-                        activeColor: "#FFD866"
+                        activeColor: Style.yellow
                         iconName: "sleep"
 
                         onActivated: exec("systemctl suspend")
@@ -133,7 +133,7 @@ PanelWindow {
                         prevItem: sleep
                         nextItem: logout
 
-                        activeColor: "#AB9DF2"
+                        activeColor: Style.purple
                         iconName: "lock"
 
                         onActivated: {
@@ -147,7 +147,7 @@ PanelWindow {
                         prevItem: lock
                         nextItem: poweroff
 
-                        activeColor: "#FC9867"
+                        activeColor: Style.orange
                         iconName: "logout"
 
                         onActivated: exec("hyprctl dispatch exit")
