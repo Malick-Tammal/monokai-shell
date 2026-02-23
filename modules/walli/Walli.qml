@@ -263,7 +263,7 @@ PanelWindow {
                         id: container
                         anchors.fill: parent
                         radius: 10
-                        color: isSelected || hoverHandler.hovered ? Style.yellow : Style.dark5
+                        color: isSelected || hoverHandler.hovered ? Style.yellow5 : Style.gray3
 
                         Inverted {
                             anchors.bottom: selWallName.top
@@ -271,7 +271,7 @@ PanelWindow {
                             rounding: 10
                             z: 2
                             visible: isSelected ? true : false
-                            roundingColor: Style.yellow
+                            roundingColor: Style.yellow5
                             rotation: 90
                         }
 
@@ -281,7 +281,7 @@ PanelWindow {
                             rounding: 10
                             z: 2
                             visible: isSelected ? true : false
-                            roundingColor: Style.yellow
+                            roundingColor: Style.yellow5
                             rotation: 180
                         }
 
@@ -313,7 +313,7 @@ PanelWindow {
                         Rectangle {
                             id: selWallName
                             height: parent.height / 6
-                            color: Style.yellow
+                            color: Style.yellow5
                             visible: isSelected ? true : false
 
                             anchors {
@@ -338,6 +338,7 @@ PanelWindow {
                                 font.family: Style.family
                                 font.pixelSize: Style.fontSizeMd
                                 font.weight: Font.Medium
+                                color: Style.bg
                             }
                         }
                     }

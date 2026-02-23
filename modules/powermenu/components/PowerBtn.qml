@@ -1,18 +1,21 @@
 import QtQuick
+import "../../../theme/"
 
 Rectangle {
     id: root
     width: 80
     height: 80
     radius: 10
-    color: (activeFocus || hoverHandler.hovered) ? activeColor : "#33342B"
+    color: (activeFocus || hoverHandler.hovered) ? activeColor : Style.gray6
+    border.color: (activeFocus || hoverHandler.hovered) ? activeBorderColor : Style.gray4
     scale: hoverHandler.hovered ? 1.03 : 1.0
     KeyNavigation.left: prevItem
     KeyNavigation.right: nextItem
 
     property Item nextItem: null
     property Item prevItem: null
-    property color activeColor: "#5e6050"
+    property color activeColor: null
+    property color activeBorderColor: null
     property string iconName: ""
     property string assetsPath: "../../../assets/"
 

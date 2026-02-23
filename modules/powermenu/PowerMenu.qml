@@ -105,7 +105,8 @@ PanelWindow {
                         nextItem: reboot
                         focus: true
 
-                        activeColor: Style.red
+                        activeColor: Style.red5
+                        activeBorderColor: Style.red3
                         iconName: "poweroff"
 
                         onActivated: exec("systemctl poweroff")
@@ -116,7 +117,8 @@ PanelWindow {
                         prevItem: poweroff
                         nextItem: sleep
 
-                        activeColor: Style.green
+                        activeColor: Style.green5
+                        activeBorderColor: Style.green3
                         iconName: "reboot"
 
                         onActivated: exec("systemctl reboot")
@@ -127,7 +129,8 @@ PanelWindow {
                         prevItem: reboot
                         nextItem: lock
 
-                        activeColor: Style.yellow
+                        activeColor: Style.yellow5
+                        activeBorderColor: Style.yellow3
                         iconName: "sleep"
 
                         onActivated: exec("systemctl suspend")
@@ -138,7 +141,8 @@ PanelWindow {
                         prevItem: sleep
                         nextItem: logout
 
-                        activeColor: Style.purple
+                        activeColor: Style.purple5
+                        activeBorderColor: Style.purple3
                         iconName: "lock"
 
                         onActivated: {
@@ -152,7 +156,8 @@ PanelWindow {
                         prevItem: lock
                         nextItem: poweroff
 
-                        activeColor: Style.orange
+                        activeColor: Style.orange5
+                        activeBorderColor: Style.orange3
                         iconName: "logout"
 
                         onActivated: exec("hyprctl dispatch exit")

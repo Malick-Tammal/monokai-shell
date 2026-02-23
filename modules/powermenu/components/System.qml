@@ -8,7 +8,7 @@ Rectangle {
     id: system
     Layout.fillWidth: true
     Layout.preferredHeight: 30
-    color: "#FFD866"
+    color: Style.yellow5
     radius: 8
 
     property string assetsPath: "../../../assets/"
@@ -53,7 +53,7 @@ Rectangle {
         Text {
             id: upTime
             text: "6 Hours , 23 Mins"
-            color: Style.yellow
+            color: Style.yellow5
             font {
                 family: Style.family
                 pixelSize: Style.fontSizeSm
@@ -75,7 +75,7 @@ Rectangle {
         }
 
         RowLayout {
-            spacing: 8
+            spacing: 5
             anchors.centerIn: parent
 
             Image {

@@ -7,7 +7,7 @@ Rectangle {
     id: user
     width: 190
     Layout.preferredHeight: 30
-    color: "#FFD866"
+    color: Style.yellow5
     radius: 8
 
     property string assetsPath: "../../../assets/"
@@ -36,7 +36,7 @@ Rectangle {
 
         Text {
             id: userName
-            color: Style.yellow
+            color: Style.yellow5
             font {
                 family: Style.family
                 pixelSize: Style.fontSizeSm

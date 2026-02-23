@@ -1,5 +1,4 @@
 import Quickshell
-import Quickshell.Io
 import QtQuick
 import "./modules/powermenu/"
 import "./modules/walli/"
@@ -11,10 +10,12 @@ import "./modules/launcher/"
 ShellRoot {
     id: root
 
-    PowerMenu {}
+    PowerMenu {
+        id: powerMenu
+    }
     Walli {}
     Cornors {}
-    // Bar {}
-    Dock {}
+    Bar {}
+    // Dock {}
     // Launcher {}
 }
