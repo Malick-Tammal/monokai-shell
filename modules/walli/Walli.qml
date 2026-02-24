@@ -197,10 +197,12 @@ PanelWindow {
 
             ListView {
                 id: wallpapers
-                anchors.fill: parent
                 orientation: ListView.Horizontal
                 spacing: 10
-                anchors.margins: 10
+                anchors {
+                    margins: 10
+                    fill: parent
+                }
                 clip: true
                 snapMode: ListView.SnapToItem
                 boundsBehavior: Flickable.StopAtBounds
@@ -266,8 +268,10 @@ PanelWindow {
                         color: isSelected || hoverHandler.hovered ? Style.yellow5 : Style.gray3
 
                         Inverted {
-                            anchors.bottom: selWallName.top
-                            anchors.right: selWallName.right
+                            anchors {
+                                bottom: selWallName.top
+                                right: selWallName.right
+                            }
                             rounding: 10
                             z: 2
                             visible: isSelected ? true : false
@@ -276,8 +280,10 @@ PanelWindow {
                         }
 
                         Inverted {
-                            anchors.bottom: selWallName.top
-                            anchors.left: selWallName.left
+                            anchors {
+                                bottom: selWallName.top
+                                left: selWallName.left
+                            }
                             rounding: 10
                             z: 2
                             visible: isSelected ? true : false
@@ -300,8 +306,10 @@ PanelWindow {
                         }
 
                         OpacityMask {
-                            anchors.fill: container
-                            anchors.margins: isSelected ? 5 : 1
+                            anchors {
+                                fill: container
+                                margins: isSelected ? 5 : 1
+                            }
                             source: img
                             maskSource: Rectangle {
                                 width: container.width

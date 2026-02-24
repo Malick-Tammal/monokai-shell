@@ -61,12 +61,18 @@ Rectangle {
             spacing: 5
             anchors.centerIn: parent
 
-            Image {
-                source: `${user.assetsPath}/icons/user.svg`
-                sourceSize.width: 16
-                sourceSize.height: 16
-                smooth: false
-                antialiasing: true
+            Item {
+                width: 16
+                height: 16
+
+                Image {
+                    source: `${user.assetsPath}/icons/user.svg`
+                    anchors.fill: parent
+                    sourceSize.width: 16
+                    sourceSize.height: 16
+                    smooth: false
+                    antialiasing: false
+                }
             }
 
             Text {

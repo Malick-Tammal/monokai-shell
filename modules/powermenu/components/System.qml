@@ -78,12 +78,18 @@ Rectangle {
             spacing: 5
             anchors.centerIn: parent
 
-            Image {
-                source: `${system.assetsPath}/icons/arch.svg`
+            Item {
                 width: 18
                 height: 18
-                smooth: false
-                antialiasing: true
+
+                Image {
+                    source: `${system.assetsPath}/icons/arch.svg`
+                    anchors.fill: parent
+                    sourceSize.width: 18
+                    sourceSize.height: 18
+                    smooth: false
+                    antialiasing: false
+                }
             }
 
             Text {

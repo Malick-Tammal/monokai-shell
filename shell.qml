@@ -10,12 +10,15 @@ import "./modules/launcher/"
 ShellRoot {
     id: root
 
+    Cornors {}
+
+    Bar {}
+
     PowerMenu {
         id: powerMenu
     }
+
     Walli {}
-    Cornors {}
-    Bar {}
     // Dock {}
     // Launcher {}
 }

@@ -1,9 +1,7 @@
-import Quickshell
 import QtQuick
 import "../../../theme/"
 import Qt5Compat.GraphicalEffects
 import Quickshell.Services.UPower
-import QtQuick.Shapes
 
 Item {
     id: battery
@@ -72,9 +70,8 @@ Item {
                 width: 16
                 height: 16
 
-                // 1. The Charging Icon
+                //  INFO: Charging Icon
                 Image {
-                    // anchors.fill: parent
                     source: battery.chargingIcon
 
                     sourceSize.width: 14
@@ -86,7 +83,7 @@ Item {
                     antialiasing: true
                 }
 
-                // 2. The Normal Battery Icon
+                //  INFO: Normal battery Icon
                 Image {
                     anchors.fill: parent
                     source: battery.normalIcon

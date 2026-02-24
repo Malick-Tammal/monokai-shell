@@ -8,7 +8,6 @@ Rectangle {
     radius: 10
     color: (activeFocus || hoverHandler.hovered) ? activeColor : Style.gray6
     border.color: (activeFocus || hoverHandler.hovered) ? activeBorderColor : Style.gray4
-    scale: hoverHandler.hovered ? 1.03 : 1.0
     KeyNavigation.left: prevItem
     KeyNavigation.right: nextItem
 
@@ -16,8 +15,25 @@ Rectangle {
     property Item prevItem: null
     property color activeColor: null
     property color activeBorderColor: null
+    property color hoverColor: Qt.lighter(activeColor, 1.1)
     property string iconName: ""
     property string assetsPath: "../../../assets/"
+
+    Rectangle {
+        anchors.fill: parent
+        radius: parent.radius
+        color: root.hoverColor
+        opacity: hoverHandler.hovered ? 1.0 : 0.0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.OutQuad
+            }
+        }
+    }
+
+    readonly property bool showActiveIcon: activeFocus || hoverHandler.hovered
 
     signal activated
 
@@ -35,13 +51,6 @@ Rectangle {
         ColorAnimation {
             duration: 100
             easing.type: Easing.OutQuad
-        }
-    }
-
-    Behavior on scale {
-        NumberAnimation {
-            duration: 100
-            easing.type: Easing.OutBack
         }
     }
 
@@ -72,13 +81,39 @@ Rectangle {
         }
     }
 
-    Image {
-        source: root.activeFocus && internal.activeIcon !== "" || hoverHandler.hovered ? internal.activeIcon : internal.normalIcon
+    Item {
         width: 25
         height: 25
-        fillMode: Image.PreserveAspectFit
         anchors.centerIn: parent
-        smooth: false
-        antialiasing: true
+
+        //  INFO: Normal Icon
+        Image {
+            anchors.fill: parent
+            source: internal.normalIcon
+
+            sourceSize.width: 25
+            sourceSize.height: 25
+
+            visible: !root.showActiveIcon
+
+            smooth: false
+            antialiasing: false
+            fillMode: Image.PreserveAspectFit
+        }
+
+        //  INFO: Active/Hover Icon
+        Image {
+            anchors.fill: parent
+            source: internal.activeIcon
+
+            sourceSize.width: 25
+            sourceSize.height: 25
+
+            visible: root.showActiveIcon && internal.activeIcon !== ""
+
+            smooth: false
+            antialiasing: false
+            fillMode: Image.PreserveAspectFit
+        }
     }
 }
