@@ -21,6 +21,7 @@ QtObject {
     property color green5: "#A9DC76"
     property color green4: "#BAE391"
     property color green3: "#CBEAAD"
+    property color green2: "#DDF1C8"
 
     property color red9: "#33131B"
     property color red7: "#993A52"

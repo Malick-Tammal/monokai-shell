@@ -301,7 +301,7 @@ PanelWindow {
 
                         OpacityMask {
                             anchors.fill: container
-                            anchors.margins: isSelected ? 5 : 2
+                            anchors.margins: isSelected ? 5 : 1
                             source: img
                             maskSource: Rectangle {
                                 width: container.width

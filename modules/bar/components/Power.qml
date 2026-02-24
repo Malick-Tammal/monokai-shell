@@ -17,18 +17,24 @@ Item {
         color: hoverHandler.hovered ? Style.red4 : Style.red5
         border.color: Style.red3
 
-        Image {
-            source: "../../../assets/icons/power.svg"
-
+        Item {
             width: 13
             height: 13
 
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)
 
-            smooth: true
-            antialiasing: true
-            fillMode: Image.PreserveAspectFit
+            Image {
+                source: "../../../assets/icons/power.svg"
+                anchors.fill: parent
+
+                sourceSize.width: 13
+                sourceSize.height: 13
+
+                smooth: true
+                antialiasing: true
+                fillMode: Image.PreserveAspectFit
+            }
         }
 
         MouseArea {

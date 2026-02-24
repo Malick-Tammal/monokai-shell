@@ -67,14 +67,24 @@ Item {
                         }
                     }
 
-                    Image {
-                        source: "../../../assets/icons/star.svg"
+                    Item {
                         width: 10
                         height: 10
-                        visible: isFocused
 
                         x: Math.round((parent.width - width) / 2)
                         y: Math.round(((parent.height - height) / 2) * (parent.isFocused ? 1 : 3))
+
+                        visible: ws.isFocused
+
+                        Image {
+                            source: "../../../assets/icons/star.svg"
+                            anchors.fill: parent
+                            sourceSize.width: 10
+                            sourceSize.height: 10
+                            smooth: true
+                            antialiasing: true
+                            fillMode: Image.PreserveAspectFit
+                        }
 
                         Behavior on y {
                             SequentialAnimation {
@@ -88,7 +98,7 @@ Item {
                             }
                         }
 
-                        opacity: parent.isFocused ? 1.0 : 0.0
+                        opacity: ws.isFocused ? 1.0 : 0.0
 
                         Behavior on opacity {
                             SequentialAnimation {
@@ -101,10 +111,6 @@ Item {
                                 }
                             }
                         }
-
-                        smooth: true
-                        antialiasing: true
-                        fillMode: Image.PreserveAspectFit
                     }
 
                     Behavior on width {
