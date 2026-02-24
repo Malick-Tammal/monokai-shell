@@ -267,30 +267,6 @@ PanelWindow {
                         radius: 10
                         color: isSelected || hoverHandler.hovered ? Style.yellow5 : Style.gray3
 
-                        Inverted {
-                            anchors {
-                                bottom: selWallName.top
-                                right: selWallName.right
-                            }
-                            rounding: 10
-                            z: 2
-                            visible: isSelected ? true : false
-                            roundingColor: Style.yellow5
-                            rotation: 90
-                        }
-
-                        Inverted {
-                            anchors {
-                                bottom: selWallName.top
-                                left: selWallName.left
-                            }
-                            rounding: 10
-                            z: 2
-                            visible: isSelected ? true : false
-                            roundingColor: Style.yellow5
-                            rotation: 180
-                        }
-
                         Image {
                             id: img
                             source: fileUrl
@@ -316,13 +292,63 @@ PanelWindow {
                                 height: container.height
                                 radius: 10
                             }
+                            Behavior on anchors.margins {
+                                NumberAnimation {
+                                    duration: 100
+                                    easing.type: Easing.Bezier
+                                }
+                            }
                         }
 
                         Rectangle {
                             id: selWallName
                             height: parent.height / 6
+                            width: parent.width + 5
                             color: Style.yellow5
                             visible: isSelected ? true : false
+                            opacity: isSelected ? 1.0 : 0.0
+
+                            transform: Translate {
+                                y: isSelected ? 0 : 100
+
+                                Behavior on y {
+                                    NumberAnimation {
+                                        duration: 100
+                                        easing.type: Easing.Bezier
+                                    }
+                                }
+                            }
+
+                            Behavior on opacity {
+                                NumberAnimation {
+                                    duration: 50
+                                    easing.type: Easing.Bezier
+                                }
+                            }
+
+                            Inverted {
+                                anchors {
+                                    bottom: selWallName.top
+                                    right: selWallName.right
+                                }
+                                rounding: 10
+                                z: 2
+                                visible: isSelected ? true : false
+                                roundingColor: Style.yellow5
+                                rotation: 90
+                            }
+
+                            Inverted {
+                                anchors {
+                                    bottom: selWallName.top
+                                    left: selWallName.left
+                                }
+                                rounding: 10
+                                z: 2
+                                visible: isSelected ? true : false
+                                roundingColor: Style.yellow5
+                                rotation: 180
+                            }
 
                             anchors {
                                 left: parent.left
