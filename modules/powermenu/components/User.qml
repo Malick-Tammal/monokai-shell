@@ -61,18 +61,13 @@ Rectangle {
             spacing: 5
             anchors.centerIn: parent
 
-            Item {
-                width: 16
-                height: 16
-
-                Image {
-                    source: `${user.assetsPath}/icons/user.svg`
-                    anchors.fill: parent
-                    sourceSize.width: 16
-                    sourceSize.height: 16
-                    smooth: false
-                    antialiasing: false
+            Text {
+                text: ""
+                font {
+                    family: Style.nerdFamily
+                    pixelSize: 14
                 }
+                renderType: Text.NativeRendering
             }
 
             Text {

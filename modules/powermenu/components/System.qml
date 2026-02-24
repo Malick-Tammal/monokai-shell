@@ -78,18 +78,13 @@ Rectangle {
             spacing: 5
             anchors.centerIn: parent
 
-            Item {
-                width: 18
-                height: 18
-
-                Image {
-                    source: `${system.assetsPath}/icons/arch.svg`
-                    anchors.fill: parent
-                    sourceSize.width: 18
-                    sourceSize.height: 18
-                    smooth: false
-                    antialiasing: false
+            Text {
+                text: "󰣇"
+                font {
+                    family: Style.nerdFamily
+                    pixelSize: 18
                 }
+                renderType: Text.NativeRendering
             }
 
             Text {

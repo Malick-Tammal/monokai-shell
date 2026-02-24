@@ -69,4 +69,5 @@ QtObject {
     property int fontSizeXl: 18
 
     property string family: "SF Pro Rounded"
+    property string nerdFamily: "JetBrainsMono Nerd Font"
 }

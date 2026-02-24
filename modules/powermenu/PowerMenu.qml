@@ -79,8 +79,10 @@ PanelWindow {
 
             ColumnLayout {
                 id: col
-                anchors.margins: 10
-                anchors.fill: parent
+                anchors {
+                    fill: parent
+                    margins: 10
+                }
                 spacing: 10
 
                 RowLayout {

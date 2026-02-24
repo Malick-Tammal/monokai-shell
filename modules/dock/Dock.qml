@@ -129,7 +129,7 @@ PanelWindow {
     Rectangle {
         id: hoverRect
         width: window.width
-        height: 10
+        height: 4
         color: "transparent"
         anchors.bottom: parent.bottom
 

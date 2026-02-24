@@ -1,5 +1,6 @@
 import QtQuick
 import "../../../theme/"
+import "../../../components/"
 
 Rectangle {
     id: root
@@ -15,30 +16,15 @@ Rectangle {
     property Item prevItem: null
     property color activeColor: null
     property color activeBorderColor: null
-    property color hoverColor: Qt.lighter(activeColor, 1.1)
     property string iconName: ""
     property string assetsPath: "../../../assets/"
-
-    Rectangle {
-        anchors.fill: parent
-        radius: parent.radius
-        color: root.hoverColor
-        opacity: hoverHandler.hovered ? 1.0 : 0.0
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 100
-                easing.type: Easing.OutQuad
-            }
-        }
-    }
 
     readonly property bool showActiveIcon: activeFocus || hoverHandler.hovered
 
     signal activated
 
     QtObject {
-        id: internal
+        id: states
         property string normalIcon: `${root.assetsPath}/icons/normal/${root.iconName}.svg`
         property string activeIcon: `${root.assetsPath}/icons/active/${root.iconName}.svg`
     }
@@ -50,7 +36,7 @@ Rectangle {
     Behavior on color {
         ColorAnimation {
             duration: 100
-            easing.type: Easing.OutQuad
+            easing.type: Easing.Bezier
         }
     }
 
@@ -81,39 +67,23 @@ Rectangle {
         }
     }
 
-    Item {
-        width: 25
-        height: 25
+    Icon {
+        path: states.normalIcon
+        size: 25
+        visible: !root.showActiveIcon
         anchors.centerIn: parent
+    }
 
-        //  INFO: Normal Icon
-        Image {
-            anchors.fill: parent
-            source: internal.normalIcon
-
-            sourceSize.width: 25
-            sourceSize.height: 25
-
-            visible: !root.showActiveIcon
-
-            smooth: false
-            antialiasing: false
-            fillMode: Image.PreserveAspectFit
-        }
-
-        //  INFO: Active/Hover Icon
-        Image {
-            anchors.fill: parent
-            source: internal.activeIcon
-
-            sourceSize.width: 25
-            sourceSize.height: 25
-
-            visible: root.showActiveIcon && internal.activeIcon !== ""
-
-            smooth: false
-            antialiasing: false
-            fillMode: Image.PreserveAspectFit
+    Icon {
+        path: states.activeIcon
+        size: hoverHandler.hovered ? 28 : 25
+        visible: root.showActiveIcon && states.activeIcon !== ""
+        anchors.centerIn: parent
+        Behavior on size {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.Bezier
+            }
         }
     }
 }
