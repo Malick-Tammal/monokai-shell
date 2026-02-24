@@ -3,11 +3,11 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
 import "../../../theme/"
+import "../../../components/"
 
 Item {
     width: row.childrenRect.width + (row.anchors.margins * 2)
     height: parent.height
-    // anchors.centerIn: parent
 
     Rectangle {
         id: workspaces
@@ -67,47 +67,39 @@ Item {
                         }
                     }
 
-                    Item {
-                        width: 10
-                        height: 10
+                    Icon {
+                        path: "../../../assets/icons/star.svg"
+                        size: 10
 
                         x: Math.round((parent.width - width) / 2)
-                        y: Math.round(((parent.height - height) / 2) * (parent.isFocused ? 1 : 3))
+                        y: Math.round((parent.height - height) / 2)
 
                         visible: ws.isFocused
 
-                        Image {
-                            source: "../../../assets/icons/star.svg"
-                            anchors.fill: parent
-                            sourceSize.width: 10
-                            sourceSize.height: 10
-                            smooth: true
-                            antialiasing: true
-                            fillMode: Image.PreserveAspectFit
-                        }
+                        rotation: parent.isFocused ? 0 : 180
 
-                        Behavior on y {
+                        Behavior on rotation {
                             SequentialAnimation {
                                 PauseAnimation {
                                     duration: 150
                                 }
                                 NumberAnimation {
-                                    duration: 100
-                                    easing.type: Easing.InOutSine
+                                    duration: 200
+                                    easing.type: Easing.BezierSpline
                                 }
                             }
                         }
 
-                        opacity: ws.isFocused ? 1.0 : 0.0
+                        scale: parent.isFocused ? 1 : 1.3
 
-                        Behavior on opacity {
+                        Behavior on scale {
                             SequentialAnimation {
                                 PauseAnimation {
-                                    duration: 150
+                                    duration: 350
                                 }
                                 NumberAnimation {
-                                    duration: 100
-                                    easing.type: Easing.OutCubic
+                                    duration: 200
+                                    easing.type: Easing.OutBounce
                                 }
                             }
                         }

@@ -1,5 +1,6 @@
 import QtQuick
 import "../../../theme/"
+import "../../../components/"
 import Qt5Compat.GraphicalEffects
 import Quickshell.Services.UPower
 
@@ -9,10 +10,7 @@ Item {
     width: parent.height * 1.7
 
     property int percentage: UPower.displayDevice ? Math.round(UPower.displayDevice.percentage * 100) : 0
-    property bool isCharging: UPower.displayDevice ? (UPower.displayDevice.state === UPowerDeviceState.Charging || UPower.displayDevice.state === UPowerDeviceState.FullyCharged) : false
-
-    property string normalIcon: "../../../assets/icons/normal/battery.svg"
-    property string chargingIcon: "../../../assets/icons/normal/zap.svg"
+    property bool isCharging: UPower.displayDevice ? (UPower.displayDevice.state !== UPowerDeviceState.Discharging) : false
 
     HoverHandler {
         id: hoverHandler
@@ -23,6 +21,7 @@ Item {
         anchors.fill: parent
         radius: 10
         color: battery.isCharging ? Style.green2 : Style.orange2
+        clip: true
 
         MouseArea {
             anchors.fill: parent
@@ -64,37 +63,41 @@ Item {
 
         Row {
             anchors.centerIn: parent
-            spacing: 3
+            spacing: 5
 
-            Item {
-                width: 16
-                height: 16
+            Symbols {
+                icon: "battery_android_full"
+                size: 15
+                iconColor: Style.green9
+                visible: !isCharging
 
-                //  INFO: Charging Icon
-                Image {
-                    source: battery.chargingIcon
+                transform: Translate {
+                    x: !isCharging ? 0 : -parent.width
 
-                    sourceSize.width: 14
-                    sourceSize.height: 14
-
-                    visible: isCharging
-
-                    smooth: true
-                    antialiasing: true
+                    Behavior on x {
+                        NumberAnimation {
+                            duration: 200
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
                 }
+            }
 
-                //  INFO: Normal battery Icon
-                Image {
-                    anchors.fill: parent
-                    source: battery.normalIcon
+            Symbols {
+                icon: "bolt"
+                size: 13
+                iconColor: Style.green9
+                visible: isCharging
 
-                    sourceSize.width: 16
-                    sourceSize.height: 16
+                transform: Translate {
+                    x: isCharging ? 0 : -parent.width
 
-                    visible: !isCharging
-
-                    smooth: true
-                    antialiasing: true
+                    Behavior on x {
+                        NumberAnimation {
+                            duration: 200
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
                 }
             }
 

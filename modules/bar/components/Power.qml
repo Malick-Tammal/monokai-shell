@@ -1,6 +1,7 @@
 import Quickshell
 import QtQuick
 import "../../../theme/"
+import "../../../components/"
 
 Item {
     id: powerBtn
@@ -17,24 +18,13 @@ Item {
         color: hoverHandler.hovered ? Style.red4 : Style.red5
         border.color: Style.red3
 
-        Item {
-            width: 13
-            height: 13
-
+        Symbols {
+            icon: "power_settings_new"
+            size: 12
+            iconColor: Style.red9
+            weight: 700
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)
-
-            Image {
-                source: "../../../assets/icons/power.svg"
-                anchors.fill: parent
-
-                sourceSize.width: 13
-                sourceSize.height: 13
-
-                smooth: true
-                antialiasing: true
-                fillMode: Image.PreserveAspectFit
-            }
         }
 
         MouseArea {
