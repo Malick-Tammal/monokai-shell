@@ -1,7 +1,6 @@
-import Quickshell
 import QtQuick
 import qs.theme
-import "../../../components/"
+import qs.components
 
 Item {
     id: powerBtn
@@ -24,6 +23,12 @@ Item {
 
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)
+        }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 100
+            }
         }
 
         MouseArea {

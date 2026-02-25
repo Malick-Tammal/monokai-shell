@@ -7,18 +7,24 @@ import "./components"
 import qs.theme
 
 PanelWindow {
-    id: window
+    id: root
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "powermenu"
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
     property bool isVisible: false
+
+    property string pendingCmd: ""
+    property bool inConfirmation: false
+    property Item lastActiveItem: null
+
+    property Item savedFocusItem: null
 
     IpcHandler {
         target: "powermenu"
         function toggle(): void {
-            window.isVisible = !window.isVisible;
+            root.isVisible = !root.isVisible;
         }
     }
 
@@ -33,14 +39,31 @@ PanelWindow {
 
     color: "transparent"
 
+    onIsVisibleChanged: {
+        if (isVisible) {
+            poweroff.forceActiveFocus();
+        } else {
+            inConfirmation = false;
+            pendingCmd = "";
+        }
+    }
+
     MouseArea {
         anchors.fill: parent
-        onClicked: window.isVisible = false
+        onClicked: {
+            if (root.inConfirmation) {
+                root.inConfirmation = false;
+                if (root.lastActiveItem)
+                    root.lastActiveItem.forceActiveFocus();
+            } else {
+                root.isVisible = false;
+            }
+        }
     }
 
     Shortcut {
         sequences: ["Escape", "Backspace", "q"]
-        onActivated: window.isVisible = false
+        onActivated: root.isVisible = false
     }
 
     Process {
@@ -50,6 +73,12 @@ PanelWindow {
     function exec(cmd) {
         runner.command = ["bash", "-c", cmd];
         runner.running = true;
+    }
+
+    function requestExecute(cmd, sourceItem) {
+        pendingCmd = cmd;
+        lastActiveItem = sourceItem;
+        inConfirmation = true;
     }
 
     Rectangle {
@@ -79,6 +108,8 @@ PanelWindow {
 
             ColumnLayout {
                 id: col
+                enabled: !root.inConfirmation
+
                 anchors {
                     fill: parent
                     margins: 10
@@ -112,7 +143,7 @@ PanelWindow {
                         iconColor: Style.gray2
                         activeIconColor: Style.red9
 
-                        onActivated: exec("systemctl poweroff")
+                        onActivated: requestExecute("systemctl poweroff", poweroff)
                     }
 
                     PowerBtn {
@@ -126,7 +157,7 @@ PanelWindow {
                         iconColor: Style.gray2
                         activeIconColor: Style.green9
 
-                        onActivated: exec("systemctl reboot")
+                        onActivated: requestExecute("systemctl reboot", reboot)
                     }
 
                     PowerBtn {
@@ -140,7 +171,7 @@ PanelWindow {
                         iconColor: Style.gray2
                         activeIconColor: Style.yellow9
 
-                        onActivated: exec("systemctl suspend")
+                        onActivated: requestExecute("systemctl suspend", sleep)
                     }
 
                     PowerBtn {
@@ -155,7 +186,7 @@ PanelWindow {
                         activeIconColor: Style.purple9
 
                         onActivated: {
-                            window.isVisible = false;
+                            root.isVisible = false;
                             exec("hyprctl dispatch exec \"sh -c 'sleep 0.1; hyprlock'\"");
                         }
                     }
@@ -171,8 +202,25 @@ PanelWindow {
                         iconColor: Style.gray2
                         activeIconColor: Style.orange9
 
-                        onActivated: exec("hyprctl dispatch exit")
+                        onActivated: requestExecute("hyprctl dispatch exit", logout)
                     }
+                }
+            }
+
+            Confirmation {
+                id: confirmationPopup
+                isActive: root.inConfirmation
+
+                onConfirm: {
+                    root.exec(root.pendingCmd);
+                    root.inConfirmation = false;
+                    root.isVisible = false;
+                }
+
+                onCancel: {
+                    root.inConfirmation = false;
+                    if (root.lastActiveItem)
+                        root.lastActiveItem.forceActiveFocus();
                 }
             }
         }

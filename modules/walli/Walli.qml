@@ -13,7 +13,7 @@ PanelWindow {
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "walli"
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
     anchors {
         top: true

@@ -1,8 +1,8 @@
 import QtQuick
 import Quickshell
-import "../../../components/"
 import qs.theme
 import qs.services
+import qs.components
 
 Item {
     id: networkWidget

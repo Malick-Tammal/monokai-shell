@@ -1,14 +1,14 @@
 import QtQuick
-import "../../../components/"
 import qs.theme
+import qs.components
 
 Rectangle {
     id: root
     width: 80
     height: 80
     radius: 10
-    color: (activeFocus || hoverHandler.hovered) ? activeColor : Style.gray6
-    border.color: (activeFocus || hoverHandler.hovered) ? activeBorderColor : Style.gray4
+    color: (activeFocus || mouseArea.containsMouse) ? activeColor : Style.gray6
+    border.color: (activeFocus || mouseArea.containsMouse) ? activeBorderColor : Style.gray4
     KeyNavigation.left: prevItem
     KeyNavigation.right: nextItem
 
@@ -22,9 +22,6 @@ Rectangle {
 
     signal activated
 
-    HoverHandler {
-        id: hoverHandler
-    }
 
     Behavior on color {
         ColorAnimation {
@@ -51,6 +48,7 @@ Rectangle {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
@@ -64,6 +62,6 @@ Rectangle {
         icon: root.iconName
         size: 25
         anchors.centerIn: parent
-        iconColor: (root.activeFocus || hoverHandler.hovered) ? root.activeIconColor : root.iconColor
+        iconColor: (root.activeFocus || mouseArea.containsMouse) ? root.activeIconColor : root.iconColor
     }
 }
