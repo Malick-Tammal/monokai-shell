@@ -5,9 +5,9 @@ import Qt5Compat.GraphicalEffects
 import Quickshell.Services.UPower
 
 Item {
-    id: battery
+    id: batteryWidget
     height: parent.height
-    width: parent.height * 1.7
+    width: con.width
 
     property int percentage: UPower.displayDevice ? Math.round(UPower.displayDevice.percentage * 100) : 0
     property bool isCharging: UPower.displayDevice ? (UPower.displayDevice.state !== UPowerDeviceState.Discharging) : false
@@ -18,17 +18,11 @@ Item {
 
     Rectangle {
         id: con
-        anchors.fill: parent
+        height: parent.height
+        width: row.width + 18
         radius: 10
-        color: battery.isCharging ? Style.green2 : Style.orange2
+        color: batteryWidget.isCharging ? Style.green2 : Style.orange2
         clip: true
-
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.CursorShape.PointingHandCursor
-            hoverEnabled: true
-            onClicked: powerMenu.isVisible = !powerMenu.isVisible
-        }
 
         Item {
             id: fillSource
@@ -38,8 +32,14 @@ Item {
             Rectangle {
                 id: batteryPer
                 height: parent.height
-                width: parent.width * (battery.percentage / 100)
-                color: battery.isCharging ? Style.green5 : (hoverHandler.hovered ? Style.orange4 : Style.orange5)
+                width: parent.width * (batteryWidget.percentage / 100)
+                color: batteryWidget.isCharging ? (hoverHandler.hovered ? Style.green4 : Style.green5) : (hoverHandler.hovered ? Style.orange4 : Style.orange5)
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 100
+                    }
+                }
             }
         }
 
@@ -48,7 +48,7 @@ Item {
             source: fillSource
             maskSource: Rectangle {
                 width: con.width
-                height: con.height
+                height: con.height - 2
                 radius: con.radius
             }
         }
@@ -56,19 +56,20 @@ Item {
         Rectangle {
             anchors.fill: parent
             color: "transparent"
-            border.color: battery.isCharging ? Style.green2 : Style.orange2
+            border.color: batteryWidget.isCharging ? Style.green2 : Style.orange2
             border.width: 1
             radius: con.radius
         }
 
         Row {
+            id: row
             anchors.centerIn: parent
             spacing: 5
 
             Symbols {
                 icon: "battery_android_full"
-                size: 15
-                iconColor: Style.green9
+                size: 14
+                iconColor: Style.orange9
                 visible: !isCharging
 
                 transform: Translate {
@@ -83,11 +84,11 @@ Item {
                 }
             }
 
-            Symbols {
-                icon: "bolt"
+            Icon {
+                path: "../../../assets/icons/normal/zap.svg"
                 size: 13
-                iconColor: Style.green9
                 visible: isCharging
+                anchors.verticalCenter: parent.verticalCenter
 
                 transform: Translate {
                     x: isCharging ? 0 : -parent.width
@@ -102,9 +103,9 @@ Item {
             }
 
             Text {
-                text: battery.percentage
+                text: batteryWidget.percentage
                 anchors.verticalCenter: parent.verticalCenter
-                color: battery.isCharging ? Style.green9 : Style.orange9
+                color: batteryWidget.isCharging ? Style.green9 : Style.orange9
                 font {
                     family: Style.family
                     weight: Font.Bold
@@ -116,7 +117,7 @@ Item {
         MouseArea {
             anchors.fill: parent
             cursorShape: Qt.CursorShape.PointingHandCursor
-            onClicked: print(battery.isCharging)
+            hoverEnabled: true
         }
     }
 }
