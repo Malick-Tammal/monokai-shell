@@ -1,8 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Io
-
-import "../../../theme/"
+import qs.theme
 
 Rectangle {
     id: system

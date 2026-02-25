@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
-import "../../../theme/"
+import qs.theme
 import "../../../components/"
 
 Item {
@@ -67,7 +67,7 @@ Item {
                         }
                     }
 
-                    Icon {
+                    Icons {
                         path: "../../../assets/icons/star.svg"
                         size: 10
 

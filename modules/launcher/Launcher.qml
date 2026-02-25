@@ -2,9 +2,8 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Widgets
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
-import "../../theme/"
+import qs.theme
 
 PanelWindow {
     id: window

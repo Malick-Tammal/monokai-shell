@@ -1,6 +1,6 @@
 import Quickshell
 import QtQuick
-import "../../../theme/"
+import qs.theme
 import "../../../components/"
 
 Item {
@@ -18,8 +18,8 @@ Item {
         color: hoverHandler.hovered ? Style.red4 : Style.red5
         border.color: Style.red3
 
-        Icon {
-            path: "../../../assets/icons/normal/poweroff.svg"
+        Icons {
+            path: "../../../assets/icons/power.svg"
             size: 14
 
             x: Math.round((parent.width - width) / 2)

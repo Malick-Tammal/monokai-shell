@@ -1,6 +1,6 @@
 import QtQuick
-import "../../../theme/"
 import "../../../components/"
+import qs.theme
 
 Rectangle {
     id: root
@@ -17,17 +17,10 @@ Rectangle {
     property color activeColor: null
     property color activeBorderColor: null
     property string iconName: ""
-    property string assetsPath: "../../../assets/"
-
-    readonly property bool showActiveIcon: activeFocus || hoverHandler.hovered
+    property color iconColor: null
+    property color activeIconColor: null
 
     signal activated
-
-    QtObject {
-        id: states
-        property string normalIcon: `${root.assetsPath}/icons/normal/${root.iconName}.svg`
-        property string activeIcon: `${root.assetsPath}/icons/active/${root.iconName}.svg`
-    }
 
     HoverHandler {
         id: hoverHandler
@@ -67,23 +60,10 @@ Rectangle {
         }
     }
 
-    Icon {
-        path: states.normalIcon
+    Symbols {
+        icon: root.iconName
         size: 25
-        visible: !root.showActiveIcon
         anchors.centerIn: parent
-    }
-
-    Icon {
-        path: states.activeIcon
-        size: hoverHandler.hovered ? 28 : 25
-        visible: root.showActiveIcon && states.activeIcon !== ""
-        anchors.centerIn: parent
-        Behavior on size {
-            NumberAnimation {
-                duration: 100
-                easing.type: Easing.Bezier
-            }
-        }
+        iconColor: (root.activeFocus || hoverHandler.hovered) ? root.activeIconColor : root.iconColor
     }
 }

@@ -1,9 +1,8 @@
 import QtQuick
 import Quickshell
-
-import "../../../theme/"
 import "../../../components/"
-import qs.services as Services
+import qs.theme
+import qs.services
 
 Item {
     id: networkWidget
@@ -34,7 +33,7 @@ Item {
             spacing: 5
 
             Symbols {
-                icon: Services.Network.symbol
+                icon: Network.symbol
                 size: 14
                 weight: 700
                 iconColor: Style.purple9
@@ -51,12 +50,12 @@ Item {
                 }
 
                 text: {
-                    if (Services.Network.ethernet)
-                        return Services.Network.interfaceName || "Ethernet";
+                    if (Network.ethernet)
+                        return Network.interfaceName || "Ethernet";
 
-                    switch (Services.Network.wifiStatus) {
+                    switch (Network.wifiStatus) {
                     case "connected":
-                        return Services.Network.networkName;
+                        return Network.networkName;
                     case "connecting":
                         return "Connecting...";
                     case "limited":
@@ -82,7 +81,7 @@ Item {
                 if (mouse.button === Qt.LeftButton) {
                     Quickshell.execDetached(["nmgui"]);
                 } else if (mouse.button === Qt.RightButton) {
-                    Services.Network.toggleWifi();
+                    Network.toggleWifi();
                 }
             }
         }

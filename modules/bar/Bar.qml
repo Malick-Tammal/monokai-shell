@@ -1,8 +1,6 @@
 import Quickshell
 import Quickshell.Wayland
-
 import QtQuick
-import "../../theme/"
 import "./modules/"
 
 PanelWindow {
@@ -26,13 +24,14 @@ PanelWindow {
 
     implicitHeight: 42
 
-    Row {
-        id: row
+    Item {
+        id: container
         anchors.bottomMargin: 1
         anchors.topMargin: 1
         anchors.fill: parent
 
         Center {}
         Right {}
+        Left {}
     }
 }

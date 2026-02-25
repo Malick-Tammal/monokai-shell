@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import Quickshell.Wayland
 import Quickshell.Io
 import "./components"
-import "../../theme/"
+import qs.theme
 
 PanelWindow {
     id: window
@@ -89,7 +89,7 @@ PanelWindow {
                     id: header
                     spacing: 10
                     Layout.fillWidth: true
-                    anchors.top: parent.top
+                    Layout.alignment: Qt.AlignTop
 
                     System {}
                     User {}
@@ -97,8 +97,7 @@ PanelWindow {
 
                 RowLayout {
                     id: powerButtons
-                    Layout.fillWidth: true
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.alignment: Qt.AlignCenter
                     spacing: 10
 
                     PowerBtn {
@@ -109,7 +108,9 @@ PanelWindow {
 
                         activeColor: Style.red5
                         activeBorderColor: Style.red3
-                        iconName: "poweroff"
+                        iconName: "power_settings_new"
+                        iconColor: Style.gray2
+                        activeIconColor: Style.red9
 
                         onActivated: exec("systemctl poweroff")
                     }
@@ -121,7 +122,9 @@ PanelWindow {
 
                         activeColor: Style.green5
                         activeBorderColor: Style.green3
-                        iconName: "reboot"
+                        iconName: "replay"
+                        iconColor: Style.gray2
+                        activeIconColor: Style.green9
 
                         onActivated: exec("systemctl reboot")
                     }
@@ -133,7 +136,9 @@ PanelWindow {
 
                         activeColor: Style.yellow5
                         activeBorderColor: Style.yellow3
-                        iconName: "sleep"
+                        iconName: "bedtime"
+                        iconColor: Style.gray2
+                        activeIconColor: Style.yellow9
 
                         onActivated: exec("systemctl suspend")
                     }
@@ -146,6 +151,8 @@ PanelWindow {
                         activeColor: Style.purple5
                         activeBorderColor: Style.purple3
                         iconName: "lock"
+                        iconColor: Style.gray2
+                        activeIconColor: Style.purple9
 
                         onActivated: {
                             window.isVisible = false;
@@ -161,6 +168,8 @@ PanelWindow {
                         activeColor: Style.orange5
                         activeBorderColor: Style.orange3
                         iconName: "logout"
+                        iconColor: Style.gray2
+                        activeIconColor: Style.orange9
 
                         onActivated: exec("hyprctl dispatch exit")
                     }

@@ -1,5 +1,5 @@
 import QtQuick
-import "../../../theme/"
+import qs.theme
 import "../../../components/"
 import Qt5Compat.GraphicalEffects
 import Quickshell.Services.UPower
@@ -48,7 +48,7 @@ Item {
             source: fillSource
             maskSource: Rectangle {
                 width: con.width
-                height: con.height - 2
+                height: con.height
                 radius: con.radius
             }
         }
@@ -84,8 +84,8 @@ Item {
                 }
             }
 
-            Icon {
-                path: "../../../assets/icons/normal/zap.svg"
+            Icons {
+                path: "../../../assets/icons/zap.svg"
                 size: 13
                 visible: isCharging
                 anchors.verticalCenter: parent.verticalCenter

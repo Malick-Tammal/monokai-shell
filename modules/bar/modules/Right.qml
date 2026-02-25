@@ -1,6 +1,5 @@
-import Quickshell
 import QtQuick
-import "../../../theme/"
+import qs.theme
 import "../components/"
 
 Item {

@@ -1,4 +1,3 @@
-import Quickshell
 import QtQuick
 import "./modules/powermenu/"
 import "./modules/walli/"
@@ -16,6 +15,6 @@ Item {
         id: powerMenu
     }
     Walli {}
-    Dock {}
+    // Dock {}
     // Launcher {}
 }

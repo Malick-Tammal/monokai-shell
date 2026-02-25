@@ -2,7 +2,7 @@ import Quickshell
 import Quickshell.Wayland
 import QtQuick
 import "../../components/"
-import "../../theme/"
+import qs.theme
 
 PanelWindow {
     id: main

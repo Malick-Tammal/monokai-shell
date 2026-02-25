@@ -5,7 +5,8 @@ import QtQuick
 import Qt5Compat.GraphicalEffects
 import Qt.labs.folderlistmodel
 import "../../components/"
-import "../../theme/"
+import qs.services
+import qs.theme
 
 PanelWindow {
     id: window

@@ -61,6 +61,8 @@ QtObject {
     property color gray5: "#3D4035"
     property color gray4: "#606359"
     property color gray3: "#84867E"
+    property color gray2: "#A7A9A2"
+    property color gray1: "#CBCCC7"
 
     property int fontSizeXs: 10
     property int fontSizeSm: 12
