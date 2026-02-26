@@ -209,9 +209,14 @@ Singleton {
     Process {
         id: updateNetworkStrength
         running: true
-        command: ["sh", "-c", "nmcli -f IN-USE,SIGNAL,SSID device wifi | awk '/^\*/{if (NR!=1) {print $2}}'"]
+        command: ["sh", "-c", "nmcli -f IN-USE,SIGNAL,SSID device wifi | awk '/^\\*/{if (NR!=1) {print $2}}'"]
         stdout: SplitParser {
-            onRead: data => root.networkStrength = parseInt(data) || 0
+            onRead: data => {
+                const cleanData = data.trim();
+                if (cleanData) {
+                    root.networkStrength = parseInt(cleanData, 10);
+                }
+            }
         }
     }
 
