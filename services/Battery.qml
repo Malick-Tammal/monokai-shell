@@ -11,13 +11,13 @@ Singleton {
     property bool available: UPower.displayDevice.isLaptopBattery
     property var chargeState: UPower.displayDevice.state
     property bool isCharging: chargeState == UPowerDeviceState.Charging
-    property bool acConnected: isCharging || chargeState == UPowerDeviceState.PendingCharge
+    property bool acConnected: isCharging || chargeState === UPowerDeviceState.PendingCharge || chargeState === UPowerDeviceState.FullyCharged
     property real percentage: UPower.displayDevice?.percentage ?? 1
 
     property bool isLow: available && (percentage <= 0.2)
     property bool isCritical: available && (percentage <= 0.05)
     property bool isSuspending: available && (percentage <= 0.03)
-    property bool isFull: available && (percentage >= 1.05)
+    property bool isFull: available && (percentage >= 1.01)
 
     property real energyRate: UPower.displayDevice.changeRate
     property real timeToEmpty: UPower.displayDevice.timeToEmpty
