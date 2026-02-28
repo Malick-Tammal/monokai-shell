@@ -11,7 +11,7 @@ Singleton {
     property bool wifi: true
     property bool ethernet: false
 
-    property string networkName: ""
+    property string networkName: "Disconnected"
 
     property bool wifiEnabled: false
     property string wifiStatus: "disconnected"
@@ -35,7 +35,8 @@ Singleton {
         if (root.wifiStatus === "connecting")
             return "wifi_add";
 
-        if (root.wifiStatus === "connected") {
+        // Must be connected AND have a valid name (prevents blank/stale SSIDs from showing full bars)
+        if (root.wifiStatus === "connected" && root.networkName !== "Disconnected" && root.networkName !== "") {
             let s = root.networkStrength;
             if (s > 83)
                 return "signal_wifi_4_bar";
@@ -55,10 +56,27 @@ Singleton {
 
     Process {
         id: updateNetworkName
-        command: ["sh", "-c", "nmcli -t -f NAME c show --active | head -1"]
+        command: ["sh", "-c", "echo \"$(nmcli -t -f DEVICE,NAME c show --active | awk -F: '$1 != \"lo\" && $1 !~ /^docker/ && $1 !~ /^veth/ && $1 !~ /^virbr/ {print $2; exit}')\""]
         running: true
         stdout: SplitParser {
-            onRead: data => root.networkName = data.trim()
+            onRead: data => {
+                let name = data.trim();
+                if (name !== "") {
+                    root.networkName = name;
+                } else if (root.wifiStatus === "connecting") {
+                    root.networkName = "Connecting..."; // Protects the connecting state!
+                } else {
+                    root.networkName = root.wifiEnabled ? "Disconnected" : "Disabled";
+                }
+            }
+        }
+    }
+    Process {
+        id: updateInterfaceName
+        command: ["sh", "-c", "echo \"$(nmcli -t -f DEVICE c show --active | awk -F: '$1 != \"lo\" && $1 !~ /^docker/ && $1 !~ /^veth/ && $1 !~ /^virbr/ {print $1; exit}')\""]
+        running: true
+        stdout: SplitParser {
+            onRead: data => root.interfaceName = data.trim()
         }
     }
 
@@ -95,7 +113,6 @@ Singleton {
                         networkMap.set(network.ssid, network);
                     }
                 }
-
                 root.wifiNetworks = Array.from(networkMap.values()).sort((a, b) => b.strength - a.strength);
             }
         }
@@ -112,13 +129,22 @@ Singleton {
         }
     }
 
+    Timer {
+        id: updateDebouncer
+        interval: 200
+        repeat: false
+        onTriggered: {
+            updateConnectionType.startCheck();
+            wifiStatusProcess.running = true;
+            updateNetworkName.running = true;
+            updateInterfaceName.running = true;
+            updateNetworkStrength.running = true;
+            getNetworks.running = true;
+        }
+    }
+
     function update() {
-        updateConnectionType.startCheck();
-        wifiStatusProcess.running = true;
-        updateNetworkName.running = true;
-        updateNetworkStrength.running = true;
-        updateInterfaceName.running = true;
-        getNetworks.running = true;
+        updateDebouncer.restart();
     }
 
     Process {
@@ -146,8 +172,15 @@ Singleton {
                 LANG: "C",
                 LC_ALL: "C"
             })
-        stdout: StdioCollector {
-            onStreamFinished: root.wifiEnabled = text.trim() === "enabled"
+        stdout: SplitParser {
+            onRead: data => {
+                let enabled = data.trim() === "enabled";
+                root.wifiEnabled = enabled;
+                if (!enabled) {
+                    root.networkName = "Disabled";
+                    root.wifiStatus = "disabled";
+                }
+            }
         }
     }
 
@@ -155,66 +188,75 @@ Singleton {
         id: updateConnectionType
         property string buffer
         command: ["sh", "-c", "nmcli -t -f TYPE,STATE d status && nmcli -t -f CONNECTIVITY g"]
-        running: true
+
         function startCheck() {
             buffer = "";
-            updateConnectionType.running = true;
+            running = true;
         }
+
         stdout: SplitParser {
             onRead: data => updateConnectionType.buffer += data + "\n"
         }
+
         onExited: (exitCode, exitStatus) => {
             const lines = updateConnectionType.buffer.trim().split('\n');
+            if (lines.length === 0 || lines[0] === "")
+                return;
+
             const connectivity = lines.pop();
             let hasEthernet = false;
             let hasWifi = false;
-            let wifiStatus = "disconnected";
+            let newWifiStatus = root.wifiEnabled ? "disconnected" : "disabled";
 
             lines.forEach(line => {
-                if (line.includes("ethernet") && line.includes("connected"))
+                if (line.startsWith("ethernet:") && line.includes("connected")) {
                     hasEthernet = true;
-                else if (line.includes("wifi:")) {
-                    if (line.includes("disconnected")) {
-                        wifiStatus = "disconnected";
-                    } else if (line.includes("connected")) {
+                } else if (line.startsWith("wifi:")) {
+                    if (line.includes("connected")) {
                         hasWifi = true;
-                        wifiStatus = "connected";
+                        newWifiStatus = "connected";
                         if (connectivity === "limited") {
                             hasWifi = false;
-                            wifiStatus = "limited";
+                            newWifiStatus = "limited";
                         }
-                    } else if (line.includes("connecting")) {
-                        wifiStatus = "connecting";
-                    } else if (line.includes("unavailable")) {
-                        wifiStatus = "disabled";
+                    } else if (newWifiStatus !== "connected") {
+                        if (line.includes("connecting")) {
+                            newWifiStatus = "connecting";
+                        } else if (line.includes("disconnected") && newWifiStatus !== "connecting") {
+                            newWifiStatus = "disconnected";
+                        }
                     }
                 }
             });
 
-            root.wifiStatus = wifiStatus;
+            root.wifiStatus = newWifiStatus;
             root.ethernet = hasEthernet;
             root.wifi = hasWifi;
-        }
-    }
 
-    Process {
-        id: updateInterfaceName
-        command: ["sh", "-c", "nmcli -t -f DEVICE connection show --active | head -1"]
-        running: true
-        stdout: SplitParser {
-            onRead: data => root.interfaceName = data.trim()
+            if (!hasEthernet && newWifiStatus !== "connected") {
+                root.interfaceName = "";
+                if (newWifiStatus === "connecting") {
+                    root.networkName = "Connecting...";
+                } else if (newWifiStatus === "disabled" || !root.wifiEnabled) {
+                    root.networkName = "Disabled";
+                } else {
+                    root.networkName = "Disconnected";
+                }
+            }
         }
     }
 
     Process {
         id: updateNetworkStrength
         running: true
-        command: ["sh", "-c", "nmcli -f IN-USE,SIGNAL,SSID device wifi | awk '/^\\*/{if (NR!=1) {print $2}}'"]
+        command: ["sh", "-c", "nmcli -f IN-USE,SIGNAL device wifi | awk '/^\\*/ {print $2}'"]
         stdout: SplitParser {
             onRead: data => {
                 const cleanData = data.trim();
                 if (cleanData) {
                     root.networkStrength = parseInt(cleanData, 10);
+                } else {
+                    root.networkStrength = 0;
                 }
             }
         }
@@ -230,11 +272,11 @@ Singleton {
     }
 
     function toggleWifi(): void {
-        enableWifi(!wifiEnabled);
+        enableWifi(!root.wifiEnabled);
     }
 
     function rescanWifi(): void {
-        wifiScanning = true;
+        root.wifiScanning = true;
         rescanProcess.running = true;
     }
 }
