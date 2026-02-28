@@ -35,7 +35,6 @@ Singleton {
         if (root.wifiStatus === "connecting")
             return "wifi_add";
 
-        // Must be connected AND have a valid name (prevents blank/stale SSIDs from showing full bars)
         if (root.wifiStatus === "connected" && root.networkName !== "Disconnected" && root.networkName !== "") {
             let s = root.networkStrength;
             if (s > 83)
@@ -64,7 +63,7 @@ Singleton {
                 if (name !== "") {
                     root.networkName = name;
                 } else if (root.wifiStatus === "connecting") {
-                    root.networkName = "Connecting..."; // Protects the connecting state!
+                    root.networkName = "Connecting...";
                 } else {
                     root.networkName = root.wifiEnabled ? "Disconnected" : "Disabled";
                 }
