@@ -26,6 +26,8 @@ PanelWindow {
     property bool isVisible: false
     property string currentWall: ""
     property int padding: 10
+    property bool isLoading: false
+
     readonly property string wallsFolder: Quickshell.env("HOME") + "/Pictures/Wallpapers/"
     readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/walli_thumbs/"
 
@@ -47,8 +49,12 @@ PanelWindow {
 
     onVisibleChanged: {
         if (visible) {
-            wallpapers.forceActiveFocus();
+            loadingTimer.restart();
             refreshTimer.restart();
+            thumbGen.running = true;
+        } else {
+            window.isLoading = false;
+            loadingTimer.stop();
         }
     }
 
@@ -62,7 +68,15 @@ PanelWindow {
         }
     }
 
-    // --- Helper Functions ---
+    Timer {
+        id: loadingTimer
+        interval: 1000
+        repeat: false
+        onTriggered: {
+            window.isLoading = true;
+        }
+    }
+
     function findAndSelect(cleanName) {
         if (wallpapers.count === 0)
             return;
@@ -80,9 +94,8 @@ PanelWindow {
     }
 
     function activateWall(name): void {
-        const wallName = name.replace(".png", "");
         const cache = cacheFolder + name;
-        const full = wallsFolder + wallName;
+        const full = wallsFolder + name;
 
         swwwProc.command[2] = full;
         cacheWall.command[1] = full;
@@ -92,9 +105,10 @@ PanelWindow {
         cacheWall.running = true;
         sddmWall.running = true;
 
-        notify.send("walli", wallName, cache);
+        const cleanName = name.replace(/\.[^/.]+$/, "");
+        notify.send("walli", cleanName, cache);
 
-        print(wallName);
+        print(cleanName);
         print("cache : " + cache);
         print("wall : " + full);
 
@@ -112,7 +126,15 @@ PanelWindow {
     Process {
         id: thumbGen
         command: ["bash", Quickshell.env("HOME") + "/.config/quickshell/scripts/walli_thumbs.sh"]
-        running: true
+        onExited: {
+            loadingTimer.stop(); // Stop the timer immediately!
+            window.isLoading = false;
+
+            // Only grab focus if the window is still open
+            if (window.visible) {
+                wallpapers.forceActiveFocus();
+            }
+        }
     }
 
     // Apply wallpaper
@@ -208,6 +230,7 @@ PanelWindow {
                 snapMode: ListView.SnapToItem
                 boundsBehavior: Flickable.StopAtBounds
                 focus: true
+                enabled: !window.isLoading
 
                 highlightFollowsCurrentItem: true
                 highlightMoveDuration: 100
@@ -234,7 +257,8 @@ PanelWindow {
                     folder: "file://" + window.cacheFolder
                     nameFilters: ["*.jpg", "*.png", "*.webp", "*.jpeg"]
                     showDirs: false
-                    sortField: FolderListModel.Name
+                    sortField: FolderListModel.Time
+                    sortReversed: false
                 }
 
                 delegate: Item {
@@ -278,14 +302,21 @@ PanelWindow {
                             mipmap: true
                             asynchronous: true
                             visible: false
-                            sourceSize.width: width
-                            sourceSize.height: height
+                        }
+
+                        property real maskMargin: isSelected ? 5 : 1
+
+                        Behavior on maskMargin {
+                            NumberAnimation {
+                                duration: 100
+                                easing.type: Easing.Bezier
+                            }
                         }
 
                         OpacityMask {
                             anchors {
                                 fill: container
-                                margins: isSelected ? 5 : 1
+                                margins: container.maskMargin
                             }
                             source: img
                             maskSource: Rectangle {
@@ -293,14 +324,7 @@ PanelWindow {
                                 height: container.height
                                 radius: 10
                             }
-                            Behavior on anchors.margins {
-                                NumberAnimation {
-                                    duration: 100
-                                    easing.type: Easing.Bezier
-                                }
-                            }
                         }
-
                         Rectangle {
                             id: selWallName
                             height: parent.height / 6
@@ -361,7 +385,7 @@ PanelWindow {
                             Text {
                                 id: wallName
                                 text: {
-                                    var cleanName = fileName.replace(".png", "");
+                                    var cleanName = fileName.replace(/\.[^/.]+$/, "");
                                     var maxLength = 20;
 
                                     if (cleanName.length > maxLength) {
@@ -377,6 +401,50 @@ PanelWindow {
                             }
                         }
                     }
+                }
+            }
+
+            Rectangle {
+                id: loadingOverlay
+                width: parent.width - 3
+                height: parent.height - 3
+                anchors.centerIn: parent
+                radius: 15
+                z: 10
+
+                color: Style.bg
+                visible: opacity > 0.01
+                opacity: window.isLoading ? 0.9 : 0.0
+
+                states: State {
+                    name: "loading"
+                    when: window.isLoading
+                    PropertyChanges {
+                        target: loadingOverlay
+                        opacity: 0.9
+                    }
+                }
+
+                transitions: Transition {
+                    NumberAnimation {
+                        properties: "opacity"
+                        duration: 150
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Generating thumbnails..."
+                    font.family: Style.family
+                    font.pixelSize: Style.fontSizeLg
+                    font.weight: Font.Medium
+                    color: Style.yellow5
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
                 }
             }
         }

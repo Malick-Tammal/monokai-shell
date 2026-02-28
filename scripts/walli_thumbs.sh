@@ -6,16 +6,27 @@ CACHE_DIR="$HOME/.cache/walli_thumbs/"
 mkdir -p "$CACHE_DIR"
 
 generate_thumbs() {
-    find "$WALLS_DIR" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" \) -print0 |
+    for thumb in "$CACHE_DIR"/*; do
+        [ -e "$thumb" ] || continue
+
+        name=$(basename "$thumb")
+
+        if [ ! -f "$WALLS_DIR/$name" ]; then
+            rm -f "$thumb"
+        fi
+    done
+
+    find "$WALLS_DIR" -maxdepth 1 -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.webp" \) -print0 |
         while IFS= read -r -d '' img; do
             name=$(basename "$img")
-            thumb="$CACHE_DIR/${name}.png"
 
-            # Only generate if missing
+            thumb="$CACHE_DIR/$name"
+
             if [ ! -f "$thumb" ]; then
-                nice -n 19 magick "${img}[0]" -strip -scale 400x450^ -gravity center -extent 400x450 "$thumb"
+                nice -n 19 magick "${img}[0]" -strip -scale 800x500^ -gravity center -extent 800x500 "$thumb"
+                touch -r "$img" "$thumb"
             fi
         done
 }
 
-generate_thumbs &
+generate_thumbs
