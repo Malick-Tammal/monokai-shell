@@ -28,5 +28,6 @@ Item {
         Battery {}
         Network {}
         Bluetooth {}
+        Audio {}
     }
 }

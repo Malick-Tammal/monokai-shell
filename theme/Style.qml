@@ -54,6 +54,7 @@ QtObject {
     property color blue5: "#78DCE8"
     property color blue4: "#93E3ED"
     property color blue3: "#AEEAF1"
+    property color blue2: "#C9F1F6"
 
     property color gray9: "#0C0D0B"
     property color gray7: "#252620"

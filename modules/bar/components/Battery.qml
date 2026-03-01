@@ -5,7 +5,7 @@ import qs.components
 import Qt5Compat.GraphicalEffects
 
 Item {
-    id: batteryWidget
+    id: root
     height: parent.height
     width: con.width
 
@@ -19,7 +19,6 @@ Item {
         width: row.width + 18
         radius: 10
         color: Battery.acConnected ? Style.green2 : Style.orange2
-        clip: true
 
         Item {
             id: fillSource
@@ -103,6 +102,8 @@ Item {
                 text: Math.round(Battery.percentage * 100)
                 anchors.verticalCenter: parent.verticalCenter
                 color: Battery.acConnected ? Style.green9 : Style.orange9
+                renderType: Text.NativeRendering
+
                 font {
                     family: Style.family
                     weight: Font.Bold
