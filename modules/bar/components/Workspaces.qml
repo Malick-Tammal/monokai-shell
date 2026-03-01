@@ -3,7 +3,8 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
 import qs.theme
-import "../../../components/"
+import qs.services
+import qs.components
 
 Item {
     id: root
@@ -21,29 +22,12 @@ Item {
             id: row
             spacing: 8
 
-            property int lastVisibleWs: {
-                let maxId = 7;
-                let activeId = Hyprland.focusedWorkspace?.id || 0;
-
-                if (activeId > maxId && activeId <= 10) {
-                    maxId = activeId;
-                }
-
-                let wsArray = Hyprland.workspaces.values;
-                for (let i = 0; i < wsArray.length; ++i) {
-                    if (wsArray[i].id > maxId && wsArray[i].id <= 10) {
-                        maxId = wsArray[i].id;
-                    }
-                }
-                return maxId;
-            }
-
             anchors {
                 fill: parent
                 topMargin: 8
                 bottomMargin: 8
-                leftMargin: (Hyprland.focusedWorkspace?.id === 1) ? 8 : 10
-                rightMargin: (Hyprland.focusedWorkspace?.id === lastVisibleWs) ? 8 : 10
+                leftMargin: (Hypr.focusedWorkspaceId === 1) ? 8 : 10
+                rightMargin: (Hypr.focusedWorkspaceId === Hypr.lastVisibleWs) ? 8 : 10
             }
 
             Behavior on anchors.leftMargin {
@@ -67,8 +51,8 @@ Item {
                     id: ws
 
                     property int wsId: index + 1
-                    property bool isFocused: (Hyprland.focusedWorkspace?.id === index + 1) ?? false
-                    property bool hasWindows: Hyprland.workspaces.values.some(w => w.id === index + 1)
+                    property bool isFocused: Hypr.focusedWorkspaceId === wsId
+                    property bool hasWindows: Hypr.hasWindows(wsId)
 
                     HoverHandler {
                         id: hoverHandler
@@ -179,7 +163,7 @@ Item {
                         anchors.fill: parent
                         cursorShape: Qt.CursorShape.PointingHandCursor
                         hoverEnabled: true
-                        onClicked: Hyprland.dispatch("workspace " + (index + 1))
+                        onClicked: Hypr.focusWorkspace(wsId)
                     }
                 }
             }
