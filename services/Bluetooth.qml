@@ -48,21 +48,16 @@ Singleton {
         });
     }
 
-    // --- Dynamic UI State ---
     readonly property string symbol: {
-        // Hardware missing or Bluetooth turned off
         if (!isAvailable || !isEnabled)
             return "bluetooth_disabled";
 
-        // Actively scanning for devices
         if (isDiscovering)
             return "bluetooth_searching";
 
-        // One or more devices are actively connected
         if (isConnected)
             return "bluetooth_connected";
 
-        // Default state: Bluetooth is on, but nothing is connected
         return "bluetooth";
     }
 

@@ -5,7 +5,7 @@ import qs.services
 import qs.components
 
 Item {
-    id: networkWidget
+    id: root
 
     height: parent.height
     width: childrenRect.width

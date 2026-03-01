@@ -1,10 +1,9 @@
-import Quickshell
 import QtQuick
 import qs.theme
 import "../../../components/"
 
 Item {
-    id: cornor
+    id: root
     width: rounding
     height: rounding
     z: 5
@@ -16,56 +15,56 @@ Item {
     property bool haveBorder: true
 
     rotation: {
-        if (cornor.position === "top") {
+        if (root.position === "top") {
             rotation: -90;
-        } else if (cornor.position === "bottom") {
+        } else if (root.position === "bottom") {
             rotation: 180;
-        } else if (cornor.position === "left") {
+        } else if (root.position === "left") {
             rotation: -90;
         }
     }
 
     anchors.top: {
-        if (cornor.position === "top") {
-            cornor.target.top;
-        } else if (cornor.position === "right" || cornor.position === "left") {
-            cornor.target.bottom;
+        if (root.position === "top") {
+            root.target.top;
+        } else if (root.position === "right" || root.position === "left") {
+            root.target.bottom;
         }
     }
 
     anchors.bottom: {
-        if (cornor.position === "bottom") {
-            cornor.target.bottom;
+        if (root.position === "bottom") {
+            root.target.bottom;
         }
     }
 
     anchors.left: {
-        if (cornor.position === "top" || cornor.position === "bottom") {
-            cornor.target.right;
-        } else if (cornor.position === "left") {
-            cornor.target.left;
+        if (root.position === "top" || root.position === "bottom") {
+            root.target.right;
+        } else if (root.position === "left") {
+            root.target.left;
         }
     }
 
     anchors.right: {
-        if (cornor.position === "right") {
-            cornor.target.right;
+        if (root.position === "right") {
+            root.target.right;
         }
     }
 
     anchors.margins: {
-        left: cornor.position === "bottom" ? -1 : 0;
-        top: cornor.position === "left" || cornor.position === "bottom" ? -1 : 0;
+        left: root.position === "bottom" ? -1 : 0;
+        top: root.position === "left" || root.position === "bottom" ? -1 : 0;
     }
 
     Inverted {
         rounding: parent.width
-        roundingColor: cornor.borderColor
-        visible: cornor.haveBorder
+        roundingColor: root.borderColor
+        visible: root.haveBorder
 
         transform: Translate {
             x: -1
-            y: cornor.position === "left" ? 1.4 : 0
+            y: root.position === "left" ? 1.4 : 0
         }
     }
 
@@ -75,7 +74,7 @@ Item {
 
         transform: Translate {
             x: 0
-            y: cornor.position === "left" ? 1 : -1
+            y: root.position === "left" ? 1 : -1
         }
     }
 }

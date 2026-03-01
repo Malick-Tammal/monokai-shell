@@ -3,7 +3,7 @@ import qs.theme
 import qs.components
 
 Item {
-    id: powerBtn
+    id: root
     height: parent.height
     width: parent.height
 
