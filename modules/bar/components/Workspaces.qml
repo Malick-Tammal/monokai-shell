@@ -6,7 +6,8 @@ import qs.theme
 import "../../../components/"
 
 Item {
-    width: row.childrenRect.width + (row.anchors.margins * 2)
+    id: root
+    width: row.childrenRect.width + row.anchors.leftMargin + row.anchors.rightMargin
     height: parent.height
 
     Rectangle {
@@ -18,11 +19,46 @@ Item {
 
         Row {
             id: row
-            anchors.fill: parent
+            spacing: 8
 
-            anchors.margins: 8
+            property int lastVisibleWs: {
+                let maxId = 7;
+                let activeId = Hyprland.focusedWorkspace?.id || 0;
 
-            spacing: 10
+                if (activeId > maxId && activeId <= 10) {
+                    maxId = activeId;
+                }
+
+                let wsArray = Hyprland.workspaces.values;
+                for (let i = 0; i < wsArray.length; ++i) {
+                    if (wsArray[i].id > maxId && wsArray[i].id <= 10) {
+                        maxId = wsArray[i].id;
+                    }
+                }
+                return maxId;
+            }
+
+            anchors {
+                fill: parent
+                topMargin: 8
+                bottomMargin: 8
+                leftMargin: (Hyprland.focusedWorkspace?.id === 1) ? 8 : 10
+                rightMargin: (Hyprland.focusedWorkspace?.id === lastVisibleWs) ? 8 : 10
+            }
+
+            Behavior on anchors.leftMargin {
+                NumberAnimation {
+                    duration: 350
+                    easing.type: Easing.OutExpo
+                }
+            }
+
+            Behavior on anchors.rightMargin {
+                NumberAnimation {
+                    duration: 350
+                    easing.type: Easing.OutExpo
+                }
+            }
 
             Repeater {
                 model: 10
@@ -41,7 +77,7 @@ Item {
                     visible: wsId <= 7 || hasWindows || isFocused
 
                     height: visible ? (isFocused ? parent.height : 20) : 0
-                    width: visible ? (isFocused ? 90 : 40) : 0
+                    width: visible ? (isFocused ? 90 : 34) : 0
                     radius: 9999
 
                     anchors.verticalCenter: parent.verticalCenter
@@ -55,10 +91,15 @@ Item {
                     Text {
                         text: wsId
                         visible: !isFocused
-                        anchors.centerIn: parent
                         color: hasWindows ? Style.fg : Style.gray3
                         renderType: Text.NativeRendering
-                        anchors.verticalCenterOffset: 1.2
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                        anchors {
+                            centerIn: parent
+                            verticalCenterOffset: 1.2
+                        }
 
                         font {
                             family: Style.family
@@ -76,16 +117,16 @@ Item {
 
                         visible: ws.isFocused
 
-                        rotation: parent.isFocused ? 0 : 180
+                        rotation: parent.isFocused ? 0 : -180
 
                         Behavior on rotation {
                             SequentialAnimation {
                                 PauseAnimation {
-                                    duration: 150
+                                    duration: 100
                                 }
                                 NumberAnimation {
-                                    duration: 200
-                                    easing.type: Easing.BezierSpline
+                                    duration: 400
+                                    easing.type: Easing.OutExpo
                                 }
                             }
                         }
@@ -95,20 +136,42 @@ Item {
                         Behavior on scale {
                             SequentialAnimation {
                                 PauseAnimation {
-                                    duration: 350
+                                    duration: 300
                                 }
                                 NumberAnimation {
                                     duration: 200
-                                    easing.type: Easing.OutBounce
+                                    easing.type: Easing.OutBack
+                                    easing.overshoot: 2
                                 }
                             }
                         }
                     }
 
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 300
+                            easing.type: Easing.OutQuad
+                        }
+                    }
+
+                    Behavior on border.color {
+                        ColorAnimation {
+                            duration: 300
+                            easing.type: Easing.OutQuad
+                        }
+                    }
+
                     Behavior on width {
                         NumberAnimation {
-                            duration: 100
-                            easing.type: Easing.Bezier
+                            duration: 300
+                            easing.type: Easing.OutBack
+                        }
+                    }
+
+                    Behavior on height {
+                        NumberAnimation {
+                            duration: 300
+                            easing.type: Easing.OutBack
                         }
                     }
 
