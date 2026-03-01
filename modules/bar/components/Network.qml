@@ -27,6 +27,13 @@ Item {
             }
         }
 
+        Behavior on width {
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.OutQuart
+            }
+        }
+
         Row {
             id: row
             anchors.centerIn: parent

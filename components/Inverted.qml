@@ -16,10 +16,9 @@ Item {
         maskEnabled: true
         maskSource: mask
 
-        // Force the effect to render at high quality
         layer.enabled: true
         layer.smooth: true
-        layer.samples: 8 // High sampling = no pixelation
+        layer.samples: 8
 
         maskThresholdMin: 0.5
         maskSpreadAtMin: 1.0
@@ -38,7 +37,6 @@ Item {
         anchors.fill: parent
         visible: false
 
-        // This makes the internal vector rendering high-quality
         layer.enabled: true
         layer.samples: 8
 
@@ -46,7 +44,7 @@ Item {
 
         ShapePath {
             strokeColor: "transparent"
-            fillColor: "black" // Must have a fill to act as a mask
+            fillColor: "black"
 
             startX: 0
             startY: 0

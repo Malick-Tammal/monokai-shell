@@ -8,7 +8,7 @@ Item {
     id: root
 
     height: parent.height
-    width: childrenRect.width
+    width: backgroundRect.width
 
     HoverHandler {
         id: hoverHandler
@@ -40,9 +40,11 @@ Item {
     }
 
     Rectangle {
+        id: backgroundRect
         height: parent.height
-        width: row.width + 18
+        width: row.implicitWidth + 18
         radius: 10
+        clip: true
 
         color: {
             if (!Bluetooth.isAvailable)
@@ -54,6 +56,13 @@ Item {
         Behavior on color {
             ColorAnimation {
                 duration: 100
+            }
+        }
+
+        Behavior on width {
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.OutQuart
             }
         }
 
