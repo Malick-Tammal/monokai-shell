@@ -15,6 +15,30 @@ Item {
         enabled: Bluetooth.isAvailable
     }
 
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Bluetooth.isAvailable ? Qt.CursorShape.PointingHandCursor : Qt.CursorShape.ForbiddenCursor
+        hoverEnabled: true
+
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+        onClicked: mouse => {
+            if (!Bluetooth.isAvailable)
+                return;
+
+            if (mouse.button === Qt.RightButton) {
+                Bluetooth.toggleBluetooth();
+                return;
+            }
+
+            if (mouse.button === Qt.LeftButton) {
+                // Bluetooth.toggleDiscovery();
+                Quickshell.execDetached(["blueman-manager"]);
+                return;
+            }
+        }
+    }
+
     Rectangle {
         height: parent.height
         width: row.width + 18
@@ -36,7 +60,7 @@ Item {
         Row {
             id: row
             anchors.centerIn: parent
-            spacing: 3
+            spacing: 4
 
             Symbols {
                 id: btIcon
@@ -73,6 +97,7 @@ Item {
                 color: Bluetooth.isAvailable ? Style.green9 : Style.gray3
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
+                anchors.verticalCenterOffset: 0.5
 
                 font {
                     family: Style.family
@@ -90,30 +115,6 @@ Item {
 
                 elide: Text.ElideRight
                 width: Math.min(implicitWidth, 150)
-            }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Bluetooth.isAvailable ? Qt.CursorShape.PointingHandCursor : Qt.CursorShape.ForbiddenCursor
-            hoverEnabled: true
-
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-            onClicked: mouse => {
-                if (!Bluetooth.isAvailable)
-                    return;
-
-                if (mouse.button === Qt.RightButton) {
-                    Bluetooth.toggleBluetooth();
-                    return;
-                }
-
-                if (mouse.button === Qt.LeftButton) {
-                    // Bluetooth.toggleDiscovery();
-                    Quickshell.execDetached(["blueman-manager"]);
-                    return;
-                }
             }
         }
     }

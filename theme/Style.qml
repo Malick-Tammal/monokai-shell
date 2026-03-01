@@ -28,6 +28,7 @@ QtObject {
     property color red5: "#FF6188"
     property color red4: "#FF81A0"
     property color red3: "#FFA0B8"
+    property color red2: "#FFC0CF"
 
     property color orange9: "#321E15"
     property color orange7: "#975B3E"

@@ -1,17 +1,18 @@
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
-import "../../components/"
+import qs.components
 import qs.theme
 
 PanelWindow {
-    id: main
+    id: root
 
     property int rounding: 20
-    property color cornors: Style.black
+    property color cornerColor: Style.black
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
+
     mask: Region {}
 
     anchors {
@@ -23,44 +24,45 @@ PanelWindow {
 
     color: "transparent"
 
-    Rectangle {
+    Item {
         anchors.fill: parent
+        enabled: false
+        z: 2
 
-        color: "transparent"
+        Repeater {
+            model: [
+                {
+                    anchorTop: true,
+                    anchorRight: true,
+                    rot: 0
+                },
+                {
+                    anchorTop: true,
+                    anchorLeft: true,
+                    rot: -90
+                },
+                {
+                    anchorBottom: true,
+                    anchorRight: true,
+                    rot: 90
+                },
+                {
+                    anchorBottom: true,
+                    anchorLeft: true,
+                    rot: -180
+                }
+            ]
 
-        Inverted {
-            anchors.right: parent.right
-            anchors.top: parent.top
-            rounding: main.rounding
-            z: 2
-            roundingColor: main.cornors
-        }
+            delegate: Inverted {
+                anchors.top: modelData.anchorTop ? parent.top : undefined
+                anchors.bottom: modelData.anchorBottom ? parent.bottom : undefined
+                anchors.left: modelData.anchorLeft ? parent.left : undefined
+                anchors.right: modelData.anchorRight ? parent.right : undefined
 
-        Inverted {
-            anchors.left: parent.left
-            anchors.top: parent.top
-            rounding: main.rounding
-            z: 2
-            rotation: -90
-            roundingColor: main.cornors
-        }
-
-        Inverted {
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            rounding: main.rounding
-            z: 2
-            rotation: 90
-            roundingColor: main.cornors
-        }
-
-        Inverted {
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            rounding: main.rounding
-            z: 2
-            rotation: -180
-            roundingColor: main.cornors
+                rounding: root.rounding
+                rotation: modelData.rot
+                roundingColor: root.cornerColor
+            }
         }
     }
 }

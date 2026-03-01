@@ -59,9 +59,10 @@ Item {
                 width: parent.width * Audio.volume
                 color: Style.blue5
 
-                Behavior on color {
-                    ColorAnimation {
-                        duration: 100
+                Behavior on width {
+                    NumberAnimation {
+                        duration: 200
+                        easing.type: Easing.OutCubic
                     }
                 }
             }
@@ -77,18 +78,11 @@ Item {
             }
         }
 
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: Style.blue2
-            border.width: 1
-            radius: con.radius
-        }
-
         Row {
             id: row
             anchors.centerIn: parent
             spacing: 5
+            z: 1
 
             Symbols {
                 icon: Audio.symbol
@@ -101,6 +95,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 color: Style.blue9
                 renderType: Text.NativeRendering
+                anchors.verticalCenterOffset: 0.5
 
                 font {
                     family: Style.family
@@ -108,6 +103,15 @@ Item {
                     pixelSize: Style.fontSizeSm
                 }
             }
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: Style.blue2
+            border.width: 1
+            radius: con.radius
+            z: 2
         }
     }
 }

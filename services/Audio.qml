@@ -58,7 +58,6 @@ Singleton {
         return "volume_up";
     }
 
-    // --- Controls ---
     function toggleMute() {
         if (sink?.audio)
             sink.audio.muted = !sink.audio.muted;
