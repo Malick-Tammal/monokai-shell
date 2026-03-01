@@ -27,5 +27,6 @@ Item {
         Power {}
         Battery {}
         Network {}
+        Bluetooth {}
     }
 }

@@ -42,6 +42,8 @@ Item {
             Text {
                 color: Style.purple9
                 anchors.verticalCenter: parent.verticalCenter
+                elide: Text.ElideRight
+                width: Math.min(implicitWidth, 80)
 
                 font {
                     family: Style.family
