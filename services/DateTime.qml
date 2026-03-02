@@ -8,19 +8,30 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    readonly property date date: clock.date
+    readonly property string date: Qt.formatDate(clock.date, "ddd, MMM d")
 
-    readonly property string hours: (clock.hours % 12 || 12).toString().padStart(2, '0')
-    readonly property string minutes: clock.minutes.toString().padStart(2, '0')
-    readonly property string seconds: clock.seconds.toString().padStart(2, '0')
+    readonly property string _fullTime: Qt.formatTime(clock.date, "hh:mm:ss AP")
 
-    readonly property string ampm: clock.hours >= 12 ? "PM" : "AM"
+    readonly property string hours: _fullTime.substring(0, 2)
+    readonly property string minutes: _fullTime.substring(3, 5)
+    readonly property string seconds: _fullTime.substring(6, 8)
+    readonly property string ampm: _fullTime.substring(9, 11)
 
     property string upTime: ""
 
     SystemClock {
         id: clock
         precision: SystemClock.Seconds
+    }
+
+    Timer {
+        id: uptimeTimer
+        interval: 300000
+        running: true
+        repeat: true
+        onTriggered: {
+            upTimeProc.running = true;
+        }
     }
 
     Process {
