@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Io
 import qs.theme
+import qs.services
 
 Rectangle {
     id: system
@@ -24,34 +24,9 @@ Rectangle {
             rightMargin: 1
         }
 
-        Process {
-            id: upTimeProc
-            command: ["uptime", "-p"]
-            running: true
-
-            stdout: StdioCollector {
-                onStreamFinished: {
-                    let clean = this.text.trim();
-
-                    let h = 0;
-                    let m = 0;
-
-                    let matchH = clean.match(/(\d+)\s+hours?/);
-                    if (matchH)
-                        h = matchH[1];
-
-                    let matchM = clean.match(/(\d+)\s+minutes?/);
-                    if (matchM)
-                        m = matchM[1];
-
-                    upTime.text = `${h} Hours , ${m} Mins`;
-                }
-            }
-        }
-
         Text {
             id: upTime
-            text: "6 Hours , 23 Mins"
+            text: DateTime.upTime
             color: Style.yellow5
             font {
                 family: Style.family
