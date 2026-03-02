@@ -5,8 +5,10 @@ import "../components/"
 Item {
     id: right
     height: parent.height
-    width: row.childrenRect.width + (row.anchors.margins * 2)
+    width: row.implicitWidth + (row.anchors.margins * 2)
     anchors.right: parent.right
+
+    property var barWindowId
 
     Rectangle {
         id: panel
@@ -29,5 +31,9 @@ Item {
         Network {}
         Bluetooth {}
         Audio {}
+        // Tray {}
+        Tray {
+            barWindowId: right.barWindowId
+        }
     }
 }

@@ -4,7 +4,7 @@ import Quickshell.Io
 import QtQuick
 import Qt5Compat.GraphicalEffects
 import Qt.labs.folderlistmodel
-import "../../components/"
+import qs.components
 import qs.services
 import qs.theme
 

@@ -6,7 +6,6 @@ import qs.components
 
 Item {
     id: root
-
     height: parent.height
     width: childrenRect.width
 
@@ -16,7 +15,7 @@ Item {
 
     Rectangle {
         height: parent.height
-        width: row.width + 18
+        width: row.implicitWidth + 18
         radius: 10
         color: hoverHandler.hovered ? Style.purple4 : Style.purple5
         border.color: Style.purple3

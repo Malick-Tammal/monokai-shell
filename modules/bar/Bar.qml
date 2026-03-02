@@ -31,7 +31,10 @@ PanelWindow {
         anchors.fill: parent
 
         Center {}
-        Right {}
+        Right {
+            barWindowId: bar
+        }
+        // Right {}
         Left {}
     }
 }
