@@ -13,7 +13,6 @@ Item {
     property int size: 17
 
     property string _displayText: "00"
-
     property real _offset: 0
 
     onTextChanged: {
@@ -61,11 +60,10 @@ Item {
             }
         }
 
-        PropertyAction {
-            target: root
-            property: "_displayText"
-            value: root.text
+        ScriptAction {
+            script: root._displayText = root.text
         }
+
         PropertyAction {
             target: root
             property: "_offset"
