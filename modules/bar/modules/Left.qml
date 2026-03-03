@@ -24,6 +24,7 @@ Item {
         layoutDirection: Qt.LeftToRight
         anchors.margins: 5
 
+        Notification {}
         Clock {}
     }
 }

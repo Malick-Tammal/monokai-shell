@@ -7,7 +7,7 @@ Text {
     property string icon: ""
     property int size: 24
     property color iconColor: Style.fg
-    property int weight: Font.Normal
+    property int weight: 700
 
     FontLoader {
         id: materialFont

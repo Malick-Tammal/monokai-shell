@@ -11,6 +11,7 @@ Item {
     property color color: Style.fg
     property int orientation: Qt.Vertical
     property int size: 17
+    property int weight: Font.Black
 
     property string _displayText: "00"
     property real _offset: 0
@@ -37,7 +38,7 @@ Item {
         font {
             pixelSize: root.size
             family: Style.family
-            weight: Font.Black
+            weight: root.weight
         }
     }
 

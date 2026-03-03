@@ -11,7 +11,7 @@ Item {
 
     Rectangle {
         id: con
-        width: row.width
+        width: Math.max(80, row.width)
         height: parent.height
         radius: 10
         color: "transparent"
