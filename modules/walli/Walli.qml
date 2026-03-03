@@ -106,7 +106,7 @@ PanelWindow {
         sddmWall.running = true;
 
         const cleanName = name.replace(/\.[^/.]+$/, "");
-        notify.send("walli", cleanName, cache);
+        NotifyService.send("walli", cleanName, cache);
 
         print(cleanName);
         print("cache : " + cache);
@@ -157,11 +157,6 @@ PanelWindow {
     Process {
         id: sddmWall
         command: ["cp", "", "/usr/share/sddm/themes/sddm-modern/wallpaper.png"]
-    }
-
-    // Notification Helper
-    Notify {
-        id: notify
     }
 
     // Active Wallpaper Query
