@@ -69,7 +69,7 @@ Item {
                     case "limited":
                         return "Limited Access";
                     case "disabled":
-                        return "Disabled";
+                        return "Off";
                     case "disconnected":
                         return "Disconnected";
                     default:
