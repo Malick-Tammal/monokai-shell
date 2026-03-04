@@ -3,6 +3,7 @@ import Quickshell.Hyprland
 import Quickshell.Wayland
 import Quickshell.Widgets
 import QtQuick
+import QtQuick.Layouts
 import qs.theme
 import qs.services
 
@@ -21,9 +22,9 @@ PanelWindow {
 
     mask: Region {
         x: 0
-        y: root.implicitHeight - height
-        height: root.shouldHide ? trigger.height : root.implicitHeight
-        width: trigger.width
+        y: Math.min(dockTranslate.y, root.implicitHeight - trigger.height)
+        height: root.implicitHeight - y
+        width: root.width
     }
 
     MouseArea {
@@ -104,55 +105,122 @@ PanelWindow {
             Repeater {
                 model: DockService.appList
 
-                Item {
-                    width: parent.height
-                    height: parent.height
+                Row {
+                    height: row.height
+                    spacing: separator.visible ? 8 : 0
 
-                    IconImage {
-                        source: Quickshell.iconPath(DockService.getIconName(modelData.class), true)
-                        anchors.fill: parent
-                        smooth: false
+                    Rectangle {
+                        id: separator
+                        width: 3
+                        height: parent.height * 0.6
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: Style.dark1
+                        radius: 1
+                        visible: !modelData.isPinned && index > 0 && DockService.appList[index - 1].isPinned
                     }
 
-                    Row {
-                        anchors {
-                            bottom: parent.bottom
-                            bottomMargin: -5
-                            horizontalCenter: parent.horizontalCenter
-                        }
-                        spacing: 4
+                    Item {
+                        width: parent.height
+                        height: parent.height
 
-                        Repeater {
-                            model: modelData.count
+                        IconImage {
+                            source: Quickshell.iconPath(DockService.getIconName(modelData.class), true)
+                            anchors.fill: parent
+                            smooth: false
+                            scale: {
+                                if (iconMouseArea.pressed)
+                                    return 0.9;
+                                if (iconMouseArea.containsMouse)
+                                    return 1.2;
+                                return 1.0;
+                            }
 
-                            Rectangle {
-                                width: 10
-                                height: 4
-                                radius: 20
-                                color: Style.yellow5
+                            Behavior on scale {
+                                NumberAnimation {
+                                    duration: 150
+                                    easing.type: Easing.OutBack
+                                    easing.overshoot: 4.0
+                                }
+                            }
+
+                            transform: Translate {
+                                y: {
+                                    if (iconMouseArea.pressed)
+                                        return 2;
+                                    if (iconMouseArea.containsMouse)
+                                        return -10;
+                                    return 0;
+                                }
+
+                                Behavior on y {
+                                    NumberAnimation {
+                                        duration: 150
+                                        easing.type: Easing.OutBack
+                                        easing.overshoot: 2.0
+                                    }
+                                }
                             }
                         }
-                    }
 
-                    MouseArea {
-                        id: iconMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.CursorShape.PointingHandCursor
+                        RowLayout {
+                            width: dotRepeater.count > 2 ? parent.width : implicitWidth
+                            clip: true
+                            spacing: 2
 
-                        onContainsMouseChanged: {
-                            if (containsMouse) {
-                                root.hoveredIconCount++;
-                            } else {
-                                root.hoveredIconCount--;
+                            anchors {
+                                bottom: parent.bottom
+                                bottomMargin: -5
+                                horizontalCenter: parent.horizontalCenter
+                            }
+
+                            Repeater {
+                                id: dotRepeater
+                                model: modelData.count
+
+                                Rectangle {
+                                    Layout.fillWidth: dotRepeater.count > 2
+                                    Layout.preferredWidth: 10
+                                    height: 4
+                                    radius: 20
+                                    color: Style.yellow5
+                                }
                             }
                         }
 
-                        onClicked: {
-                            if (modelData.count > 0) {
-                                Hyprland.dispatch(`focuswindow address:${modelData.windows[0].address}`);
-                            } else if (modelData.isPinned) {
-                                Hyprland.dispatch(`exec ${modelData.exec}`);
+                        MouseArea {
+                            id: iconMouseArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.CursorShape.PointingHandCursor
+
+                            acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+
+                            onContainsMouseChanged: {
+                                if (containsMouse) {
+                                    root.hoveredIconCount++;
+                                } else {
+                                    root.hoveredIconCount--;
+                                }
+                            }
+
+                            Component.onDestruction: {
+                                if (containsMouse) {
+                                    root.hoveredIconCount--;
+                                }
+                            }
+
+                            onClicked: mouse => {
+                                if (mouse.button === Qt.LeftButton) {
+                                    if (modelData.count > 0) {
+                                        Hyprland.dispatch(`focuswindow address:${modelData.windows[0].address}`);
+                                    } else if (modelData.isPinned) {
+                                        Hyprland.dispatch(`exec ${modelData.exec}`);
+                                    }
+                                } else if (mouse.button === Qt.MiddleButton) {
+                                    if (modelData.count > 0) {
+                                        Hyprland.dispatch(`closewindow address:${modelData.windows[0].address}`);
+                                    }
+                                }
                             }
                         }
                     }
@@ -162,7 +230,7 @@ PanelWindow {
 
         transform: Translate {
             id: dockTranslate
-            y: root.shouldHide ? root.height : 0
+            y: root.shouldHide ? root.implicitHeight : 0
             Behavior on y {
                 SpringAnimation {
                     spring: 7
