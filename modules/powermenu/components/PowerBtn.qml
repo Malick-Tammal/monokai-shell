@@ -22,7 +22,6 @@ Rectangle {
 
     signal activated
 
-
     Behavior on color {
         ColorAnimation {
             duration: 100
@@ -63,5 +62,6 @@ Rectangle {
         size: 25
         anchors.centerIn: parent
         iconColor: (root.activeFocus || mouseArea.containsMouse) ? root.activeIconColor : root.iconColor
+        weight: Font.Medium
     }
 }

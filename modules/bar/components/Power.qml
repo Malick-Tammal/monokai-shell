@@ -17,9 +17,11 @@ Item {
         color: hoverHandler.hovered ? Style.red4 : Style.red5
         border.color: Style.red3
 
-        Icons {
-            path: "../../../assets/icons/power.svg"
-            size: 14
+        Nerd {
+            icon: "⏻"
+            weight: Font.Black
+            size: 12
+            color: Style.red9
 
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)

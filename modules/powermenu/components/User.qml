@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Io
 import qs.theme
+import qs.components
 
 Rectangle {
     id: user
@@ -9,8 +10,6 @@ Rectangle {
     Layout.preferredHeight: 30
     color: Style.yellow5
     radius: 8
-
-    property string assetsPath: "../../../assets/"
 
     Rectangle {
         width: parent.width / 2 + 20
@@ -61,18 +60,15 @@ Rectangle {
             spacing: 5
             anchors.centerIn: parent
 
-            Text {
-                text: ""
-                font {
-                    family: Style.nerdFamily
-                    pixelSize: 14
-                }
-                renderType: Text.NativeRendering
+            Symbols {
+                icon: "person"
+                size: 16
+                iconColor: Style.orange9
             }
 
             Text {
                 text: "User"
-                color: Style.bg
+                color: Style.orange9
                 font {
                     family: Style.family
                     pixelSize: Style.fontSizeMd
