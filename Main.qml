@@ -15,6 +15,6 @@ Item {
         id: powerMenu
     }
     Walli {}
-    // Dock {}
+    Dock {}
     // Launcher {}
 }

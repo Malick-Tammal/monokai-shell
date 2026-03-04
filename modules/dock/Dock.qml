@@ -1,17 +1,19 @@
 import Quickshell
-import QtQuick
 import Quickshell.Hyprland
 import Quickshell.Wayland
-import Quickshell.Io
+import Quickshell.Widgets
+import QtQuick
 import qs.theme
+import qs.services
 
 PanelWindow {
-    id: window
-    implicitWidth: dockWidth
-    implicitHeight: dockHeight + 20
+    id: root
+    implicitWidth: dock.width
+    implicitHeight: dock.height + 20
     color: "transparent"
 
     WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.exclusiveZone: -1
 
     anchors {
         bottom: true
@@ -19,9 +21,9 @@ PanelWindow {
 
     mask: Region {
         x: 0
-        y: window.implicitHeight - height
-        height: window.shouldHide ? hoverRect.height : window.implicitHeight
-        width: hoverRect.width
+        y: root.implicitHeight - height
+        height: root.shouldHide ? trigger.height : root.implicitHeight
+        width: trigger.width
     }
 
     MouseArea {
@@ -30,23 +32,19 @@ PanelWindow {
         hoverEnabled: true
     }
 
-    property var windowList: []
-    property int dockWidth: 800
-    property int dockHeight: 60
     property alias animY: dockTranslate.y
 
-    // INTELLIHIDE
+    //  INFO: INTELLIHIDE
     readonly property bool overlapsWindow: {
-        if (windowList.length === 0)
+        if (DockService.windowList.length === 0)
             return false;
 
-        const dockTopEdge = (window.screen.y + window.screen.height) - dockHeight;
+        const dockTopEdge = (root.screen.y + root.screen.height) - root.implicitHeight + 5;
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
 
-        return windowList.some(win => {
+        return DockService.windowList.some(win => {
             if (win.workspace.id !== currentWsId)
                 return false;
-
             if (win.at[0] === -32000)
                 return false;
 
@@ -55,52 +53,31 @@ PanelWindow {
         });
     }
 
-    readonly property bool isHovered: dockMouseArea.containsMouse || activatorMouseArea.containsMouse
-    readonly property bool shouldHide: overlapsWindow && !isHovered
-
-    WlrLayershell.exclusiveZone: -1
-
-    Process {
-        id: getClients
-        command: ["hyprctl", "clients", "-j"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                try {
-                    window.windowList = JSON.parse(text);
-                } catch (e) {
-                    console.error("Failed to parse hyprctl output");
-                }
-            }
-        }
-    }
+    property bool activeHover: false
+    property int hoveredIconCount: 0
+    readonly property bool isHovered: gapBridge.containsMouse || dockMouseArea.containsMouse || activatorMouseArea.containsMouse || hoveredIconCount > 0
+    readonly property bool shouldHide: overlapsWindow && !activeHover
 
     Timer {
-        interval: 500
-        running: true
-        repeat: true
-        onTriggered: getClients.running = true
-    }
-
-    Timer {
-        id: updateDebounce
-        interval: 100
+        id: hideTimer
+        interval: 300
         repeat: false
-        onTriggered: getClients.running = true
+        onTriggered: root.activeHover = false
     }
 
-    Connections {
-        target: Hyprland
-        function onRawEvent(event) {
-            updateDebounce.restart();
+    onIsHoveredChanged: {
+        if (isHovered) {
+            hideTimer.stop();
+            activeHover = true;
+        } else {
+            hideTimer.restart();
         }
     }
-
-    Component.onCompleted: getClients.running = true
 
     Rectangle {
         id: dock
-        height: window.dockHeight
-        width: parent.width
+        height: 60
+        width: row.implicitWidth + 16
         color: Style.bg
         border.color: Style.border
         border.width: 1
@@ -113,9 +90,79 @@ PanelWindow {
             hoverEnabled: true
         }
 
+        Row {
+            id: row
+            spacing: 8
+
+            anchors {
+                fill: parent
+                topMargin: 8
+                bottomMargin: 8
+                leftMargin: 8
+            }
+
+            Repeater {
+                model: DockService.appList
+
+                Item {
+                    width: parent.height
+                    height: parent.height
+
+                    IconImage {
+                        source: Quickshell.iconPath(DockService.getIconName(modelData.class), true)
+                        anchors.fill: parent
+                        smooth: false
+                    }
+
+                    Row {
+                        anchors {
+                            bottom: parent.bottom
+                            bottomMargin: -5
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        spacing: 4
+
+                        Repeater {
+                            model: modelData.count
+
+                            Rectangle {
+                                width: 10
+                                height: 4
+                                radius: 20
+                                color: Style.yellow5
+                            }
+                        }
+                    }
+
+                    MouseArea {
+                        id: iconMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.CursorShape.PointingHandCursor
+
+                        onContainsMouseChanged: {
+                            if (containsMouse) {
+                                root.hoveredIconCount++;
+                            } else {
+                                root.hoveredIconCount--;
+                            }
+                        }
+
+                        onClicked: {
+                            if (modelData.count > 0) {
+                                Hyprland.dispatch(`focuswindow address:${modelData.windows[0].address}`);
+                            } else if (modelData.isPinned) {
+                                Hyprland.dispatch(`exec ${modelData.exec}`);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         transform: Translate {
             id: dockTranslate
-            y: window.shouldHide ? window.height : 0
+            y: root.shouldHide ? root.height : 0
             Behavior on y {
                 SpringAnimation {
                     spring: 7
@@ -127,9 +174,9 @@ PanelWindow {
     }
 
     Rectangle {
-        id: hoverRect
-        width: window.width
-        height: 4
+        id: trigger
+        width: root.width
+        height: 1
         color: "transparent"
         anchors.bottom: parent.bottom
 
