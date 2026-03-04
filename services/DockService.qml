@@ -36,7 +36,7 @@ Item {
             exec: "code"
         },
         {
-            class: "vscodium",
+            class: "codium",
             exec: "vscodium"
         },
         {

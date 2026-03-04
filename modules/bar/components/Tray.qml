@@ -25,9 +25,25 @@ Item {
 
         Row {
             id: row
-            spacing: 5
+            spacing: 2
             layoutDirection: Qt.RightToLeft
             anchors.centerIn: parent
+
+            Rectangle {
+                width: 20
+                height: 5
+                anchors.verticalCenter: parent.verticalCenter
+                color: "transparent"
+
+                Rectangle {
+                    width: 5
+                    height: 5
+                    anchors.centerIn: parent
+                    radius: 10
+
+                    color: Style.gray2
+                }
+            }
 
             Repeater {
                 id: trayRepeater
