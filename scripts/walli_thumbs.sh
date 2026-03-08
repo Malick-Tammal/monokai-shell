@@ -35,7 +35,7 @@ generate_thumbs() {
         exit 0
     fi
 
-    # We found new wallpapers, tell UI to show overlay
+    # We found new wallpapers, tell UI to show overlay and generate thumbnails
     echo "STATUS:DETECTED"
 
     # Generate missing thumbnails and output progress

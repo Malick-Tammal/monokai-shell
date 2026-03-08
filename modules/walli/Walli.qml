@@ -23,47 +23,33 @@ PanelWindow {
     }
     color: "transparent"
 
-    property bool isVisible: false
-    property string currentWall: ""
     property int padding: 10
-    property bool isLoading: false
-    property string loadingText: "Checking wallpapers..."
+    
+    visible: WalliService.isVisible
 
-    readonly property string wallsFolder: Quickshell.env("HOME") + "/Pictures/Wallpapers/"
-    readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/walli_thumbs/"
-
-    visible: isVisible
-
-    IpcHandler {
-        target: "walli"
-        function toggle(): void {
-            window.isVisible = !window.isVisible;
+    Connections {
+        target: WalliService
+        function onIsVisibleChanged() {
+            if (!WalliService.isLoading && WalliService.isVisible) {
+                wallpapers.forceActiveFocus();
+            }
+        }
+        function onIsLoadingChanged() {
+            if (!WalliService.isLoading && WalliService.isVisible) {
+                wallpapers.forceActiveFocus();
+            }
+        }
+        function onCurrentWallChanged() {
+            if (WalliService.currentWall !== "") {
+                window.findAndSelect(WalliService.currentWall);
+            }
         }
     }
 
     Shortcut {
         sequences: ["Escape", "Backspace", "q"]
         onActivated: {
-            window.isVisible = false;
-        }
-    }
-
-    onVisibleChanged: {
-        if (visible) {
-            refreshTimer.restart();
-            thumbGen.running = true;
-        } else {
-            window.isLoading = false;
-        }
-    }
-
-    Timer {
-        id: refreshTimer
-        interval: 10
-        repeat: false
-        onTriggered: {
-            window.currentWall = "";
-            swwwQuery.running = true;
+            WalliService.isVisible = false;
         }
     }
 
@@ -83,107 +69,9 @@ PanelWindow {
         wallpapers.positionViewAtBeginning();
     }
 
-    function activateWall(name): void {
-        const cache = cacheFolder + name;
-        const full = wallsFolder + name;
-
-        swwwProc.command[2] = full;
-        cacheWall.command[1] = full;
-        sddmWall.command[1] = full;
-
-        swwwProc.running = true;
-        cacheWall.running = true;
-        sddmWall.running = true;
-
-        const cleanName = name.replace(/\.[^/.]+$/, "");
-        NotifyService.send("walli", cleanName, cache);
-
-        print(cleanName);
-        print("cache : " + cache);
-        print("wall : " + full);
-
-        isVisible = false;
-    }
-
     MouseArea {
         anchors.fill: parent
-        onClicked: window.isVisible = false
-    }
-
-    //  INFO: Processes ---
-
-    // Thumbnail Generator
-    Process {
-        id: thumbGen
-        command: ["bash", Quickshell.env("HOME") + "/.config/quickshell/scripts/walli_thumbs.sh"]
-
-        stdout: SplitParser {
-            onRead: data => {
-                const line = data.trim();
-                if (line === "STATUS:DETECTED") {
-                    window.isLoading = true;
-                    window.loadingText = "New wallpapers detected...";
-                } else if (line.startsWith("STATUS:GENERATING:")) {
-                    window.isLoading = true;
-                    const parts = line.split(":");
-                    if (parts.length >= 4) {
-                        window.loadingText = "Generating wallpaper thumb (" + parts[2] + " of " + parts[3] + ")...";
-                    }
-                }
-            }
-        }
-
-        onExited: {
-            window.isLoading = false;
-
-            if (window.visible) {
-                wallpapers.forceActiveFocus();
-            }
-        }
-    }
-
-    // Apply wallpaper
-    Process {
-        id: swwwProc
-        command: ["swww", "img", "", "--transition-type", "grow", "--transition-pos", "0.5,0.5", "--transition-step", "90", "--transition-fps", "60"]
-
-        onExited: code => {
-            if (code === 0) {
-                window.isVisible = false;
-            }
-        }
-    }
-
-    // Helper Processes (Cache & SDDM)
-    Process {
-        id: cacheWall
-        command: ["cp", "", Quickshell.env("HOME") + "/.cache/current-wallpaper.png"]
-    }
-    Process {
-        id: sddmWall
-        command: ["cp", "", "/usr/share/sddm/themes/sddm-modern/wallpaper.png"]
-    }
-
-    // Active Wallpaper Query
-    Process {
-        id: swwwQuery
-        command: ["swww", "query"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const output = this.text.trim();
-                if (!output)
-                    return;
-                const parts = output.split(": ");
-                if (parts.length > 1) {
-                    const fullPath = parts[parts.length - 1].trim().split(",")[0];
-                    const filename = fullPath.split("/").pop();
-                    const cleanName = filename.replace(/\.[^/.]+$/, "");
-
-                    window.currentWall = cleanName;
-                    window.findAndSelect(cleanName);
-                }
-            }
-        }
+        onClicked: WalliService.isVisible = false
     }
 
     //  INFO: UI
@@ -230,7 +118,7 @@ PanelWindow {
                 snapMode: ListView.SnapToItem
                 boundsBehavior: Flickable.StopAtBounds
                 focus: true
-                enabled: !window.isLoading
+                enabled: !WalliService.isLoading
 
                 highlightFollowsCurrentItem: true
                 highlightMoveDuration: 100
@@ -248,13 +136,13 @@ PanelWindow {
                         event.accepted = true;
                     } else if (event.text === "k" || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                         const fileName = wallpapers.model.get(wallpapers.currentIndex, "fileName");
-                        window.activateWall(fileName);
+                        WalliService.activateWall(fileName);
                         event.accepted = true;
                     }
                 }
 
                 model: FolderListModel {
-                    folder: "file://" + window.cacheFolder
+                    folder: "file://" + WalliService.cacheFolder
                     nameFilters: ["*.jpg", "*.png", "*.webp", "*.jpeg"]
                     showDirs: false
                     sortField: FolderListModel.Time
@@ -282,7 +170,7 @@ PanelWindow {
                             wallpapers.forceActiveFocus();
                         }
                         onDoubleClicked: {
-                            window.activateWall(fileName);
+                            WalliService.activateWall(fileName);
                         }
                     }
 
@@ -414,11 +302,11 @@ PanelWindow {
 
                 color: Style.bg
                 visible: opacity > 0.01
-                opacity: window.isLoading ? 0.9 : 0.0
+                opacity: WalliService.isLoading ? 0.9 : 0.0
 
                 states: State {
                     name: "loading"
-                    when: window.isLoading
+                    when: WalliService.isLoading
                     PropertyChanges {
                         target: loadingOverlay
                         opacity: 0.9
@@ -435,7 +323,7 @@ PanelWindow {
 
                 Text {
                     anchors.centerIn: parent
-                    text: window.loadingText
+                    text: WalliService.loadingText
                     font.family: Style.family
                     font.pixelSize: Style.fontSizeLg
                     font.weight: Font.Medium
