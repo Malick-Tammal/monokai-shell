@@ -43,12 +43,14 @@ QtObject {
     property color yellow5: "#FFD866"
     property color yellow4: "#FFE085"
     property color yellow3: "#FFE8A3"
+    property color yellow2: "#FFEFC2"
 
     property color purple9: "#2A234E"
     property color purple7: "#6B60A0"
     property color purple5: "#AB9DF2"
     property color purple4: "#BCB1F5"
     property color purple3: "#CDC4F7"
+    property color purple2: "#DDD8FA"
 
     property color blue9: "#182C2E"
     property color blue7: "#48848B"

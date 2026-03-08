@@ -5,26 +5,37 @@ import "../components/"
 Item {
     id: left
     height: parent.height
-    width: row.implicitWidth + (row.anchors.margins * 2)
     anchors.left: parent.left
-
-    Rectangle {
-        id: panel
-        anchors.fill: parent
-
-        color: Style.bg
-        border.color: Style.border
-        radius: 15
-    }
 
     Row {
         id: row
-        anchors.fill: parent
-        spacing: 5
+        height: parent.height
+        width: childrenRect.width
+        spacing: 10
         layoutDirection: Qt.LeftToRight
-        anchors.margins: 5
 
-        Notification {}
-        Clock {}
+        Rectangle {
+            id: panel
+            height: parent.height
+            width: componentsRow.implicitWidth + (componentsRow.anchors.margins * 2)
+            color: Style.bg
+            border.color: Style.border
+            radius: 15
+
+            Row {
+                id: componentsRow
+                anchors.fill: parent
+                spacing: 5
+                layoutDirection: Qt.LeftToRight
+                anchors.margins: 5
+
+                Notification {}
+                Clock {}
+            }
+        }
+
+        Mode {
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 }

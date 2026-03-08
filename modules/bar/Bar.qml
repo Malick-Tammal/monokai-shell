@@ -34,7 +34,6 @@ PanelWindow {
         Right {
             barWindowId: bar
         }
-        // Right {}
         Left {}
     }
 }
