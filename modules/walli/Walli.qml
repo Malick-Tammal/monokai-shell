@@ -24,7 +24,7 @@ PanelWindow {
     color: "transparent"
 
     property int padding: 10
-    
+
     visible: WalliService.isVisible
 
     Connections {
@@ -178,7 +178,7 @@ PanelWindow {
                         id: container
                         anchors.fill: parent
                         radius: 10
-                        color: isSelected || hoverHandler.hovered ? Style.yellow5 : Style.gray3
+                        color: isSelected || hoverHandler.hovered ? Style.yellow5 : Style.gray4
 
                         Image {
                             id: img

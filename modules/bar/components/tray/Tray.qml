@@ -7,8 +7,20 @@ Item {
     id: root
     anchors.verticalCenter: parent.verticalCenter
     height: parent.height
-    width: backgroundRect.width
-    visible: trayRepeater.count > 0
+
+    property bool hasItems: trayRepeater.count > 0
+    property real targetWidth: hasItems ? (row.implicitWidth + 10) : 0
+
+    width: targetWidth
+    clip: true
+    visible: width > 0
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+            easing.type: Easing.InOutQuad
+        }
+    }
 
     property var barWindowId: null
     property var activeMenu: null
@@ -16,6 +28,7 @@ Item {
 
     Rectangle {
         id: backgroundRect
+        anchors.right: parent.right
         height: parent.height
         width: row.implicitWidth + 10
         color: "transparent"

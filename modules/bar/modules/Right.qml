@@ -1,6 +1,7 @@
 import QtQuick
 import qs.theme
 import "../components/"
+import "../components/tray"
 
 Item {
     id: right
@@ -31,7 +32,6 @@ Item {
         Network {}
         Bluetooth {}
         Audio {}
-        // Tray {}
         Tray {
             barWindowId: right.barWindowId
         }
