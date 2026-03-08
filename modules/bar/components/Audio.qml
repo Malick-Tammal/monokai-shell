@@ -10,11 +10,8 @@ Item {
     height: parent.height
     width: con.width
 
-    HoverHandler {
-        id: hoverHandler
-    }
-
     MouseArea {
+        id: audioMouseArea
         anchors.fill: parent
         cursorShape: Qt.CursorShape.PointingHandCursor
         hoverEnabled: true
@@ -57,7 +54,7 @@ Item {
                 id: soundPer
                 height: parent.height
                 width: parent.width * Audio.volume
-                color: Style.blue5
+                color: audioMouseArea.containsMouse ? Style.blue4 : Style.blue5
 
                 Behavior on width {
                     NumberAnimation {

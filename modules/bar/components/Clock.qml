@@ -19,6 +19,7 @@ Item {
         Row {
             id: row
             anchors.centerIn: parent
+            spacing: 3
 
             Sliding {
                 text: DateTime.hours

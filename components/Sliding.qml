@@ -3,8 +3,8 @@ import qs.theme
 
 Item {
     id: root
-    width: mainText.width + 5
-    height: mainText.height
+    width: row.width
+    height: row.height
     clip: true
 
     property string text: "00"
@@ -13,77 +13,92 @@ Item {
     property int size: 17
     property int weight: Font.Black
 
-    property string _displayText: "00"
-    property real _offset: 0
+    Row {
+        id: row
+        spacing: 0
 
-    onTextChanged: {
-        if (text !== _displayText) {
-            anim.restart();
-        }
-    }
+        Repeater {
+            model: root.text.length
 
-    Text {
-        id: mainText
-        text: root._displayText
-        color: root.color
-        anchors.centerIn: parent
-        renderType: Text.NativeRendering
+            delegate: Item {
+                id: charItem
+                width: charText.width
+                height: charText.height
+                clip: true
 
-        transform: Translate {
-            id: textTransform
-            x: root.orientation === Qt.Horizontal ? root._offset : 0
-            y: root.orientation === Qt.Vertical ? root._offset : 0
-        }
+                property string targetChar: root.text.charAt(index)
+                property string _displayChar: targetChar
+                property real _offset: 0
 
-        font {
-            pixelSize: root.size
-            family: Style.family
-            weight: root.weight
-        }
-    }
+                onTargetCharChanged: {
+                    if (targetChar !== _displayChar) {
+                        anim.restart();
+                    }
+                }
 
-    SequentialAnimation {
-        id: anim
+                Text {
+                    id: charText
+                    text: charItem._displayChar
+                    color: root.color
+                    renderType: Text.NativeRendering
 
-        ParallelAnimation {
-            NumberAnimation {
-                target: root
-                property: "_offset"
-                to: -40
-                duration: 250
-                easing.type: Easing.InQuad
-            }
-            NumberAnimation {
-                target: mainText
-                property: "opacity"
-                to: 0
-                duration: 150
-            }
-        }
+                    transform: Translate {
+                        x: root.orientation === Qt.Horizontal ? charItem._offset : 0
+                        y: root.orientation === Qt.Vertical ? charItem._offset : 0
+                    }
 
-        ScriptAction {
-            script: root._displayText = root.text
-        }
+                    font {
+                        pixelSize: root.size
+                        family: Style.family
+                        weight: root.weight
+                    }
+                }
 
-        PropertyAction {
-            target: root
-            property: "_offset"
-            value: 20
-        }
+                SequentialAnimation {
+                    id: anim
 
-        ParallelAnimation {
-            NumberAnimation {
-                target: root
-                property: "_offset"
-                to: 0
-                duration: 350
-                easing.type: Easing.OutBack
-            }
-            NumberAnimation {
-                target: mainText
-                property: "opacity"
-                to: 1
-                duration: 250
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target: charItem
+                            property: "_offset"
+                            to: -40
+                            duration: 250
+                            easing.type: Easing.InQuad
+                        }
+                        NumberAnimation {
+                            target: charText
+                            property: "opacity"
+                            to: 0
+                            duration: 150
+                        }
+                    }
+
+                    ScriptAction {
+                        script: charItem._displayChar = charItem.targetChar
+                    }
+
+                    PropertyAction {
+                        target: charItem
+                        property: "_offset"
+                        value: 20
+                    }
+
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target: charItem
+                            property: "_offset"
+                            to: 0
+                            duration: 350
+                            easing.type: Easing.OutBack
+                        }
+                        NumberAnimation {
+                            target: charText
+                            property: "opacity"
+                            to: 1
+                            duration: 250
+                        }
+                    }
+                }
             }
         }
     }
