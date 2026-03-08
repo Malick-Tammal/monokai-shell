@@ -82,8 +82,8 @@ PanelWindow {
     }
 
     Rectangle {
-        width: 460
-        height: 140
+        width: main.width
+        height: main.height
 
         color: "transparent"
 
@@ -97,7 +97,8 @@ PanelWindow {
         Rectangle {
             id: main
 
-            anchors.fill: parent
+            width: col.implicitWidth + 20
+            height: col.implicitHeight + 20
 
             border.color: Style.border
             border.width: 1
@@ -114,6 +115,7 @@ PanelWindow {
                     fill: parent
                     margins: 10
                 }
+
                 spacing: 10
 
                 RowLayout {
@@ -128,7 +130,8 @@ PanelWindow {
 
                 RowLayout {
                     id: powerButtons
-                    Layout.alignment: Qt.AlignCenter
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.fillWidth: true
                     spacing: 10
 
                     PowerBtn {

@@ -27,6 +27,7 @@ PanelWindow {
     property string currentWall: ""
     property int padding: 10
     property bool isLoading: false
+    property string loadingText: "Checking wallpapers..."
 
     readonly property string wallsFolder: Quickshell.env("HOME") + "/Pictures/Wallpapers/"
     readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/walli_thumbs/"
@@ -49,12 +50,10 @@ PanelWindow {
 
     onVisibleChanged: {
         if (visible) {
-            loadingTimer.restart();
             refreshTimer.restart();
             thumbGen.running = true;
         } else {
             window.isLoading = false;
-            loadingTimer.stop();
         }
     }
 
@@ -65,15 +64,6 @@ PanelWindow {
         onTriggered: {
             window.currentWall = "";
             swwwQuery.running = true;
-        }
-    }
-
-    Timer {
-        id: loadingTimer
-        interval: 1000
-        repeat: false
-        onTriggered: {
-            window.isLoading = true;
         }
     }
 
@@ -126,11 +116,26 @@ PanelWindow {
     Process {
         id: thumbGen
         command: ["bash", Quickshell.env("HOME") + "/.config/quickshell/scripts/walli_thumbs.sh"]
+
+        stdout: SplitParser {
+            onRead: data => {
+                const line = data.trim();
+                if (line === "STATUS:DETECTED") {
+                    window.isLoading = true;
+                    window.loadingText = "New wallpapers detected...";
+                } else if (line.startsWith("STATUS:GENERATING:")) {
+                    window.isLoading = true;
+                    const parts = line.split(":");
+                    if (parts.length >= 4) {
+                        window.loadingText = "Generating wallpaper thumb (" + parts[2] + " of " + parts[3] + ")...";
+                    }
+                }
+            }
+        }
+
         onExited: {
-            loadingTimer.stop(); // Stop the timer immediately!
             window.isLoading = false;
 
-            // Only grab focus if the window is still open
             if (window.visible) {
                 wallpapers.forceActiveFocus();
             }
@@ -430,7 +435,7 @@ PanelWindow {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "Generating thumbnails..."
+                    text: window.loadingText
                     font.family: Style.family
                     font.pixelSize: Style.fontSizeLg
                     font.weight: Font.Medium
