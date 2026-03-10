@@ -38,8 +38,11 @@ Rectangle {
         id: tooltipText
         text: tooltip.text
         color: Style.fg
-        font.pixelSize: Style.fontSizeSm
-        font.family: Style.family
         anchors.centerIn: parent
+        font {
+            pixelSize: Style.fontSizeSm
+            family: Style.family
+            weight: Font.Normal
+        }
     }
 }

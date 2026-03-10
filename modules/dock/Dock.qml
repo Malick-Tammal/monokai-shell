@@ -98,9 +98,12 @@ PanelWindow {
         border.width: 1
         radius: 15
         clip: false
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.horizontalCenter: parent.horizontalCenter
+
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 15
+            horizontalCenter: parent.horizontalCenter
+        }
 
         MouseArea {
             id: dockMouseArea
