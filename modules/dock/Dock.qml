@@ -10,7 +10,7 @@ import qs.services
 PanelWindow {
     id: root
     implicitWidth: dock.width
-    implicitHeight: dock.height + 20
+    implicitHeight: dock.height + 40
     color: "transparent"
 
     WlrLayershell.layer: WlrLayer.Overlay
@@ -40,7 +40,7 @@ PanelWindow {
         if (DockService.windowList.length === 0)
             return false;
 
-        const dockTopEdge = (root.screen.y + root.screen.height) - root.implicitHeight + 5;
+        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - 10;
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
 
         return DockService.windowList.some(win => {
@@ -56,6 +56,8 @@ PanelWindow {
 
     property bool activeHover: false
     property int hoveredIconCount: 0
+    property real dockMouseX: -1
+
     readonly property bool isHovered: gapBridge.containsMouse || dockMouseArea.containsMouse || activatorMouseArea.containsMouse || hoveredIconCount > 0
     readonly property bool shouldHide: overlapsWindow && !activeHover
 
@@ -72,6 +74,7 @@ PanelWindow {
             activeHover = true;
         } else {
             hideTimer.restart();
+            root.dockMouseX = -1;
         }
     }
 
@@ -83,12 +86,18 @@ PanelWindow {
         border.color: Style.border
         border.width: 1
         radius: 15
-        anchors.verticalCenter: parent.verticalCenter
+        clip: false
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
 
         MouseArea {
             id: dockMouseArea
             anchors.fill: parent
             hoverEnabled: true
+
+            onPositionChanged: mouse => {
+                root.dockMouseX = mapToItem(row, mouse.x, 0).x;
+            }
         }
 
         Row {
@@ -120,26 +129,39 @@ PanelWindow {
                     }
 
                     Item {
+                        id: iconSlot
                         width: parent.height
-                        height: parent.height
+                        height: parent.height + 24
+                        anchors.bottom: parent.bottom
+
+                        readonly property real iconCenterX: parent.x + x + width / 2
 
                         IconImage {
                             source: Quickshell.iconPath(DockService.getIconName(modelData.class), true)
-                            anchors.fill: parent
-                            smooth: false
+                            width: parent.width
+                            height: parent.width
+                            anchors.bottom: parent.bottom
+                            smooth: true
+                            transformOrigin: Item.Bottom
+
                             scale: {
                                 if (iconMouseArea.pressed)
                                     return 0.9;
-                                if (iconMouseArea.containsMouse)
-                                    return 1.2;
-                                return 1.0;
+                                if (root.dockMouseX < 0)
+                                    return 1.0;
+                                const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
+                                const radius = 100;
+                                const maxScale = 1.3;
+                                if (pixelDist >= radius)
+                                    return 1.0;
+                                return 1.0 + (maxScale - 1.0) * (1 + Math.cos(Math.PI * pixelDist / radius)) / 1.5;
                             }
 
                             Behavior on scale {
-                                NumberAnimation {
-                                    duration: 150
-                                    easing.type: Easing.OutBack
-                                    easing.overshoot: 4.0
+                                SpringAnimation {
+                                    spring: 10
+                                    damping: 0.5
+                                    mass: 1.5
                                 }
                             }
 
@@ -147,16 +169,19 @@ PanelWindow {
                                 y: {
                                     if (iconMouseArea.pressed)
                                         return 2;
-                                    if (iconMouseArea.containsMouse)
-                                        return -10;
-                                    return 0;
+                                    if (root.dockMouseX < 0)
+                                        return 0;
+                                    const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
+                                    const radius = 120;
+                                    const maxLift = -8;
+                                    if (pixelDist >= radius)
+                                        return 0;
+                                    return maxLift * (1 + Math.cos(Math.PI * pixelDist / radius)) / 2;
                                 }
 
                                 Behavior on y {
-                                    NumberAnimation {
-                                        duration: 150
-                                        easing.type: Easing.OutBack
-                                        easing.overshoot: 2.0
+                                    SmoothedAnimation {
+                                        velocity: 100
                                     }
                                 }
                             }
@@ -192,8 +217,11 @@ PanelWindow {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.CursorShape.PointingHandCursor
-
                             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+
+                            onPositionChanged: mouse => {
+                                root.dockMouseX = mapToItem(row, mouse.x, 0).x;
+                            }
 
                             onContainsMouseChanged: {
                                 if (containsMouse) {
