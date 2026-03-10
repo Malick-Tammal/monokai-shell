@@ -55,6 +55,7 @@ Item {
                 size: 12
                 color: Style.orange9
                 weight: Font.Bold
+                anchors.bottom: parent.bottom
             }
         }
     }
