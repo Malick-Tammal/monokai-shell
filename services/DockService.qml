@@ -85,6 +85,40 @@ Item {
         },
     ]
 
+    function getDisplayName(className) {
+        if (!className)
+            return "Unknown";
+        const lower = className.toLowerCase();
+
+        const nameOverrides = {
+            "code": "VS Code",
+            "code-url-handler": "VS Code",
+            "code-oss": "VS Codium",
+            "codium": "VS Codium",
+            "kitty": "Terminal",
+            "neovim": "Neovim",
+            "vlc": "VLC",
+            "gimp": "GIMP"
+        };
+
+        if (nameOverrides[lower])
+            return nameOverrides[lower];
+
+        try {
+            if (typeof DesktopEntries !== "undefined" && typeof DesktopEntries.heuristicLookup === "function") {
+                const entry = DesktopEntries.heuristicLookup(className);
+                if (entry && entry.name)
+                    return entry.name;
+            }
+        } catch (e) {
+            console.warn("Display name lookup failed for " + className);
+        }
+
+        const parts = className.split(/[.\-_]/);
+        const last = parts[parts.length - 1];
+        return last.split(/(?=[A-Z])|[\s\-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    }
+
     function getIconName(className) {
         if (!className)
             return "unknown";

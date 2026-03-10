@@ -1,20 +1,20 @@
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Wayland
-import Quickshell.Widgets
 import QtQuick
-import QtQuick.Layouts
 import qs.theme
 import qs.services
+import "./components/"
 
 PanelWindow {
     id: root
-    implicitWidth: dock.width
-    implicitHeight: dock.height + 40
+    implicitWidth: screen.width
+    implicitHeight: dock.height + 75
     color: "transparent"
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
+    WlrLayershell.namespace: "dock"
 
     anchors {
         bottom: true
@@ -22,7 +22,18 @@ PanelWindow {
 
     mask: Region {
         x: 0
-        y: Math.min(dockTranslate.y, root.implicitHeight - trigger.height)
+        y: {
+            const hiddenY = root.implicitHeight - trigger.height;
+            const dockAreaY = root.implicitHeight - dock.height - 20;
+
+            if (root.shouldHide)
+                return Math.min(dockTranslate.y, hiddenY);
+
+            if (root.hoveredIconCount > 0)
+                return Math.min(dockTranslate.y, 0);
+
+            return Math.min(dockTranslate.y, dockAreaY);
+        }
         height: root.implicitHeight - y
         width: root.width
     }
@@ -89,6 +100,7 @@ PanelWindow {
         clip: false
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
+        anchors.horizontalCenter: parent.horizontalCenter
 
         MouseArea {
             id: dockMouseArea
@@ -114,143 +126,19 @@ PanelWindow {
             Repeater {
                 model: DockService.appList
 
-                Row {
-                    height: row.height
-                    spacing: separator.visible ? 8 : 0
+                DockItem {
+                    dockMouseX: root.dockMouseX
+                    rowItem: row
 
-                    Rectangle {
-                        id: separator
-                        width: 3
-                        height: parent.height * 0.6
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: Style.dark1
-                        radius: 1
-                        visible: !modelData.isPinned && index > 0 && DockService.appList[index - 1].isPinned
+                    onIconHoverChanged: hovered => {
+                        if (hovered)
+                            root.hoveredIconCount++;
+                        else
+                            root.hoveredIconCount--;
                     }
 
-                    Item {
-                        id: iconSlot
-                        width: parent.height
-                        height: parent.height + 24
-                        anchors.bottom: parent.bottom
-
-                        readonly property real iconCenterX: parent.x + x + width / 2
-
-                        IconImage {
-                            source: Quickshell.iconPath(DockService.getIconName(modelData.class), true)
-                            width: parent.width
-                            height: parent.width
-                            anchors.bottom: parent.bottom
-                            smooth: true
-                            transformOrigin: Item.Bottom
-
-                            scale: {
-                                if (iconMouseArea.pressed)
-                                    return 0.9;
-                                if (root.dockMouseX < 0)
-                                    return 1.0;
-                                const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
-                                const radius = 100;
-                                const maxScale = 1.3;
-                                if (pixelDist >= radius)
-                                    return 1.0;
-                                return 1.0 + (maxScale - 1.0) * (1 + Math.cos(Math.PI * pixelDist / radius)) / 1.5;
-                            }
-
-                            Behavior on scale {
-                                SpringAnimation {
-                                    spring: 10
-                                    damping: 0.5
-                                    mass: 1.5
-                                }
-                            }
-
-                            transform: Translate {
-                                y: {
-                                    if (iconMouseArea.pressed)
-                                        return 2;
-                                    if (root.dockMouseX < 0)
-                                        return 0;
-                                    const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
-                                    const radius = 120;
-                                    const maxLift = -8;
-                                    if (pixelDist >= radius)
-                                        return 0;
-                                    return maxLift * (1 + Math.cos(Math.PI * pixelDist / radius)) / 2;
-                                }
-
-                                Behavior on y {
-                                    SmoothedAnimation {
-                                        velocity: 100
-                                    }
-                                }
-                            }
-                        }
-
-                        RowLayout {
-                            width: dotRepeater.count > 2 ? parent.width : implicitWidth
-                            clip: true
-                            spacing: 2
-
-                            anchors {
-                                bottom: parent.bottom
-                                bottomMargin: -5
-                                horizontalCenter: parent.horizontalCenter
-                            }
-
-                            Repeater {
-                                id: dotRepeater
-                                model: modelData.count
-
-                                Rectangle {
-                                    Layout.fillWidth: dotRepeater.count > 2
-                                    Layout.preferredWidth: 10
-                                    height: 4
-                                    radius: 20
-                                    color: Style.yellow5
-                                }
-                            }
-                        }
-
-                        MouseArea {
-                            id: iconMouseArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            cursorShape: Qt.CursorShape.PointingHandCursor
-                            acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-
-                            onPositionChanged: mouse => {
-                                root.dockMouseX = mapToItem(row, mouse.x, 0).x;
-                            }
-
-                            onContainsMouseChanged: {
-                                if (containsMouse) {
-                                    root.hoveredIconCount++;
-                                } else {
-                                    root.hoveredIconCount--;
-                                }
-                            }
-
-                            Component.onDestruction: {
-                                if (containsMouse) {
-                                    root.hoveredIconCount--;
-                                }
-                            }
-
-                            onClicked: mouse => {
-                                if (mouse.button === Qt.LeftButton) {
-                                    if (modelData.count > 0) {
-                                        Hyprland.dispatch(`focuswindow address:${modelData.windows[0].address}`);
-                                    } else if (modelData.isPinned) {
-                                        Hyprland.dispatch(`exec ${modelData.exec}`);
-                                    }
-                                } else if (mouse.button === Qt.MiddleButton) {
-                                    if (modelData.count > 0) {
-                                        Hyprland.dispatch(`closewindow address:${modelData.windows[0].address}`);
-                                    }
-                                }
-                            }
-                        }
+                    onIconMouseMoved: mappedX => {
+                        root.dockMouseX = mappedX;
                     }
                 }
             }
