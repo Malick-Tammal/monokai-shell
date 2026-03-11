@@ -5,7 +5,7 @@ import "./modules/"
 import qs.services
 
 PanelWindow {
-    id: bar
+    id: root
     color: "transparent"
     implicitHeight: 42
     visible: isVisible
@@ -31,9 +31,9 @@ PanelWindow {
         target: BarService
 
         function onToggleRequested(targetScreenName) {
-            if (bar.screen.name === targetScreenName) {
-                console.log("[Bar] Toggling visibility for screen: " + bar.screen.name);
-                bar.isVisible = !bar.isVisible;
+            if (root.screen.name === targetScreenName) {
+                console.log("[Bar] Toggling visibility for screen: " + root.screen.name);
+                root.isVisible = !root.isVisible;
             }
         }
     }
@@ -46,7 +46,7 @@ PanelWindow {
 
         Center {}
         Right {
-            barWindowId: bar
+            barWindowId: root
         }
         Left {}
     }
