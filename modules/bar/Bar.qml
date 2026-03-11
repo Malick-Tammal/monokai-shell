@@ -1,5 +1,6 @@
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Io
 import QtQuick
 import "./modules/"
 
@@ -22,7 +23,18 @@ PanelWindow {
         top: 10
     }
 
+    property bool isVisible: true
+
     implicitHeight: 42
+
+    IpcHandler {
+        target: "bar"
+        function toggle(): void {
+            bar.isVisible = !bar.isVisible;
+        }
+    }
+
+    visible: isVisible
 
     Item {
         id: container
