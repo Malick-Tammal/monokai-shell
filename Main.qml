@@ -1,20 +1,25 @@
 import QtQuick
-import "./modules/powermenu/"
-import "./modules/walli/"
 import "./modules/cornors/"
 import "./modules/bar/"
 import "./modules/dock/"
-import "./modules/launcher/"
 
 Item {
-    id: mainRoot
+    id: root
 
-    Cornors {}
-    Bar {}
-    PowerMenu {
-        id: powerMenu
+    required property var screen
+
+    Cornors {
+        id: cornors
+        screen: root.screen
     }
-    Walli {}
-    Dock {}
-    // Launcher {}
+
+    Bar {
+        id: bar
+        screen: root.screen
+    }
+
+    Dock {
+        id: dock
+        screen: root.screen
+    }
 }

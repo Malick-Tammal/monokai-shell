@@ -1,12 +1,14 @@
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Io
 import QtQuick
 import "./modules/"
+import qs.services
 
 PanelWindow {
     id: bar
     color: "transparent"
+    implicitHeight: 42
+    visible: isVisible
 
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "bar"
@@ -25,16 +27,16 @@ PanelWindow {
 
     property bool isVisible: true
 
-    implicitHeight: 42
+    Connections {
+        target: BarService
 
-    IpcHandler {
-        target: "bar"
-        function toggle(): void {
-            bar.isVisible = !bar.isVisible;
+        function onToggleRequested(targetScreenName) {
+            if (bar.screen.name === targetScreenName) {
+                console.log("[Bar] Toggling visibility for screen: " + bar.screen.name);
+                bar.isVisible = !bar.isVisible;
+            }
         }
     }
-
-    visible: isVisible
 
     Item {
         id: container

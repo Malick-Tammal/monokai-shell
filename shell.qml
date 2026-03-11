@@ -11,7 +11,7 @@ ShellRoot {
     id: root
 
     Loader {
-        id: uiLoader
+        id: popupsLoader
         sourceComponent: undefined
     }
 
@@ -20,7 +20,15 @@ ShellRoot {
         running: true
         repeat: false
         onTriggered: {
-            uiLoader.source = "Main.qml";
+            popupsLoader.source = "Popups.qml";
+        }
+    }
+
+    Instantiator {
+        model: Quickshell.screens
+        delegate: Main {
+            required property var modelData
+            screen: modelData
         }
     }
 }

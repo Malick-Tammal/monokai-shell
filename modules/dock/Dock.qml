@@ -8,8 +8,8 @@ import "./components/"
 
 PanelWindow {
     id: root
-    implicitWidth: dock.width + 20
-    implicitHeight: dock.height + 65
+    implicitWidth: dock.width + 35
+    implicitHeight: dock.height + 62
     color: "transparent"
 
     WlrLayershell.layer: WlrLayer.Overlay
