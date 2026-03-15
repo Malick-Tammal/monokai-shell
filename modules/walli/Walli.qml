@@ -15,15 +15,16 @@ PanelWindow {
     WlrLayershell.namespace: "walli"
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
+    exclusionMode: ExclusionMode.Ignore
+
     anchors {
         top: true
         left: true
         right: true
         bottom: true
     }
-    color: "transparent"
 
-    property int padding: 10
+    color: "transparent"
 
     visible: GlobalStates.walliVisible
 
@@ -84,10 +85,16 @@ PanelWindow {
             top: parent.top
             right: parent.right
             horizontalCenter: parent.horizontalCenter
-            margins: {
-                top: window.padding;
-                left: window.padding;
-                right: window.padding;
+            leftMargin: GlobalStates.padding
+            rightMargin: GlobalStates.padding
+            topMargin: GlobalStates.barVisible ? GlobalStates.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
+
+            Behavior on topMargin {
+                SpringAnimation {
+                    spring: 10
+                    damping: 0.5
+                    mass: 1.5
+                }
             }
         }
 
@@ -96,6 +103,7 @@ PanelWindow {
 
             anchors {
                 fill: parent
+                top: parent.top
             }
 
             border.color: Style.border

@@ -3,10 +3,13 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Hyprland
 
 Singleton {
     id: root
+
+    property var windowList: []
 
     readonly property int focusedWorkspaceId: Hyprland.focusedWorkspace?.id ?? 0
 
@@ -34,4 +37,42 @@ Singleton {
     function focusWorkspace(id) {
         Hyprland.dispatch("workspace " + id);
     }
+
+    Process {
+        id: getClients
+        command: ["hyprctl", "clients", "-j"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    const clients = JSON.parse(text);
+                    root.windowList = clients;
+                } catch (e) {
+                    console.error("Failed to parse hyprctl output");
+                }
+            }
+        }
+    }
+
+    Timer {
+        interval: 500
+        running: true
+        repeat: true
+        onTriggered: getClients.running = true
+    }
+
+    Timer {
+        id: updateDebounce
+        interval: 100
+        repeat: false
+        onTriggered: getClients.running = true
+    }
+
+    Connections {
+        target: Hyprland
+        function onRawEvent(event) {
+            updateDebounce.restart();
+        }
+    }
+
+    Component.onCompleted: getClients.running = true
 }

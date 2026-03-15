@@ -1,13 +1,10 @@
 pragma Singleton
 import QtQuick
 import Quickshell
-import Quickshell.Io
-import Quickshell.Hyprland
 
-Item {
-    id: service
+Singleton {
+    id: root
 
-    property var windowList: []
     property var appList: []
 
     property var pinnedApps: [
@@ -82,7 +79,7 @@ Item {
         {
             class: "vlc",
             exec: "vlc"
-        },
+        }
     ]
 
     function getDisplayName(className) {
@@ -135,17 +132,14 @@ Item {
             "io.github.kolunmi.bazaar": "software-store"
         };
 
-        if (iconOverrides[lower]) {
+        if (iconOverrides[lower])
             return iconOverrides[lower];
-        }
 
         try {
             if (typeof DesktopEntries !== "undefined" && typeof DesktopEntries.heuristicLookup === "function") {
                 const appEntry = DesktopEntries.heuristicLookup(className);
-
-                if (appEntry && appEntry.icon) {
+                if (appEntry && appEntry.icon)
                     return appEntry.icon;
-                }
             }
         } catch (e) {
             console.warn("Auto-lookup failed for " + className);
@@ -154,88 +148,65 @@ Item {
         return lower;
     }
 
-    Process {
-        id: getClients
-        command: ["hyprctl", "clients", "-j"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                try {
-                    const clients = JSON.parse(text);
-                    service.windowList = clients;
+    function updateAppList() {
+        let clients = Hypr.windowList;
+        let runningMap = {};
 
-                    let runningMap = {};
-                    clients.forEach(win => {
-                        if (!win.class)
-                            return;
-                        let cls = win.class.toLowerCase();
+        clients.forEach(win => {
+            if (!win.class)
+                return;
+            let cls = win.class.toLowerCase();
 
-                        if (!runningMap[cls]) {
-                            runningMap[cls] = {
-                                class: win.class,
-                                count: 0,
-                                windows: []
-                            };
-                        }
-                        runningMap[cls].windows.push(win);
-                        runningMap[cls].count++;
-                    });
-
-                    let mergedList = [];
-
-                    service.pinnedApps.forEach(pinned => {
-                        let cls = pinned.class.toLowerCase();
-                        let isRunning = runningMap[cls] !== undefined;
-
-                        mergedList.push({
-                            class: pinned.class,
-                            exec: pinned.exec,
-                            isPinned: true,
-                            count: isRunning ? runningMap[cls].count : 0,
-                            windows: isRunning ? runningMap[cls].windows : []
-                        });
-
-                        if (isRunning)
-                            delete runningMap[cls];
-                    });
-
-                    Object.values(runningMap).forEach(app => {
-                        mergedList.push({
-                            class: app.class,
-                            exec: "",
-                            isPinned: false,
-                            count: app.count,
-                            windows: app.windows
-                        });
-                    });
-
-                    service.appList = mergedList;
-                } catch (e) {
-                    console.error("Failed to parse hyprctl output");
-                }
+            if (!runningMap[cls]) {
+                runningMap[cls] = {
+                    class: win.class,
+                    count: 0,
+                    windows: []
+                };
             }
-        }
-    }
+            runningMap[cls].windows.push(win);
+            runningMap[cls].count++;
+        });
 
-    Timer {
-        interval: 500
-        running: true
-        repeat: true
-        onTriggered: getClients.running = true
-    }
+        let mergedList = [];
 
-    Timer {
-        id: updateDebounce
-        interval: 100
-        repeat: false
-        onTriggered: getClients.running = true
+        root.pinnedApps.forEach(pinned => {
+            let cls = pinned.class.toLowerCase();
+            let isRunning = runningMap[cls] !== undefined;
+
+            mergedList.push({
+                class: pinned.class,
+                exec: pinned.exec,
+                isPinned: true,
+                count: isRunning ? runningMap[cls].count : 0,
+                windows: isRunning ? runningMap[cls].windows : []
+            });
+
+            if (isRunning)
+                delete runningMap[cls];
+        });
+
+        Object.values(runningMap).forEach(app => {
+            mergedList.push({
+                class: app.class,
+                exec: "",
+                isPinned: false,
+                count: app.count,
+                windows: app.windows
+            });
+        });
+
+        root.appList = mergedList;
     }
 
     Connections {
-        target: Hyprland
-        function onRawEvent(event) {
-            updateDebounce.restart();
+        target: Hypr
+        function onWindowListChanged() {
+            root.updateAppList();
         }
     }
 
-    Component.onCompleted: getClients.running = true
+    Component.onCompleted: {
+        updateAppList();
+    }
 }

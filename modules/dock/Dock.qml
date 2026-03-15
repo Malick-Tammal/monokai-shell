@@ -4,6 +4,7 @@ import Quickshell.Wayland
 import QtQuick
 import qs.theme
 import qs.services
+import qs
 import "./components/"
 
 PanelWindow {
@@ -48,13 +49,13 @@ PanelWindow {
 
     //  INFO: INTELLIHIDE
     readonly property bool overlapsWindow: {
-        if (DockService.windowList.length === 0)
+        if (Hypr.windowList.length === 0)
             return false;
 
-        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - 10;
+        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - (GlobalStates.padding + 3);
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
 
-        return DockService.windowList.some(win => {
+        return Hypr.windowList.some(win => {
             if (win.workspace.id !== currentWsId)
                 return false;
             if (win.at[0] === -32000)

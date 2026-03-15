@@ -14,6 +14,8 @@ PanelWindow {
     WlrLayershell.namespace: "powermenu"
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
+    exclusionMode: ExclusionMode.Ignore
+
     property string pendingCmd: ""
     property bool inConfirmation: false
     property Item lastActiveItem: null
@@ -87,8 +89,16 @@ PanelWindow {
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: 10
-            rightMargin: 10
+            topMargin: GlobalStates.barVisible ? GlobalStates.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
+            rightMargin: GlobalStates.padding
+
+            Behavior on topMargin {
+                SpringAnimation {
+                    spring: 10
+                    damping: 0.5
+                    mass: 1.5
+                }
+            }
         }
 
         Rectangle {
