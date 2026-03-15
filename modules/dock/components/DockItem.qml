@@ -187,7 +187,8 @@ Row {
                     if (root.modelData.count > 0) {
                         Hyprland.dispatch(`focuswindow address:${root.modelData.windows[0].address}`);
                     } else if (root.modelData.isPinned) {
-                        if (root.isLaunching) return;
+                        if (root.isLaunching)
+                            return;
                         root.isLaunching = true;
                         launchTimeout.restart();
                         Hyprland.dispatch(`exec ${root.modelData.exec}`);

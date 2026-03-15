@@ -1,6 +1,7 @@
 import QtQuick
 import qs.theme
 import qs.components
+import qs
 
 Item {
     id: root
@@ -35,9 +36,11 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            cursorShape: Qt.CursorShape.PointingHandCursor
+            cursorShape: Qt.PointingHandCursor
             hoverEnabled: true
-            onClicked: powerMenu.isVisible = !powerMenu.isVisible
+            onClicked: {
+                GlobalStates.powerMenuVisible = !GlobalStates.powerMenuVisible;
+            }
         }
     }
 }

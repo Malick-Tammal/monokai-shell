@@ -5,11 +5,11 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import qs.services
+import qs
 
 Singleton {
     id: root
 
-    property bool isVisible: false
     property string currentWall: ""
     property bool isLoading: false
     property string loadingText: "Checking wallpapers..."
@@ -20,16 +20,19 @@ Singleton {
     IpcHandler {
         target: "walli"
         function toggle(): void {
-            root.isVisible = !root.isVisible;
+            GlobalStates.walliVisible = !GlobalStates.walliVisible;
         }
     }
 
-    onIsVisibleChanged: {
-        if (isVisible) {
-            refreshTimer.restart();
-            thumbGen.running = true;
-        } else {
-            root.isLoading = false;
+    Connections {
+        target: GlobalStates
+        function onWalliVisibleChanged() {
+            if (GlobalStates.walliVisible) {
+                refreshTimer.restart();
+                thumbGen.running = true;
+            } else {
+                root.isLoading = false;
+            }
         }
     }
 
@@ -57,12 +60,12 @@ Singleton {
 
         const cleanName = name.replace(/\.[^/.]+$/, "");
         NotifyService.send("walli", cleanName, cache);
-        
+
         print(cleanName);
         print("cache : " + cache);
         print("wall : " + full);
 
-        root.isVisible = false;
+        GlobalStates.walliVisible = false;
     }
 
     //  INFO: Processes ---
@@ -100,7 +103,7 @@ Singleton {
 
         onExited: code => {
             if (code === 0) {
-                root.isVisible = false;
+                GlobalStates.walliVisible = false;
             }
         }
     }

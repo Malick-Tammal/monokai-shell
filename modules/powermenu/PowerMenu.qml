@@ -5,30 +5,27 @@ import Quickshell.Wayland
 import Quickshell.Io
 import "./components"
 import qs.theme
+import qs
 
 PanelWindow {
     id: root
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "powermenu"
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
-
-    property bool isVisible: false
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
     property string pendingCmd: ""
     property bool inConfirmation: false
     property Item lastActiveItem: null
 
-    property Item savedFocusItem: null
-
     IpcHandler {
         target: "powermenu"
         function toggle(): void {
-            root.isVisible = !root.isVisible;
+            GlobalStates.powerMenuVisible = !GlobalStates.powerMenuVisible;
         }
     }
 
-    visible: isVisible
+    visible: GlobalStates.powerMenuVisible
 
     anchors {
         top: true
@@ -39,8 +36,8 @@ PanelWindow {
 
     color: "transparent"
 
-    onIsVisibleChanged: {
-        if (isVisible) {
+    onVisibleChanged: {
+        if (visible) {
             poweroff.forceActiveFocus();
         } else {
             inConfirmation = false;
@@ -56,14 +53,14 @@ PanelWindow {
                 if (root.lastActiveItem)
                     root.lastActiveItem.forceActiveFocus();
             } else {
-                root.isVisible = false;
+                GlobalStates.powerMenuVisible = false;
             }
         }
     }
 
     Shortcut {
         sequences: ["Escape", "Backspace", "q"]
-        onActivated: root.isVisible = false
+        onActivated: GlobalStates.powerMenuVisible = false
     }
 
     Process {
@@ -106,6 +103,10 @@ PanelWindow {
 
             color: Style.bg
             radius: 15
+
+            MouseArea {
+                anchors.fill: parent
+            }
 
             ColumnLayout {
                 id: col
@@ -189,7 +190,7 @@ PanelWindow {
                         activeIconColor: Style.purple9
 
                         onActivated: {
-                            root.isVisible = false;
+                            GlobalStates.powerMenuVisible = false;
                             exec("hyprctl dispatch exec \"sh -c 'sleep 0.1; hyprlock'\"");
                         }
                     }
@@ -217,7 +218,7 @@ PanelWindow {
                 onConfirm: {
                     root.exec(root.pendingCmd);
                     root.inConfirmation = false;
-                    root.isVisible = false;
+                    GlobalStates.powerMenuVisible = false;
                 }
 
                 onCancel: {

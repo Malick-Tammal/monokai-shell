@@ -1,19 +1,19 @@
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Io
 import QtQuick
 import Qt5Compat.GraphicalEffects
 import Qt.labs.folderlistmodel
 import qs.components
 import qs.services
 import qs.theme
+import qs
 
 PanelWindow {
     id: window
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "walli"
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
     anchors {
         top: true
@@ -25,17 +25,18 @@ PanelWindow {
 
     property int padding: 10
 
-    visible: WalliService.isVisible
+    visible: GlobalStates.walliVisible
+
+    onVisibleChanged: {
+        if (visible && !WalliService.isLoading) {
+            wallpapers.forceActiveFocus();
+        }
+    }
 
     Connections {
         target: WalliService
-        function onIsVisibleChanged() {
-            if (!WalliService.isLoading && WalliService.isVisible) {
-                wallpapers.forceActiveFocus();
-            }
-        }
         function onIsLoadingChanged() {
-            if (!WalliService.isLoading && WalliService.isVisible) {
+            if (!WalliService.isLoading && GlobalStates.walliVisible) {
                 wallpapers.forceActiveFocus();
             }
         }
@@ -48,9 +49,7 @@ PanelWindow {
 
     Shortcut {
         sequences: ["Escape", "Backspace", "q"]
-        onActivated: {
-            WalliService.isVisible = false;
-        }
+        onActivated: GlobalStates.walliVisible = false
     }
 
     function findAndSelect(cleanName) {
@@ -71,7 +70,7 @@ PanelWindow {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: WalliService.isVisible = false
+        onClicked: GlobalStates.walliVisible = false
     }
 
     //  INFO: UI
@@ -105,6 +104,10 @@ PanelWindow {
 
             color: Style.bg
             radius: 15
+
+            MouseArea {
+                anchors.fill: parent
+            }
 
             ListView {
                 id: wallpapers
