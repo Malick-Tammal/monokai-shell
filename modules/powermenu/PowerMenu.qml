@@ -5,6 +5,7 @@ import Quickshell.Wayland
 import Quickshell.Io
 import "./components"
 import qs.theme
+import qs.services
 import qs
 
 PanelWindow {
@@ -89,7 +90,8 @@ PanelWindow {
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: GlobalStates.isBarEffectivelyVisible ? GlobalStates.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
+            topMargin: BarService.isBarEffectivelyVisible ? BarService.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
+
             rightMargin: GlobalStates.padding
 
             Behavior on topMargin {

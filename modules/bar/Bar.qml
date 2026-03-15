@@ -10,7 +10,7 @@ PanelWindow {
     color: "transparent"
 
     property int bounceBuffer: 5
-    readonly property bool isHovered: !GlobalStates.barOverlapsWindow || triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
+    readonly property bool isHovered: !BarService.effectivelyOverlapped || triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
 
     MouseArea {
         id: gapBridge
@@ -18,11 +18,11 @@ PanelWindow {
         hoverEnabled: true
     }
 
-    implicitHeight: GlobalStates.barHeight + GlobalStates.padding + bounceBuffer
+    implicitHeight: BarService.barHeight + GlobalStates.padding + bounceBuffer
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "bar"
-    exclusiveZone: GlobalStates.barVisible ? (GlobalStates.barHeight + GlobalStates.padding) : 0
+    exclusiveZone: GlobalStates.barVisible ? (BarService.barHeight + GlobalStates.padding) : 0
 
     anchors {
         top: true
@@ -34,7 +34,7 @@ PanelWindow {
         x: 0
         y: 0
         width: root.width
-        height: Math.max(trigger.height, GlobalStates.barHeight + GlobalStates.padding + root.bounceBuffer + barTranslate.y)
+        height: Math.max(trigger.height, BarService.barHeight + GlobalStates.padding + root.bounceBuffer + barTranslate.y)
     }
 
     Connections {
@@ -49,17 +49,19 @@ PanelWindow {
 
     Item {
         id: container
-        height: GlobalStates.barHeight
+        height: BarService.barHeight
 
         transform: Translate {
             id: barTranslate
-            y: (GlobalStates.barVisible || root.isHovered) ? 0 : -GlobalStates.barHeight * 2
+            // Switched to BarService
+            readonly property bool shouldShow: GlobalStates.barVisible || root.isHovered
+
+            y: shouldShow ? 0 : -BarService.barHeight * 2
 
             Behavior on y {
-                SpringAnimation {
-                    spring: 7
-                    damping: 0.5
-                    mass: 1.5
+                NumberAnimation {
+                    duration: 300
+                    easing.type: Easing.OutExpo
                 }
             }
         }
