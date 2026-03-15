@@ -53,15 +53,15 @@ PanelWindow {
 
         transform: Translate {
             id: barTranslate
-            // Switched to BarService
             readonly property bool shouldShow: GlobalStates.barVisible || root.isHovered
 
             y: shouldShow ? 0 : -BarService.barHeight * 2
 
             Behavior on y {
-                NumberAnimation {
-                    duration: 300
-                    easing.type: Easing.OutExpo
+                SpringAnimation {
+                    spring: 10
+                    damping: 0.5
+                    mass: 1.5
                 }
             }
         }

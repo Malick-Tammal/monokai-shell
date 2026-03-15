@@ -15,18 +15,20 @@ Singleton {
 
     signal toggleRequested(var targetScreen)
 
-    property bool barVisible: false
     property bool isTransitioning: false
 
     Timer {
         id: transitionTimer
-        interval: 250
+        interval: 300
         onTriggered: root.isTransitioning = false
     }
 
-    onBarVisibleChanged: {
-        root.isTransitioning = true;
-        transitionTimer.restart();
+    Connections {
+        target: GlobalStates
+
+        function onBarVisibleChanged() {
+            root.isTransitioning = true;
+        }
     }
 
     readonly property bool isWorkspaceEmpty: Hypr.isWorkspaceEmpty
