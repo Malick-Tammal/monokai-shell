@@ -1,6 +1,5 @@
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Hyprland
 import QtQuick
 import "./modules/"
 import qs.services
@@ -11,26 +10,7 @@ PanelWindow {
     color: "transparent"
 
     property int bounceBuffer: 5
-    readonly property bool isHovered: !overlapsWindow || triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
-
-    //  INFO: INTELLIHIDE
-    readonly property bool overlapsWindow: {
-        if (Hypr.windowList.length === 0)
-            return false;
-
-        const barBottomEdge = root.screen.y + GlobalStates.barHeight + GlobalStates.padding;
-        const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
-
-        return Hypr.windowList.some(win => {
-            if (win.workspace.id !== currentWsId)
-                return false;
-            if (win.at[0] === -32000)
-                return false;
-
-            const winTopEdge = win.at[1];
-            return winTopEdge < barBottomEdge;
-        });
-    }
+    readonly property bool isHovered: !GlobalStates.barOverlapsWindow || triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
 
     MouseArea {
         id: gapBridge

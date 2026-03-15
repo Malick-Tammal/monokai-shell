@@ -30,6 +30,14 @@ Singleton {
         return maxId;
     }
 
+    readonly property bool isWorkspaceEmpty: {
+        if (!root.windowList || root.windowList.length === 0)
+            return true;
+
+        const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
+        return !root.windowList.some(win => win.workspace.id === currentWsId);
+    }
+
     function hasWindows(id) {
         return Hyprland.workspaces.values.some(w => w.id === id);
     }

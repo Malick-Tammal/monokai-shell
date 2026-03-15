@@ -89,7 +89,7 @@ PanelWindow {
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: GlobalStates.barVisible ? GlobalStates.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
+            topMargin: GlobalStates.isBarEffectivelyVisible ? GlobalStates.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
             rightMargin: GlobalStates.padding
 
             Behavior on topMargin {
