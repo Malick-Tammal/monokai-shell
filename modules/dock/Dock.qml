@@ -10,12 +10,17 @@ import "./components/"
 PanelWindow {
     id: root
     implicitWidth: dock.width + 35
-    implicitHeight: dock.height + 62
+    implicitHeight: dock.height + 50
     color: "transparent"
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
     WlrLayershell.namespace: "dock"
+
+    property string tooltipText: ""
+    property real tooltipTargetX: 0
+    property bool showTooltip: false
+    property alias dockRef: dock
 
     anchors {
         bottom: true
@@ -26,13 +31,10 @@ PanelWindow {
         y: {
             const hiddenY = root.implicitHeight - trigger.height;
             const dockAreaY = root.implicitHeight - dock.height - 20;
-
             if (root.shouldHide)
                 return Math.min(dockTranslate.y, hiddenY);
-
             if (root.hoveredIconCount > 0)
                 return Math.min(dockTranslate.y, 0);
-
             return Math.min(dockTranslate.y, dockAreaY);
         }
         height: root.implicitHeight - y
@@ -131,6 +133,7 @@ PanelWindow {
                 model: DockService.appList
 
                 DockItem {
+                    dockWindow: root
                     dockMouseX: root.dockMouseX
                     rowItem: row
 
@@ -173,5 +176,12 @@ PanelWindow {
             anchors.fill: parent
             hoverEnabled: true
         }
+    }
+
+    DockTooltip {
+        dockWindow: root
+        text: root.tooltipText
+        show: root.showTooltip
+        targetX: root.tooltipTargetX
     }
 }

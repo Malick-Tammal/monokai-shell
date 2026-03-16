@@ -13,6 +13,7 @@ Row {
     required property int index
     required property real dockMouseX
     required property Item rowItem
+    property var dockWindow: null
 
     signal iconHoverChanged(bool hovered)
     signal iconMouseMoved(real mappedX)
@@ -43,7 +44,7 @@ Row {
         loops: Animation.Infinite
 
         NumberAnimation {
-            to: -30
+            to: -20
             duration: 300
             easing.type: Easing.OutQuad
         }
@@ -88,11 +89,14 @@ Row {
                     return 0.9;
                 if (root.dockMouseX < 0)
                     return 1.0;
+
                 const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
                 const radius = 100;
                 const maxScale = 1.3;
+
                 if (pixelDist >= radius)
                     return 1.0;
+
                 return 1.0 + (maxScale - 1.0) * (1 + Math.cos(Math.PI * pixelDist / radius)) / 1.5;
             }
 
@@ -111,11 +115,14 @@ Row {
                             return 2;
                         if (root.dockMouseX < 0)
                             return 0;
+
                         const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
                         const radius = 120;
                         const maxLift = -8;
+
                         if (pixelDist >= radius)
                             return 0;
+
                         return maxLift * (1 + Math.cos(Math.PI * pixelDist / radius)) / 2;
                     }
 
@@ -129,11 +136,6 @@ Row {
                     y: root.bounceOffset
                 }
             ]
-        }
-
-        DockTooltip {
-            text: DockService.getDisplayName(root.modelData.class)
-            show: iconMouseArea.containsMouse
         }
 
         RowLayout {
@@ -174,6 +176,18 @@ Row {
 
             onContainsMouseChanged: {
                 root.iconHoverChanged(containsMouse);
+
+                if (containsMouse) {
+                    let mapped = iconSlot.mapToItem(root.dockWindow.dockRef, iconSlot.width / 2, 0);
+
+                    root.dockWindow.tooltipText = DockService.getDisplayName(root.modelData.class);
+                    root.dockWindow.tooltipTargetX = mapped.x;
+                    root.dockWindow.showTooltip = true;
+                } else {
+                    if (root.dockWindow.tooltipText === DockService.getDisplayName(root.modelData.class)) {
+                        root.dockWindow.showTooltip = false;
+                    }
+                }
             }
 
             Component.onDestruction: {
