@@ -9,7 +9,7 @@ PanelWindow {
     id: root
     color: "transparent"
 
-    property int bounceBuffer: 5
+    property int bounceBuffer: 10
     readonly property bool isHovered: !BarService.effectivelyOverlapped || triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
 
     MouseArea {
