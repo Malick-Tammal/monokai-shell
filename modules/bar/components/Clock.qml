@@ -11,7 +11,7 @@ Item {
 
     Rectangle {
         id: con
-        width: Math.max(80, row.width)
+        width: Math.max(100, row.width)
         height: parent.height
         radius: 10
         color: "transparent"
@@ -24,13 +24,13 @@ Item {
             Sliding {
                 text: DateTime.hours
                 size: 20
-                color: Style.yellow5
+                textColor: Style.yellow5
             }
 
             Text {
                 text: ":"
                 color: Style.fg
-                renderType: Text.NativeRendering
+                renderType: Text.QtRendering
                 anchors.horizontalCenterOffset: 0
                 y: -1
 
@@ -44,6 +44,24 @@ Item {
             Sliding {
                 text: DateTime.minutes
                 size: 20
+            }
+
+            Text {
+                text: DateTime.ampm
+                color: Style.gray1
+                renderType: Text.NativeRendering
+                width: contentWidth + 5
+                horizontalAlignment: Text.AlignHCenter
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    verticalCenterOffset: 2
+                }
+
+                font {
+                    pixelSize: 12
+                    family: Style.family
+                    weight: Font.Black
+                }
             }
         }
     }

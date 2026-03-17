@@ -8,7 +8,7 @@ Item {
     clip: true
 
     property string text: "00"
-    property color color: Style.fg
+    property color textColor: Style.fg
     property int orientation: Qt.Vertical
     property int size: 17
     property int weight: Font.Black
@@ -39,8 +39,9 @@ Item {
                 Text {
                     id: charText
                     text: charItem._displayChar
-                    color: root.color
-                    renderType: Text.NativeRendering
+                    color: root.textColor
+                    renderType: Text.QtRendering
+                    renderTypeQuality: Text.VeryHighRenderTypeQuality
 
                     transform: Translate {
                         x: root.orientation === Qt.Horizontal ? charItem._offset : 0

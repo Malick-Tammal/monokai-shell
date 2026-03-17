@@ -1,5 +1,6 @@
 import QtQuick
 import qs.theme
+import qs.components
 import "../components/"
 
 Item {
@@ -31,6 +32,8 @@ Item {
 
                 Notification {}
                 Clock {}
+                DotSeparator {}
+                KbLang {}
             }
         }
 

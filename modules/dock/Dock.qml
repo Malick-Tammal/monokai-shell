@@ -177,7 +177,7 @@ PanelWindow {
             y: root.shouldHide ? root.implicitHeight : 0
             Behavior on y {
                 SpringAnimation {
-                    spring: 7
+                    spring: 10
                     damping: 0.5
                     mass: 1.5
                 }

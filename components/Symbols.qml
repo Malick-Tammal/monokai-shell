@@ -18,6 +18,7 @@ Text {
     color: iconColor
 
     renderType: Text.NativeRendering
+    renderTypeQuality: Text.VeryHighRenderTypeQuality
 
     font {
         family: materialFont.name

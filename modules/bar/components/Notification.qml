@@ -53,7 +53,7 @@ Item {
                 text: NotifyService.notifCount > 0 ? NotifyService.notifCount.toString() : ""
                 visible: NotifyService.notifCount > 0 ? true : false
                 size: 12
-                color: Style.orange9
+                textColor: Style.orange9
                 weight: Font.Bold
                 anchors.bottom: parent.bottom
             }

@@ -91,10 +91,10 @@ PanelWindow {
             y: shouldShow ? 0 : -BarService.barHeight * 2
 
             Behavior on y {
-                SpringAnimation {
-                    spring: 10
-                    damping: 0.5
-                    mass: 1.5
+                NumberAnimation {
+                    duration: 300
+                    easing.type: Easing.OutBack
+                    easing.overshoot: 1.8
                 }
             }
         }

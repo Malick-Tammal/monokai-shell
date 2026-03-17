@@ -39,19 +39,8 @@ Item {
             layoutDirection: Qt.RightToLeft
             anchors.centerIn: parent
 
-            Rectangle {
-                width: 20
-                height: 5
-                anchors.verticalCenter: parent.verticalCenter
-                color: "transparent"
-
-                Rectangle {
-                    width: 5
-                    height: 5
-                    anchors.centerIn: parent
-                    radius: 10
-                    color: Style.gray2
-                }
+            DotSeparator {
+                space: 20
             }
 
             Repeater {
