@@ -10,7 +10,7 @@ import "./components/"
 PanelWindow {
     id: root
     implicitWidth: dock.width + 35
-    implicitHeight: dock.height + 50
+    implicitHeight: dock.height + 30
     color: "transparent"
 
     anchors {
