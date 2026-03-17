@@ -13,60 +13,13 @@ PanelWindow {
     implicitHeight: dock.height + 50
     color: "transparent"
 
-    WlrLayershell.layer: WlrLayer.Overlay
-    WlrLayershell.exclusiveZone: -1
-    WlrLayershell.namespace: "dock"
-
-    property string tooltipText: ""
-    property real tooltipTargetX: 0
-    property bool showTooltip: false
-    property alias dockRef: dock
-
     anchors {
         bottom: true
     }
 
-    mask: Region {
-        x: 0
-        y: {
-            const hiddenY = root.implicitHeight - trigger.height;
-            const dockAreaY = root.implicitHeight - dock.height - 20;
-            if (root.shouldHide)
-                return Math.min(dockTranslate.y, hiddenY);
-            if (root.hoveredIconCount > 0)
-                return Math.min(dockTranslate.y, 0);
-            return Math.min(dockTranslate.y, dockAreaY);
-        }
-        height: root.implicitHeight - y
-        width: root.width
-    }
-
-    MouseArea {
-        id: gapBridge
-        anchors.fill: parent
-        hoverEnabled: true
-    }
-
-    property alias animY: dockTranslate.y
-
-    //  INFO: INTELLIHIDE
-    readonly property bool overlapsWindow: {
-        if (Hypr.windowList.length === 0)
-            return false;
-
-        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - (GlobalStates.padding + 3);
-        const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
-
-        return Hypr.windowList.some(win => {
-            if (win.workspace.id !== currentWsId)
-                return false;
-            if (win.at[0] === -32000)
-                return false;
-
-            const winBottomEdge = win.at[1] + win.size[1];
-            return winBottomEdge > dockTopEdge;
-        });
-    }
+    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.exclusiveZone: -1
+    WlrLayershell.namespace: "dock"
 
     property bool activeHover: false
     property int hoveredIconCount: 0
@@ -89,6 +42,74 @@ PanelWindow {
         } else {
             hideTimer.restart();
             root.dockMouseX = -1;
+        }
+    }
+
+    //  INFO: INTELLIHIDE ---
+    readonly property bool overlapsWindow: {
+        if (Hypr.windowList.length === 0)
+            return false;
+
+        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - (GlobalStates.padding + 3);
+        const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
+
+        return Hypr.windowList.some(win => {
+            if (win.workspace.id !== currentWsId)
+                return false;
+            if (win.at[0] === -32000)
+                return false;
+
+            const winBottomEdge = win.at[1] + win.size[1];
+            return winBottomEdge > dockTopEdge;
+        });
+    }
+
+    property alias animY: dockTranslate.y
+
+    mask: Region {
+        x: 0
+        y: {
+            const hiddenY = root.implicitHeight - trigger.height;
+            const dockAreaY = root.implicitHeight - dock.height - 20;
+            if (root.shouldHide)
+                return Math.min(dockTranslate.y, hiddenY);
+            if (root.hoveredIconCount > 0)
+                return Math.min(dockTranslate.y, 0);
+            return Math.min(dockTranslate.y, dockAreaY);
+        }
+        height: root.implicitHeight - y
+        width: root.width
+    }
+
+    MouseArea {
+        id: gapBridge
+        anchors.fill: parent
+        hoverEnabled: true
+    }
+
+    //  INFO: ToolTip ---
+    property string tooltipText: ""
+    property real tooltipTargetX: 0
+    property bool showTooltip: false
+    property alias dockRef: dock
+
+    Timer {
+        id: tooltipHideTimer
+        interval: 100
+        repeat: false
+        onTriggered: root.showTooltip = false
+    }
+
+    function updateTooltip(text, x) {
+        tooltipHideTimer.stop();
+        root.tooltipText = text;
+        root.tooltipTargetX = x;
+        root.showTooltip = true;
+    }
+
+    function cancelTooltip(text) {
+        if (root.tooltipText === text) {
+            tooltipHideTimer.restart();
         }
     }
 

@@ -9,6 +9,9 @@ import qs.services
 Row {
     id: root
 
+    height: parent.height
+    spacing: separator.visible ? 8 : 0
+
     required property var modelData
     required property int index
     required property real dockMouseX
@@ -54,9 +57,6 @@ Row {
             easing.type: Easing.InQuad
         }
     }
-
-    height: parent.height
-    spacing: separator.visible ? 8 : 0
 
     Rectangle {
         id: separator
@@ -179,14 +179,9 @@ Row {
 
                 if (containsMouse) {
                     let mapped = iconSlot.mapToItem(root.dockWindow.dockRef, iconSlot.width / 2, 0);
-
-                    root.dockWindow.tooltipText = DockService.getDisplayName(root.modelData.class);
-                    root.dockWindow.tooltipTargetX = mapped.x;
-                    root.dockWindow.showTooltip = true;
+                    root.dockWindow.updateTooltip(DockService.getDisplayName(root.modelData.class), mapped.x);
                 } else {
-                    if (root.dockWindow.tooltipText === DockService.getDisplayName(root.modelData.class)) {
-                        root.dockWindow.showTooltip = false;
-                    }
+                    root.dockWindow.cancelTooltip(DockService.getDisplayName(root.modelData.class));
                 }
             }
 

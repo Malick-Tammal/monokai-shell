@@ -64,7 +64,7 @@ PopupWindow {
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 50
+                duration: 100
                 easing.type: Easing.OutQuad
             }
         }
