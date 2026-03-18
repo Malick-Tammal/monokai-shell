@@ -11,7 +11,7 @@ import qs
 Singleton {
     id: root
 
-    property int barHeight: 40
+    property int barHeight: 42
 
     signal toggleRequested(var targetScreen)
 

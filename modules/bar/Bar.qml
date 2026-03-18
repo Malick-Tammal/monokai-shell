@@ -82,7 +82,7 @@ PanelWindow {
 
     Item {
         id: container
-        height: BarService.barHeight
+        height: BarService.barHeight - 2
 
         transform: Translate {
             id: barTranslate
@@ -107,7 +107,7 @@ PanelWindow {
             top: parent.top
             left: parent.left
             right: parent.right
-            topMargin: GlobalStates.padding
+            topMargin: GlobalStates.padding + 1
             leftMargin: GlobalStates.padding
             rightMargin: GlobalStates.padding
         }
