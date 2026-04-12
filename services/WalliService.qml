@@ -42,7 +42,7 @@ Singleton {
         repeat: false
         onTriggered: {
             root.currentWall = "";
-            swwwQuery.running = true;
+            awwwQuery.running = true;
         }
     }
 
@@ -50,11 +50,11 @@ Singleton {
         const cache = root.cacheFolder + name;
         const full = root.wallsFolder + name;
 
-        swwwProc.command[2] = full;
+        awwwProc.command[2] = full;
         cacheWall.command[1] = full;
         sddmWall.command[1] = full;
 
-        swwwProc.running = true;
+        awwwProc.running = true;
         cacheWall.running = true;
         sddmWall.running = true;
 
@@ -98,8 +98,8 @@ Singleton {
 
     // Apply wallpaper
     Process {
-        id: swwwProc
-        command: ["swww", "img", "", "--transition-type", "grow", "--transition-pos", "0.5,0.5", "--transition-step", "90", "--transition-fps", "60"]
+        id: awwwProc
+        command: ["awww", "img", "", "--transition-type", "grow", "--transition-pos", "0.5,0.5", "--transition-step", "90", "--transition-fps", "60"]
 
         onExited: code => {
             if (code === 0) {
@@ -120,8 +120,8 @@ Singleton {
 
     // Active Wallpaper Query
     Process {
-        id: swwwQuery
-        command: ["swww", "query"]
+        id: awwwQuery
+        command: ["awww", "query"]
         stdout: StdioCollector {
             onStreamFinished: {
                 const output = this.text.trim();

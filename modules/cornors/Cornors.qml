@@ -12,6 +12,7 @@ PanelWindow {
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
+    exclusiveZone: 0
 
     mask: Region {}
 
