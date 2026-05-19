@@ -14,6 +14,14 @@ Singleton {
     property bool isLoading: false
     property string loadingText: "Checking wallpapers..."
 
+    property string animationType: "wipe"
+    property string animationPos: "0.1 , 0.5"
+    property string animationBezier: ".23,.86,.81,.07"
+    property int animationStep: 120
+    property int animationFps: 60
+    property int animationAngle: 15
+    property double animationDuration: 1.6
+
     readonly property string wallsFolder: Quickshell.env("HOME") + "/Pictures/Wallpapers/"
     readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/walli_thumbs/"
 
@@ -99,7 +107,7 @@ Singleton {
     // Apply wallpaper
     Process {
         id: awwwProc
-        command: ["awww", "img", "", "--transition-type", "grow", "--transition-pos", "0.5,0.5", "--transition-step", "90", "--transition-fps", "60"]
+        command: ["awww", "img", "", "--transition-type", root.animationType, "--transition-pos", root.animationPos, "--transition-step", root.animationStep, "--transition-fps", root.animationFps, "--transition-angle", root.animationAngle, "--transition-bezier", root.animationBezier, "--transition-duration", root.animationDuration]
 
         onExited: code => {
             if (code === 0) {
