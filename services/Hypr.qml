@@ -38,11 +38,13 @@ Singleton {
         return !root.windowList.some(win => win.workspace.id === currentWsId);
     }
 
+    property bool hyprbars: true
+
     function hasWindows(id) {
         return Hyprland.workspaces.values.some(w => w.id === id);
     }
 
-    function focusWorkspace(id) {
+    function focusWorkspace(id): void {
         Hyprland.dispatch("workspace " + id);
     }
 
@@ -57,6 +59,42 @@ Singleton {
                 } catch (e) {
                     console.error("Failed to parse hyprctl output");
                 }
+            }
+        }
+    }
+
+    Process {
+        id: checkHyprbars
+        command: ["hyprpm", "list"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const cleanText = text.replace(/\x1b\[[0-9;]*m/g, '');
+                const lines = cleanText.split("\n");
+
+                let isEnabled = false;
+                let foundPlugin = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const currentLine = lines[i];
+
+                    if (currentLine.includes("Plugin hyprbars")) {
+                        foundPlugin = true;
+                        continue;
+                    }
+
+                    if (foundPlugin) {
+                        if (currentLine.trim() === "")
+                            continue;
+
+                        if (currentLine.includes("enabled: true")) {
+                            isEnabled = true;
+                        }
+                        break;
+                    }
+                }
+
+                root.hyprbars = isEnabled;
             }
         }
     }
@@ -79,8 +117,15 @@ Singleton {
         target: Hyprland
         function onRawEvent(event) {
             updateDebounce.restart();
+
+            if (event.name === "configreloaded") {
+                checkHyprbars.running = true;
+            }
         }
     }
 
-    Component.onCompleted: getClients.running = true
+    Component.onCompleted: {
+        getClients.running = true;
+        checkHyprbars.running = true;
+    }
 }

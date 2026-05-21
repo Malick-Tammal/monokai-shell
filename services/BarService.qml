@@ -46,7 +46,7 @@ Singleton {
             if (win.at[0] === -32000)
                 return false;
 
-            const winTopEdge = win.at[1];
+            const winTopEdge = Hypr.hyprbars ? win.at[1] - 30 : win.at[1];
             return winTopEdge < barBottomEdge;
         });
     }
