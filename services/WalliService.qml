@@ -61,15 +61,16 @@ Singleton {
         awwwProc.command[2] = full;
         cacheWall.command[1] = full;
         sddmWall.command[1] = full;
+        pywal.command[2] = full;
 
         awwwProc.running = true;
         cacheWall.running = true;
         sddmWall.running = true;
+        pywal.running = true;
 
         const cleanName = name.replace(/\.[^/.]+$/, "");
         NotifyService.send("walli", cleanName, cache);
 
-        print(cleanName);
         print("cache : " + cache);
         print("wall : " + full);
 
@@ -121,6 +122,7 @@ Singleton {
         id: cacheWall
         command: ["cp", "", Quickshell.env("HOME") + "/.cache/current-wallpaper.png"]
     }
+
     Process {
         id: sddmWall
         command: ["cp", "", "/usr/share/sddm/themes/sddm-modern/wallpaper.png"]
@@ -145,5 +147,39 @@ Singleton {
                 }
             }
         }
+    }
+
+    Process {
+        id: pywal
+        command: ["wal", "-i", "", "-s", "-n"]
+
+        onExited: {
+            readPywalColorsProc.running = true;
+        }
+    }
+
+    Process {
+        id: readPywalColorsProc
+        command: ["cat", Quickshell.env("HOME") + "/.cache/wal/colors.json"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    const data = JSON.parse(this.text);
+                    const color = data.colors.color4;
+                    console.log("Pywal color:", color);
+
+                    ledStrip.command[2] = color;
+                    ledStrip.running = true;
+                } catch (err) {
+                    console.log("Failed to parse JSON:", err);
+                }
+            }
+        }
+    }
+
+    Process {
+        id: ledStrip
+        command: [Quickshell.env("HOME") + "/.config/hypr/scripts/ELK.py", "color", ""]
     }
 }
