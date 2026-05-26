@@ -87,18 +87,15 @@ Item {
                 iconColor: Style.blue9
             }
 
-            Text {
+            Sliding {
                 text: Math.round(Audio.volume * 100)
-                anchors.verticalCenter: parent.verticalCenter
-                color: Style.blue9
-                renderType: Text.NativeRendering
-                anchors.verticalCenterOffset: 0.5
+                textColor: Style.blue9
+                size: Style.fontSizeSm
+                weight: Font.Bold
+                fastAnimation: true
 
-                font {
-                    family: Style.family
-                    weight: Font.Bold
-                    pixelSize: Style.fontSizeSm
-                }
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 0.5
             }
         }
 

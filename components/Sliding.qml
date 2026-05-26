@@ -12,6 +12,7 @@ Item {
     property int orientation: Qt.Vertical
     property int size: 17
     property int weight: Font.Black
+    property bool fastAnimation: false
 
     Row {
         id: row
@@ -63,14 +64,14 @@ Item {
                             target: charItem
                             property: "_offset"
                             to: -40
-                            duration: 250
+                            duration: root.fastAnimation ? 100 : 250
                             easing.type: Easing.InQuad
                         }
                         NumberAnimation {
                             target: charText
                             property: "opacity"
                             to: 0
-                            duration: 150
+                            duration: root.fastAnimation ? 30 : 150
                         }
                     }
 
@@ -89,14 +90,14 @@ Item {
                             target: charItem
                             property: "_offset"
                             to: 0
-                            duration: 350
+                            duration: root.fastAnimation ? 150 : 350
                             easing.type: Easing.OutBack
                         }
                         NumberAnimation {
                             target: charText
                             property: "opacity"
                             to: 1
-                            duration: 250
+                            duration: root.fastAnimation ? 100 : 250
                         }
                     }
                 }

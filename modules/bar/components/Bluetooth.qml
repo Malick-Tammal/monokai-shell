@@ -69,6 +69,7 @@ Item {
         Row {
             id: row
             anchors.centerIn: parent
+            height: parent.height
             spacing: 4
 
             Symbols {
@@ -78,9 +79,11 @@ Item {
                 weight: 700
                 iconColor: Bluetooth.isAvailable ? Style.green9 : Style.gray3
 
+                y: Math.round((parent.height - height) / 2)
+
                 SequentialAnimation on opacity {
                     id: pulseAnim
-                    running: Bluetooth.isDiscovering && Bluetooth.isAvailable
+                    running: Bluetooth.isDiscovering && Bluetooth.isAvailable && Bluetooth.isManualScan
                     loops: Animation.Infinite
 
                     NumberAnimation {
@@ -104,9 +107,9 @@ Item {
 
             Text {
                 color: Bluetooth.isAvailable ? Style.green9 : Style.gray3
-                anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
-                anchors.verticalCenterOffset: 0.5
+
+                y: Math.round((parent.height - height) / 2)
 
                 font {
                     family: Style.family
@@ -117,7 +120,7 @@ Item {
                 text: {
                     if (!Bluetooth.isAvailable)
                         return "Unavailable";
-                    if (Bluetooth.isDiscovering)
+                    if (Bluetooth.isDiscovering && Bluetooth.isManualScan)
                         return "Scanning...";
                     return Bluetooth.currentDeviceName;
                 }

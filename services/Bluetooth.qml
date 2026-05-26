@@ -8,13 +8,14 @@ import Quickshell.Bluetooth
 Singleton {
     id: root
 
-    // --- Core Adapter Stats ---
     readonly property var adapter: Bluetooth.defaultAdapter
     readonly property bool isAvailable: Bluetooth.adapters.values.length > 0
-    readonly property bool isEnabled: adapter?.enabled ?? false
-    readonly property bool isDiscovering: adapter?.discovering ?? false
 
-    // --- Connected Device Stats ---
+    readonly property bool isEnabled: adapter ? adapter.enabled : false
+    readonly property bool isDiscovering: adapter ? adapter.discovering : false
+
+    property bool isManualScan: false
+
     readonly property var connectedDevices: Bluetooth.devices.values.filter(d => d.connected)
     readonly property int activeCount: connectedDevices.length
     readonly property bool isConnected: activeCount > 0
@@ -77,17 +78,24 @@ Singleton {
         }
     }
 
+    onIsDiscoveringChanged: {
+        if (!isDiscovering) {
+            isManualScan = false;
+            discoveryTimer.stop();
+        }
+    }
+
     function toggleDiscovery() {
-        if (adapter) {
-            let startScanning = !adapter.discovering;
+        if (!adapter)
+            return;
 
-            adapter.discovering = startScanning;
-
-            if (startScanning) {
-                discoveryTimer.restart();
-            } else {
-                discoveryTimer.stop();
-            }
+        if (adapter.discovering) {
+            isManualScan = true;
+            discoveryTimer.restart();
+        } else {
+            adapter.discovering = true;
+            isManualScan = true;
+            discoveryTimer.restart();
         }
     }
 
@@ -96,9 +104,7 @@ Singleton {
         interval: 12000
         repeat: false
         onTriggered: {
-            if (adapter) {
-                adapter.discovering = false;
-            }
+            isManualScan = false;
         }
     }
 }

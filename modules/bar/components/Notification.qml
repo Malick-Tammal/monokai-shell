@@ -47,6 +47,7 @@ Item {
                 icon: NotifyService.notifCount > 0 ? "notifications_unread" : "notifications"
                 size: 13
                 color: Style.orange9
+                y: Math.round((parent.height - height) / 2)
             }
 
             Sliding {
@@ -55,7 +56,7 @@ Item {
                 size: 12
                 textColor: Style.orange9
                 weight: Font.Bold
-                anchors.bottom: parent.bottom
+                y: Math.round((parent.height - height) / 2)
             }
         }
     }

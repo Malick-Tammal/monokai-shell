@@ -119,13 +119,14 @@ Item {
         Row {
             id: row
             anchors.centerIn: parent
+            height: parent.height
             spacing: 5
             z: 1
             clip: true
 
             Symbols {
                 id: batteryIcon
-                anchors.verticalCenter: parent.verticalCenter
+                y: Math.round((parent.height - height) / 2)
                 size: Battery.acConnected ? 13 : 14
 
                 iconColor: {
@@ -223,7 +224,6 @@ Item {
 
             Text {
                 text: Math.round(Battery.percentage * 100)
-                anchors.verticalCenter: parent.verticalCenter
                 color: {
                     if (Battery.acConnected)
                         return Style.green9;
@@ -232,7 +232,9 @@ Item {
                     return Style.orange9;
                 }
                 renderType: Text.NativeRendering
-                anchors.verticalCenterOffset: 0.5
+                renderTypeQuality: Text.VeryHighRenderTypeQuality
+
+                y: Math.round((parent.height - height) / 2)
 
                 font {
                     family: Style.family
