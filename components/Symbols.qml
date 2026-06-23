@@ -25,9 +25,9 @@ Text {
         pixelSize: size
         variableAxes: {
             "wght": weight,
-            "FILL": true,
-            "GRAD": 200,
-            "opsz": size
+            "FILL": 1,
+            "GRAD": 0,
+            "opsz": 20
         }
     }
 }

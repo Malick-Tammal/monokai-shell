@@ -7,12 +7,13 @@ import qs.theme
 PanelWindow {
     id: root
 
-    property int rounding: 20
+    property int rounding: 25
     property color cornerColor: Style.black
 
+    exclusionMode: ExclusionMode.Ignore
     WlrLayershell.layer: WlrLayer.Overlay
-    WlrLayershell.exclusiveZone: -1
     exclusiveZone: 0
+    WlrLayershell.namespace: "cornors"
 
     mask: Region {}
 
@@ -32,26 +33,26 @@ PanelWindow {
 
         Repeater {
             model: [
-                {
-                    anchorTop: true,
-                    anchorRight: true,
-                    rot: 0
-                },
-                {
-                    anchorTop: true,
-                    anchorLeft: true,
-                    rot: -90
-                },
-                {
-                    anchorBottom: true,
-                    anchorRight: true,
-                    rot: 90
-                },
-                {
-                    anchorBottom: true,
-                    anchorLeft: true,
-                    rot: -180
-                }
+            {
+                anchorTop: true,
+                anchorRight: true,
+                rot: 0
+            },
+            {
+                anchorTop: true,
+                anchorLeft: true,
+                rot: -90
+            },
+            {
+                anchorBottom: true,
+                anchorRight: true,
+                rot: 90
+            },
+            {
+                anchorBottom: true,
+                anchorLeft: true,
+                rot: -180
+            }
             ]
 
             delegate: Inverted {

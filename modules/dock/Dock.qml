@@ -48,19 +48,19 @@ PanelWindow {
     //  INFO: INTELLIHIDE ---
     readonly property bool overlapsWindow: {
         if (Hypr.windowList.length === 0)
-            return false;
+        return false;
 
         const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - (GlobalStates.padding + 3);
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
 
         return Hypr.windowList.some(win => {
-            if (win.workspace.id !== currentWsId)
+                if (win.workspace.id !== currentWsId)
                 return false;
-            if (win.at[0] === -32000)
+                if (win.at[0] === -32000)
                 return false;
 
-            const winBottomEdge = win.at[1] + win.size[1];
-            return winBottomEdge > dockTopEdge;
+                const winBottomEdge = win.at[1] + win.size[1];
+                return winBottomEdge > dockTopEdge;
         });
     }
 
@@ -72,9 +72,9 @@ PanelWindow {
             const hiddenY = root.implicitHeight - trigger.height;
             const dockAreaY = root.implicitHeight - dock.height - 20;
             if (root.shouldHide)
-                return Math.min(dockTranslate.y, hiddenY);
+            return Math.min(dockTranslate.y, hiddenY);
             if (root.hoveredIconCount > 0)
-                return Math.min(dockTranslate.y, 0);
+            return Math.min(dockTranslate.y, 0);
             return Math.min(dockTranslate.y, dockAreaY);
         }
         height: root.implicitHeight - y
@@ -115,7 +115,7 @@ PanelWindow {
 
     Rectangle {
         id: dock
-        height: 60
+        height: 65
         width: row.implicitWidth + 16
         color: Style.bg
         border.color: Style.border
@@ -160,9 +160,9 @@ PanelWindow {
 
                     onIconHoverChanged: hovered => {
                         if (hovered)
-                            root.hoveredIconCount++;
+                        root.hoveredIconCount++;
                         else
-                            root.hoveredIconCount--;
+                        root.hoveredIconCount--;
                     }
 
                     onIconMouseMoved: mappedX => {

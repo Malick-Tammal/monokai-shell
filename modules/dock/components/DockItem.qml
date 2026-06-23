@@ -1,6 +1,7 @@
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Widgets
+import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import qs.theme
@@ -86,16 +87,16 @@ Row {
 
             scale: {
                 if (iconMouseArea.pressed)
-                    return 0.9;
+                return 0.9;
                 if (root.dockMouseX < 0)
-                    return 1.0;
+                return 1.0;
 
                 const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
                 const radius = 100;
                 const maxScale = 1.3;
 
                 if (pixelDist >= radius)
-                    return 1.0;
+                return 1.0;
 
                 return 1.0 + (maxScale - 1.0) * (1 + Math.cos(Math.PI * pixelDist / radius)) / 1.5;
             }
@@ -109,32 +110,32 @@ Row {
             }
 
             transform: [
-                Translate {
-                    y: {
-                        if (iconMouseArea.pressed)
-                            return 2;
-                        if (root.dockMouseX < 0)
-                            return 0;
+            Translate {
+                y: {
+                    if (iconMouseArea.pressed)
+                    return 2;
+                    if (root.dockMouseX < 0)
+                    return 0;
 
-                        const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
-                        const radius = 120;
-                        const maxLift = -8;
+                    const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
+                    const radius = 120;
+                    const maxLift = -8;
 
-                        if (pixelDist >= radius)
-                            return 0;
+                    if (pixelDist >= radius)
+                    return 0;
 
-                        return maxLift * (1 + Math.cos(Math.PI * pixelDist / radius)) / 2;
-                    }
-
-                    Behavior on y {
-                        SmoothedAnimation {
-                            velocity: 100
-                        }
-                    }
-                },
-                Translate {
-                    y: root.bounceOffset
+                    return maxLift * (1 + Math.cos(Math.PI * pixelDist / radius)) / 2;
                 }
+
+                Behavior on y {
+                    SmoothedAnimation {
+                        velocity: 100
+                    }
+                }
+            },
+            Translate {
+                y: root.bounceOffset
+            }
             ]
         }
 
@@ -194,17 +195,20 @@ Row {
             onClicked: mouse => {
                 if (mouse.button === Qt.LeftButton) {
                     if (root.modelData.count > 0) {
-                        Hyprland.dispatch(`focuswindow address:${root.modelData.windows[0].address}`);
+                        const winAddress = root.modelData.windows[0].address;
+                        Hyprland.dispatch(`hl.dsp.focus({window = "address:${winAddress}"})`);
+                        Hyprland.dispatch(`hl.dsp.window.bring_to_top({window = "address:${winAddress}"})`);
+
                     } else if (root.modelData.isPinned) {
                         if (root.isLaunching)
-                            return;
+                        return;
                         root.isLaunching = true;
                         launchTimeout.restart();
-                        Hyprland.dispatch(`exec ${root.modelData.exec}`);
+                        Hyprland.dispatch(`hl.dsp.exec_cmd("${root.modelData.exec}")`);
                     }
                 } else if (mouse.button === Qt.MiddleButton) {
                     if (root.modelData.count > 0) {
-                        Hyprland.dispatch(`closewindow address:${root.modelData.windows[0].address}`);
+                        Hyprland.dispatch(`hl.dsp.window.close({window = "address:${root.modelData.windows[0].address}"})`);
                     }
                 }
             }

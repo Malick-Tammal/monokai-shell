@@ -22,7 +22,7 @@ Item {
     Rectangle {
         id: con
         height: parent.height
-        width: row.width + 18
+        width: row.implicitWidth + 20
         radius: 10
         color: Battery.acConnected ? Style.green2 : (Battery.percentage <= 0.15 ? Style.red2 : Style.orange2)
 
@@ -86,10 +86,10 @@ Item {
                 }
 
                 onOpacityChanged: if (!Battery.acConnected)
-                    opacity = 1.0
+                opacity = 1.0
 
                 onXChanged: if (Math.round(Battery.percentage) >= 0.15 || Battery.acConnected)
-                    x = 0
+                x = 0
 
                 Behavior on color {
                     ColorAnimation {
@@ -120,20 +120,20 @@ Item {
             id: row
             anchors.centerIn: parent
             height: parent.height
-            spacing: 5
+            spacing: 6
             z: 1
             clip: true
 
             Symbols {
                 id: batteryIcon
                 y: Math.round((parent.height - height) / 2)
-                size: Battery.acConnected ? 13 : 14
+                size: Style.symbolSize
 
                 iconColor: {
                     if (Battery.acConnected)
-                        return Style.green9;
+                    return Style.green9;
                     if (Battery.percentage <= 0.15)
-                        return Style.red9;
+                    return Style.red9;
                     return Style.orange9;
                 }
 
@@ -141,34 +141,34 @@ Item {
 
                 state: {
                     if (Battery.acConnected)
-                        return "charging";
+                    return "charging";
                     if (Battery.percentage <= 0.15)
-                        return "low";
+                    return "low";
                     return "discharging";
                 }
 
                 states: [
-                    State {
-                        name: "charging"
-                        PropertyChanges {
-                            target: batteryIcon
-                            icon: "electric_bolt"
-                        }
-                    },
-                    State {
-                        name: "discharging"
-                        PropertyChanges {
-                            target: batteryIcon
-                            icon: "battery_android_full"
-                        }
-                    },
-                    State {
-                        name: "low"
-                        PropertyChanges {
-                            target: batteryIcon
-                            icon: "warning"
-                        }
+                State {
+                    name: "charging"
+                    PropertyChanges {
+                        target: batteryIcon
+                        icon: "electric_bolt"
                     }
+                },
+                State {
+                    name: "discharging"
+                    PropertyChanges {
+                        target: batteryIcon
+                        icon: "battery_android_full"
+                    }
+                },
+                State {
+                    name: "low"
+                    PropertyChanges {
+                        target: batteryIcon
+                        icon: "warning"
+                    }
+                }
                 ]
 
                 transitions: Transition {
@@ -226,20 +226,21 @@ Item {
                 text: Math.round(Battery.percentage * 100)
                 color: {
                     if (Battery.acConnected)
-                        return Style.green9;
+                    return Style.green9;
                     if (Battery.percentage <= 0.15)
-                        return Style.red9;
+                    return Style.red9;
                     return Style.orange9;
                 }
                 renderType: Text.NativeRendering
                 renderTypeQuality: Text.VeryHighRenderTypeQuality
 
-                y: Math.round((parent.height - height) / 2)
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 0.5
 
                 font {
                     family: Style.family
-                    weight: Font.Bold
-                    pixelSize: Style.fontSizeSm
+                    weight: Font.Black
+                    pixelSize: Style.fontSizeMd
                 }
             }
         }

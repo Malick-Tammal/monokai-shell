@@ -4,8 +4,8 @@ import qs.components
 
 Rectangle {
     id: root
-    width: 80
-    height: 80
+    width: 90
+    height: 90
     radius: 10
     color: (activeFocus || mouseArea.containsMouse) ? activeColor : Style.gray6
     border.color: (activeFocus || mouseArea.containsMouse) ? activeBorderColor : Style.gray4
@@ -59,9 +59,9 @@ Rectangle {
 
     Symbols {
         icon: root.iconName
-        size: 25
+        size: 30
         anchors.centerIn: parent
         iconColor: (root.activeFocus || mouseArea.containsMouse) ? root.activeIconColor : root.iconColor
-        weight: Font.Medium
+        weight: Font.Bold
     }
 }

@@ -35,7 +35,7 @@ Item {
 
         Row {
             id: row
-            spacing: 2
+            spacing: 5
             layoutDirection: Qt.RightToLeft
             anchors.centerIn: parent
 

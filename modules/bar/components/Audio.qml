@@ -41,7 +41,7 @@ Item {
     Rectangle {
         id: con
         height: parent.height
-        width: row.width + 18
+        width: row.implicitWidth + 20
         radius: 10
         color: Style.blue2
 
@@ -78,20 +78,21 @@ Item {
         Row {
             id: row
             anchors.centerIn: parent
-            spacing: 5
+            spacing: 6
             z: 1
 
             Symbols {
                 icon: Audio.symbol
-                size: 14
+                size: Style.symbolSize
                 iconColor: Style.blue9
             }
 
             Sliding {
                 text: Math.round(Audio.volume * 100)
                 textColor: Style.blue9
-                size: Style.fontSizeSm
+                size: Style.fontSizeMd
                 weight: Font.Bold
+                styleName: "Bold"
                 fastAnimation: true
 
                 anchors.verticalCenter: parent.verticalCenter

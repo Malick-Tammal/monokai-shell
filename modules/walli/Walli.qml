@@ -55,7 +55,7 @@ PanelWindow {
 
     function findAndSelect(cleanName) {
         if (wallpapers.count === 0)
-            return;
+        return;
 
         for (let i = 0; i < wallpapers.count; i++) {
             let file = wallpapers.model.get(i, "fileName");
@@ -77,7 +77,7 @@ PanelWindow {
     //  INFO: UI
     Rectangle {
         implicitWidth: parent.width
-        implicitHeight: 300
+        implicitHeight: 360
 
         color: "transparent"
 
@@ -111,7 +111,7 @@ PanelWindow {
             antialiasing: true
 
             color: Style.bg
-            radius: 15
+            radius: 25
 
             MouseArea {
                 anchors.fill: parent
@@ -188,7 +188,7 @@ PanelWindow {
                     Rectangle {
                         id: container
                         anchors.fill: parent
-                        radius: 10
+                        radius: 15
                         color: isSelected || hoverHandler.hovered ? Style.yellow5 : Style.gray4
 
                         Image {
@@ -221,7 +221,7 @@ PanelWindow {
                             maskSource: Rectangle {
                                 width: container.width
                                 height: container.height
-                                radius: 10
+                                radius: 15
                             }
                         }
                         Rectangle {
@@ -255,7 +255,7 @@ PanelWindow {
                                     bottom: selWallName.top
                                     right: selWallName.right
                                 }
-                                rounding: 10
+                                rounding: 15
                                 z: 2
                                 visible: isSelected ? true : false
                                 roundingColor: Style.yellow5
@@ -267,7 +267,7 @@ PanelWindow {
                                     bottom: selWallName.top
                                     left: selWallName.left
                                 }
-                                rounding: 10
+                                rounding: 15
                                 z: 2
                                 visible: isSelected ? true : false
                                 roundingColor: Style.yellow5
@@ -293,9 +293,14 @@ PanelWindow {
                                     return cleanName;
                                 }
                                 anchors.centerIn: parent
-                                font.family: Style.family
-                                font.pixelSize: Style.fontSizeMd
-                                font.weight: Font.Medium
+
+                                font {
+                                    family: Style.family
+                                    pixelSize: Style.fontSizeXl
+                                    weight: Font.Medium
+                                    styleName: "Medium"
+                                }
+
                                 color: Style.bg
                             }
                         }

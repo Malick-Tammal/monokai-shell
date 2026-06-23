@@ -44,7 +44,7 @@ PopupWindow {
         radius: 8
 
         width: tooltipText.implicitWidth + 16
-        height: tooltipText.implicitHeight + 10
+        height: tooltipText.implicitHeight + 13
 
         opacity: tooltip.show ? 1.0 : 0.0
         scale: tooltip.show ? 1.0 : 0.6
@@ -53,7 +53,7 @@ PopupWindow {
         property real rawX: tooltip.animatedTargetX - (width / 2)
         x: Math.max(0, Math.min(rawX, tooltip.width - width))
 
-        y: tooltip.height - height - 20
+        y: tooltip.height - height - 25
 
         Behavior on width {
             NumberAnimation {
@@ -82,7 +82,7 @@ PopupWindow {
             color: Style.fg
             anchors.centerIn: parent
             font {
-                pixelSize: Style.fontSizeSm
+                pixelSize: Style.fontSizeMd
                 family: Style.family
                 weight: Font.Normal
             }

@@ -4,7 +4,7 @@ import qs.theme
 Item {
     id: root
 
-    property int space: 10
+    property int space: 5
 
     implicitWidth: space
     implicitHeight: parent.height

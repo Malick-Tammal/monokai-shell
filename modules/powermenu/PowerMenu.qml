@@ -2,6 +2,7 @@ import Quickshell
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Wayland
+import Quickshell.Hyprland
 import Quickshell.Io
 import "./components"
 import qs.theme
@@ -54,7 +55,7 @@ PanelWindow {
             if (root.inConfirmation) {
                 root.inConfirmation = false;
                 if (root.lastActiveItem)
-                    root.lastActiveItem.forceActiveFocus();
+                root.lastActiveItem.forceActiveFocus();
             } else {
                 GlobalStates.powerMenuVisible = false;
             }
@@ -203,7 +204,7 @@ PanelWindow {
 
                         onActivated: {
                             GlobalStates.powerMenuVisible = false;
-                            exec("hyprctl dispatch exec \"sh -c 'sleep 0.1; hyprlock'\"");
+                            Hyprland.dispatch(`hl.dsp.exec_cmd("sh -c 'sleep 0.1; hyprlock'")`);
                         }
                     }
 
@@ -218,7 +219,7 @@ PanelWindow {
                         iconColor: Style.gray2
                         activeIconColor: Style.orange9
 
-                        onActivated: requestExecute("hyprctl dispatch exit", logout)
+                        onActivated: Hyprland.dispatch(`hl.dsp.exit()`)
                     }
                 }
             }
@@ -236,7 +237,7 @@ PanelWindow {
                 onCancel: {
                     root.inConfirmation = false;
                     if (root.lastActiveItem)
-                        root.lastActiveItem.forceActiveFocus();
+                    root.lastActiveItem.forceActiveFocus();
                 }
             }
         }

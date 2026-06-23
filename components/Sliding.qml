@@ -12,6 +12,7 @@ Item {
     property int orientation: Qt.Vertical
     property int size: 17
     property int weight: Font.Black
+    property string styleName: "Black"
     property bool fastAnimation: false
 
     Row {
@@ -53,6 +54,7 @@ Item {
                         pixelSize: root.size
                         family: Style.family
                         weight: root.weight
+                        styleName: root.styleName
                     }
                 }
 

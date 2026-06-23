@@ -14,6 +14,7 @@ Singleton {
     property bool isLoading: false
     property string loadingText: "Checking wallpapers..."
 
+    //  TIP: Animation Settings
     property string animationType: "wipe"
     property string animationPos: "0.1 , 0.5"
     property string animationBezier: ".23,.86,.81,.07"
@@ -136,7 +137,7 @@ Singleton {
             onStreamFinished: {
                 const output = this.text.trim();
                 if (!output)
-                    return;
+                return;
                 const parts = output.split(": ");
                 if (parts.length > 1) {
                     const fullPath = parts[parts.length - 1].trim().split(",")[0];

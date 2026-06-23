@@ -17,14 +17,14 @@ Item {
 
         Row {
             id: row
-            spacing: 8
+            spacing: 10
 
             anchors {
                 fill: parent
                 topMargin: 8
                 bottomMargin: 8
-                leftMargin: (Hypr.focusedWorkspaceId === 1) ? 8 : 10
-                rightMargin: (Hypr.focusedWorkspaceId === Hypr.lastVisibleWs) ? 8 : 10
+                leftMargin: (Hypr.focusedWorkspaceId === 1) ? 8 : 15
+                rightMargin: (Hypr.focusedWorkspaceId === Hypr.lastVisibleWs) ? 8 : 15
             }
 
             Behavior on anchors.leftMargin {
@@ -58,14 +58,14 @@ Item {
                     visible: wsId <= 7 || hasWindows || isFocused
 
                     height: visible ? (isFocused ? parent.height : 20) : 0
-                    width: visible ? (isFocused ? 90 : 34) : 0
+                    width: visible ? (isFocused ? 110 : 34) : 0
                     radius: 9999
 
                     anchors.verticalCenter: parent.verticalCenter
 
                     color: isFocused ? (hoverHandler.hovered ? Style.green4 : Style.green5) : (hoverHandler.hovered ? Style.gray5 : Style.gray6)
                     border.color: isFocused ? Style.green7 : Style.dark1
-                    border.width: isFocused ? 4 : 1
+                    border.width: isFocused ? 5 : 1
 
                     clip: true
 
@@ -85,13 +85,14 @@ Item {
                         font {
                             family: Style.family
                             pixelSize: Style.fontSizeSm
-                            weight: Font.Medium
+                            weight: Font.Bold
+                            styleName: "Bold"
                         }
                     }
 
                     Icons {
                         path: "../../../assets/icons/star.svg"
-                        size: 10
+                        size: 12
 
                         x: Math.round((parent.width - width) / 2)
                         y: Math.round((parent.height - height) / 2)

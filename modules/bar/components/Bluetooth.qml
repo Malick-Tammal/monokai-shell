@@ -24,7 +24,7 @@ Item {
 
         onClicked: mouse => {
             if (!Bluetooth.isAvailable)
-                return;
+            return;
 
             if (mouse.button === Qt.RightButton) {
                 Bluetooth.toggleBluetooth();
@@ -42,13 +42,13 @@ Item {
     Rectangle {
         id: backgroundRect
         height: parent.height
-        width: row.implicitWidth + 18
+        width: row.implicitWidth + 20
         radius: 10
         clip: true
 
         color: {
             if (!Bluetooth.isAvailable)
-                return Style.gray6;
+            return Style.gray6;
             return hoverHandler.hovered ? Style.green4 : Style.green5;
         }
         border.color: Bluetooth.isAvailable ? Style.green3 : Style.dark1
@@ -70,13 +70,13 @@ Item {
             id: row
             anchors.centerIn: parent
             height: parent.height
-            spacing: 4
+            spacing: 6
 
             Symbols {
                 id: btIcon
                 icon: Bluetooth.symbol
-                size: 14
-                weight: 700
+                size: Style.symbolSize
+                weight: Font.Bold
                 iconColor: Bluetooth.isAvailable ? Style.green9 : Style.gray3
 
                 y: Math.round((parent.height - height) / 2)
@@ -106,27 +106,27 @@ Item {
             }
 
             Text {
+                text: {
+                    if (!Bluetooth.isAvailable)
+                    return "Unavailable";
+                    if (Bluetooth.isDiscovering && Bluetooth.isManualScan)
+                    return "Scanning...";
+                    return Bluetooth.currentDeviceName;
+                }
+
                 color: Bluetooth.isAvailable ? Style.green9 : Style.gray3
                 renderType: Text.NativeRendering
+                elide: Text.ElideRight
+                width: Math.min(implicitWidth, 150)
 
                 y: Math.round((parent.height - height) / 2)
 
                 font {
                     family: Style.family
                     weight: Font.Bold
-                    pixelSize: Style.fontSizeSm
+                    pixelSize: Style.fontSizeMd
+                    styleName: "Bold"
                 }
-
-                text: {
-                    if (!Bluetooth.isAvailable)
-                        return "Unavailable";
-                    if (Bluetooth.isDiscovering && Bluetooth.isManualScan)
-                        return "Scanning...";
-                    return Bluetooth.currentDeviceName;
-                }
-
-                elide: Text.ElideRight
-                width: Math.min(implicitWidth, 150)
             }
         }
     }

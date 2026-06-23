@@ -4,8 +4,8 @@ import qs.theme
 
 Item {
     id: trayItemRoot
-    width: 24
-    height: 24
+    width: 30
+    height: 30
 
     property var trayItem: null
     property var rootContext: null
@@ -31,8 +31,8 @@ Item {
 
     IconImage {
         anchors.centerIn: parent
-        width: 16
-        height: 16
+        width: 20
+        height: 20
         source: trayItemRoot.trayItem ? trayItemRoot.trayItem.icon : ""
     }
 
@@ -45,7 +45,7 @@ Item {
 
         onClicked: mouse => {
             if (!trayItemRoot.trayItem)
-                return;
+            return;
             if (mouse.button === Qt.LeftButton) {
                 trayItemRoot.trayItem.activate();
             } else if (mouse.button === Qt.RightButton) {

@@ -18,10 +18,9 @@ Item {
         color: hoverHandler.hovered ? Style.red4 : Style.red5
         border.color: Style.red3
 
-        Nerd {
-            icon: "⏻"
-            weight: Font.Black
-            size: 12
+        Symbols {
+            icon : "mode_off_on"
+            size: Style.symbolSize
             color: Style.red9
 
             x: Math.round((parent.width - width) / 2)

@@ -6,8 +6,8 @@ import qs.components
 
 Rectangle {
     id: user
-    width: 190
-    Layout.preferredHeight: 30
+    width: 200
+    Layout.preferredHeight: 32
     color: Style.yellow5
     radius: 8
 
@@ -38,8 +38,9 @@ Rectangle {
             color: Style.yellow5
             font {
                 family: Style.family
-                pixelSize: Style.fontSizeSm
-                weight: Font.DemiBold
+                pixelSize: Style.fontSizeMd
+                weight: 600
+                styleName: "Semibold"
             }
             anchors.centerIn: parent
         }
@@ -62,7 +63,7 @@ Rectangle {
 
             Symbols {
                 icon: "person"
-                size: 16
+                size: 19
                 iconColor: Style.orange9
             }
 
@@ -71,8 +72,9 @@ Rectangle {
                 color: Style.orange9
                 font {
                     family: Style.family
-                    pixelSize: Style.fontSizeMd
-                    weight: Font.DemiBold
+                    pixelSize: Style.fontSizeLg
+                    weight: 600
+                    styleName: "Semibold"
                 }
             }
         }

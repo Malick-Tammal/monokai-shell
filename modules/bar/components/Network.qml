@@ -15,7 +15,7 @@ Item {
 
     Rectangle {
         height: parent.height
-        width: row.implicitWidth + 18
+        width: row.implicitWidth + 20
         radius: 10
         color: hoverHandler.hovered ? Style.purple4 : Style.purple5
         border.color: Style.purple3
@@ -36,46 +36,50 @@ Item {
         Row {
             id: row
             anchors.centerIn: parent
-            spacing: 5
+            spacing: 6
 
             Symbols {
                 icon: Network.symbol
-                size: 14
-                weight: 700
+                size: Style.symbolSize
+                weight: Font.Bold
                 iconColor: Style.purple9
             }
 
             Text {
+                text: {
+                    if (Network.ethernet)
+                    return Network.interfaceName || "Ethernet";
+
+                    switch (Network.wifiStatus) {
+                        case "connected":
+                        return Network.networkName;
+                        case "connecting":
+                        return "Connecting...";
+                        case "limited":
+                        return "Limited Access";
+                        case "disabled":
+                        return "Off";
+                        case "disconnected":
+                        return "Disconnected";
+                        default:
+                        return "Unknown";
+                    }
+                }
+
                 color: Style.purple9
-                anchors.verticalCenter: parent.verticalCenter
+                renderType: Text.NativeRendering
                 elide: Text.ElideRight
                 width: Math.min(implicitWidth, 80)
+
+                y: Math.round((parent.height - height) / 2)
 
                 font {
                     family: Style.family
                     weight: Font.Bold
-                    pixelSize: Style.fontSizeSm
+                    pixelSize: Style.fontSizeMd
+                    styleName: "Bold"
                 }
 
-                text: {
-                    if (Network.ethernet)
-                        return Network.interfaceName || "Ethernet";
-
-                    switch (Network.wifiStatus) {
-                    case "connected":
-                        return Network.networkName;
-                    case "connecting":
-                        return "Connecting...";
-                    case "limited":
-                        return "Limited Access";
-                    case "disabled":
-                        return "Off";
-                    case "disconnected":
-                        return "Disconnected";
-                    default:
-                        return "Unknown";
-                    }
-                }
             }
         }
 

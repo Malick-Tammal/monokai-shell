@@ -6,7 +6,7 @@ import qs.services
 Item {
     id: root
     height: parent.height
-    width: row.implicitWidth + 10
+    width: row.implicitWidth + 20
 
     Behavior on width {
         NumberAnimation {
@@ -18,7 +18,7 @@ Item {
     Row {
         id: row
         anchors.centerIn: parent
-        spacing: 5
+        spacing: 6
 
         transformOrigin: Item.Center
 
@@ -44,17 +44,24 @@ Item {
 
         Symbols {
             icon: "keyboard"
-            size: 13
+            size: Style.symbolSize
             iconColor: Style.gray1
         }
 
         Text {
             text: KbService.shortLayout
             color: Style.gray1
+            renderType: Text.NativeRendering
+            renderTypeQuality: Text.VeryHighRenderTypeQuality
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 0.5
+
             font {
                 family: Style.family
                 weight: Font.Bold
-                pixelSize: Style.fontSizeSm
+                pixelSize: Style.fontSizeMd
+                styleName: "Bold"
             }
 
             onTextChanged: popAnim.restart()

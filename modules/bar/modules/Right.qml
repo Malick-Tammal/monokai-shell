@@ -23,7 +23,7 @@ Item {
     Row {
         id: row
         anchors.fill: parent
-        spacing: 5
+        spacing: 4
         layoutDirection: Qt.RightToLeft
         anchors.margins: 5
 

@@ -32,7 +32,7 @@ Singleton {
 
     readonly property bool isWorkspaceEmpty: {
         if (!root.windowList || root.windowList.length === 0)
-            return true;
+        return true;
 
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
         return !root.windowList.some(win => win.workspace.id === currentWsId);
@@ -45,7 +45,7 @@ Singleton {
     }
 
     function focusWorkspace(id): void {
-        Hyprland.dispatch("workspace " + id);
+        Hyprland.dispatch(`hl.dsp.focus({workspace = ${id}})`);
     }
 
     Process {
@@ -85,7 +85,7 @@ Singleton {
 
                     if (foundPlugin) {
                         if (currentLine.trim() === "")
-                            continue;
+                        continue;
 
                         if (currentLine.includes("enabled: true")) {
                             isEnabled = true;

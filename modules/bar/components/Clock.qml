@@ -11,7 +11,7 @@ Item {
 
     Rectangle {
         id: con
-        width: Math.max(100, row.width)
+        width: Math.max(130, row.width)
         height: parent.height
         radius: 10
         color: "transparent"
@@ -23,44 +23,56 @@ Item {
 
             Sliding {
                 text: DateTime.hours
-                size: 20
+                size: Style.fontSize2Xl
                 textColor: Style.yellow5
+                weight: Font.Black
+                styleName: "Black"
             }
 
             Text {
                 text: ":"
                 color: Style.fg
-                renderType: Text.QtRendering
                 anchors.horizontalCenterOffset: 0
                 y: -1
 
+                renderType: Text.NativeRendering
+                renderTypeQuality: Text.VeryHighRenderTypeQuality
+
                 font {
-                    pixelSize: 20
+                    pixelSize: Style.fontSize2Xl
                     family: Style.family
                     weight: Font.Black
+                    styleName: "Black"
                 }
             }
 
             Sliding {
                 text: DateTime.minutes
-                size: 20
+                size: Style.fontSize2Xl
+                textColor: Style.fg
+                weight: Font.Black
+                styleName: "Black"
             }
 
             Text {
                 text: DateTime.ampm
                 color: Style.gray1
-                renderType: Text.NativeRendering
-                width: contentWidth + 5
+                width: contentWidth + 10
                 horizontalAlignment: Text.AlignHCenter
+
+                renderType: Text.NativeRendering
+                renderTypeQuality: Text.VeryHighRenderTypeQuality
+
                 anchors {
                     verticalCenter: parent.verticalCenter
-                    verticalCenterOffset: 2
+                    verticalCenterOffset: 1
                 }
 
                 font {
-                    pixelSize: 12
+                    pixelSize: Style.fontSizeMd
                     family: Style.family
                     weight: Font.Black
+                    styleName: "Black"
                 }
             }
         }

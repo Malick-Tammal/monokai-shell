@@ -7,7 +7,7 @@ import qs.components
 Rectangle {
     id: system
     Layout.fillWidth: true
-    Layout.preferredHeight: 30
+    Layout.preferredHeight: 32
     color: Style.yellow5
     radius: 8
 
@@ -29,8 +29,9 @@ Rectangle {
             color: Style.yellow5
             font {
                 family: Style.family
-                pixelSize: Style.fontSizeSm
-                weight: Font.DemiBold
+                pixelSize: Style.fontSizeMd
+                weight: 600
+                styleName: "Semibold"
             }
             anchors.centerIn: parent
         }
@@ -53,17 +54,19 @@ Rectangle {
 
             Nerd {
                 icon: "󰣇"
-                size: 18
+                size: 19
                 color: Style.orange9
             }
 
             Text {
                 text: "System"
                 color: Style.orange9
+
                 font {
                     family: Style.family
-                    pixelSize: Style.fontSizeMd
-                    weight: Font.DemiBold
+                    pixelSize: Style.fontSizeLg
+                    weight: 600
+                    styleName: "Semibold"
                 }
             }
         }

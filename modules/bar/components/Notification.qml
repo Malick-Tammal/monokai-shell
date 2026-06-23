@@ -41,11 +41,11 @@ Item {
         Row {
             id: row
             anchors.centerIn: parent
-            spacing: 5
+            spacing: 6
 
             Symbols {
                 icon: NotifyService.notifCount > 0 ? "notifications_unread" : "notifications"
-                size: 13
+                size: Style.symbolSize
                 color: Style.orange9
                 y: Math.round((parent.height - height) / 2)
             }
@@ -53,9 +53,10 @@ Item {
             Sliding {
                 text: NotifyService.notifCount > 0 ? NotifyService.notifCount.toString() : ""
                 visible: NotifyService.notifCount > 0 ? true : false
-                size: 12
+                size: Style.fontSizeMd
                 textColor: Style.orange9
                 weight: Font.Bold
+                styleName: "Bold"
                 y: Math.round((parent.height - height) / 2)
             }
         }

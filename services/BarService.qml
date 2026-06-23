@@ -11,7 +11,7 @@ import qs
 Singleton {
     id: root
 
-    property int barHeight: 42
+    property int barHeight: 46
 
     signal toggleRequested(var targetScreen)
 
@@ -35,19 +35,19 @@ Singleton {
 
     readonly property bool barOverlapsWindow: {
         if (!Hypr.windowList || Hypr.windowList.length === 0)
-            return false;
+        return false;
 
         const barBottomEdge = root.barHeight + GlobalStates.padding;
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
 
         return Hypr.windowList.some(win => {
-            if (win.workspace.id !== currentWsId)
+                if (win.workspace.id !== currentWsId)
                 return false;
-            if (win.at[0] === -32000)
+                if (win.at[0] === -32000)
                 return false;
 
-            const winTopEdge = Hypr.hyprbars ? win.at[1] - 30 : win.at[1];
-            return winTopEdge < barBottomEdge;
+                const winTopEdge = Hypr.hyprbars ? win.at[1] - 35 : win.at[1];
+                return winTopEdge < barBottomEdge;
         });
     }
 
