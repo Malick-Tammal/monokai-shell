@@ -26,7 +26,7 @@ Text {
         variableAxes: {
             "wght": weight,
             "FILL": 1,
-            "GRAD": 0,
+            "GRAD": 200,
             "opsz": 20
         }
     }

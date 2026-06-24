@@ -5,8 +5,8 @@ import qs.services
 
 Item {
     id: root
-    width: 28
-    height: 28
+    width: 32
+    height: 32
     z: -1
 
     visible: ModeService.isActive ? true : false
@@ -41,10 +41,11 @@ Item {
 
         Symbols {
             icon: ModeService.currentIcon
-            size: 15
+            size: 16
             iconColor: Style[ModeService.themeColor + "9"] || Style.gray9
             weight: Font.Black
-            anchors.centerIn: parent
+            x: Math.round((parent.width - width) / 2)
+            y: Math.round((parent.height - height) / 2)
         }
     }
 }

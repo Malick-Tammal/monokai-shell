@@ -25,33 +25,34 @@ Singleton {
                 } else {
                     root.currentSubmap = submapName;
                     root.isActive = true;
+                    console.log(root.currentSubmap);
 
                     switch (submapName) {
-                    case "window":
+                        case "dwindle_layout" : case "scrolling_layout" : case "master_layout":
                         root.themeColor = "yellow";
                         root.currentIcon = "select_window_2";
                         break;
-                    case "screenshot":
+                        case "screenshot":
                         root.themeColor = "purple";
                         root.currentIcon = "screenshot_monitor";
                         break;
-                    case "scratchpad":
+                        case "scratchpad":
                         root.themeColor = "orange";
                         root.currentIcon = "layers";
                         break;
-                    case "groups":
+                        case "groups":
                         root.themeColor = "green";
                         root.currentIcon = "ad_group";
                         break;
-                    case "managers":
+                        case "managers":
                         root.themeColor = "blue";
                         root.currentIcon = "settings_applications";
                         break;
-                    case "dev":
+                        case "dev":
                         root.themeColor = "red";
-                        root.currentIcon = "code";
+                        root.currentIcon = "data_array";
                         break;
-                    default:
+                        default:
                         root.themeColor = "gray";
                         root.currentIcon = "settings";
                         break;
