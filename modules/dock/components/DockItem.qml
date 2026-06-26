@@ -66,6 +66,7 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
         color: Style.dark1
         radius: 1
+        antialiasing: true
         visible: !root.modelData.isPinned && root.index > 0 && DockService.appList[root.index - 1].isPinned
     }
 
@@ -77,13 +78,18 @@ Row {
 
         readonly property real iconCenterX: root.x + x + width / 2
 
-        IconImage {
+        Image {
             source: Quickshell.iconPath(DockService.getIconName(root.modelData.class), true)
             width: parent.width
             height: parent.width
             anchors.bottom: parent.bottom
-            smooth: true
             transformOrigin: Item.Bottom
+            asynchronous: true
+
+            sourceSize.width: parent.width * 2
+            sourceSize.height: parent.width * 2
+            smooth: true
+            mipmap: true
 
             scale: {
                 if (iconMouseArea.pressed)
@@ -159,6 +165,7 @@ Row {
                     Layout.preferredWidth: 10
                     height: 4
                     radius: 20
+                    antialiasing: true
                     color: Style.yellow5
                 }
             }

@@ -11,6 +11,7 @@ Item {
     Rectangle {
         id: workspaces
         radius: 9999
+        antialiasing: true
         color: Style.bg
         border.color: Style.border
         anchors.fill: parent
@@ -23,8 +24,8 @@ Item {
                 fill: parent
                 topMargin: 8
                 bottomMargin: 8
-                leftMargin: (Hypr.focusedWorkspaceId === 1) ? 8 : 15
-                rightMargin: (Hypr.focusedWorkspaceId === Hypr.lastVisibleWs) ? 8 : 15
+                leftMargin: (Hypr.focusedWorkspaceId === 1) ? 8 : 12
+                rightMargin: (Hypr.focusedWorkspaceId === Hypr.lastVisibleWs) ? 8 : 12
             }
 
             Behavior on anchors.leftMargin {
@@ -60,6 +61,7 @@ Item {
                     height: visible ? (isFocused ? parent.height : 20) : 0
                     width: visible ? (isFocused ? 110 : 34) : 0
                     radius: 9999
+                    antialiasing: true
 
                     anchors.verticalCenter: parent.verticalCenter
 

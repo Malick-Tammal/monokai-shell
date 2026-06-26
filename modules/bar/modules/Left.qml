@@ -22,6 +22,7 @@ Item {
             color: Style.bg
             border.color: Style.border
             radius: 15
+            antialiasing: true
 
             Row {
                 id: componentsRow

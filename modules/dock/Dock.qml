@@ -115,12 +115,13 @@ PanelWindow {
 
     Rectangle {
         id: dock
-        height: 65
+        height: 70
         width: row.implicitWidth + 16
         color: Style.bg
         border.color: Style.border
         border.width: 1
         radius: 15
+        antialiasing: true
         clip: false
 
         anchors {

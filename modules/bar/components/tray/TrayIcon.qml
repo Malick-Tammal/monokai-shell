@@ -29,11 +29,21 @@ Item {
         }
     }
 
-    IconImage {
-        anchors.centerIn: parent
+    Image {
+        id: icon
+
         width: 20
-        height: 20
+        height: width
+        anchors.centerIn: parent
+
         source: trayItemRoot.trayItem ? trayItemRoot.trayItem.icon : ""
+
+        sourceSize.width: width * 2
+        sourceSize.height: height * 2
+
+        smooth: true
+        mipmap: true
+        asynchronous: true
     }
 
     MouseArea {

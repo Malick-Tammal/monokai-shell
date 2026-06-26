@@ -212,14 +212,12 @@ PanelWindow {
                         id: logout
                         prevItem: lock
                         nextItem: poweroff
-
                         activeColor: Style.orange5
                         activeBorderColor: Style.orange3
                         iconName: "logout"
                         iconColor: Style.gray2
                         activeIconColor: Style.orange9
-
-                        onActivated: Hyprland.dispatch(`hl.dsp.exit()`)
+                        onActivated: requestExecute("hyprctl dispatch 'hl.dsp.exit()'", logout)
                     }
                 }
             }
