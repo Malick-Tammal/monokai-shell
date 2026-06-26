@@ -24,9 +24,10 @@ Item {
         width: parent.width - 2
         height: parent.height - 2
         color: Style.black
-        opacity: root.isActive ? 0.3 : 0
+        opacity: root.isActive ? 0.5 : 0
         anchors.centerIn: parent
         radius: 15
+        antialiasing: true
 
         Behavior on opacity {
             NumberAnimation {
@@ -81,7 +82,8 @@ Item {
                 font {
                     family: Style.family
                     weight: Font.Bold
-                    pixelSize: Style.fontSizeMd
+                    pixelSize: Style.fontSizeLg
+                    styleName: "Bold"
                 }
             }
 
@@ -91,8 +93,8 @@ Item {
 
                 Rectangle {
                     id: yes
-                    width: yesTxt.width + 60
-                    height: yesTxt.height + 15
+                    width: noTxt.width + 80
+                    height: noTxt.height + 20
 
                     property Item nextItem: no
                     property Item prevItem: no
@@ -135,6 +137,7 @@ Item {
                             family: Style.family
                             weight: Font.DemiBold
                             pixelSize: Style.fontSizeMd
+                            styleName: "DemiBold"
                         }
                     }
 
@@ -152,8 +155,8 @@ Item {
 
                 Rectangle {
                     id: no
-                    width: noTxt.width + 60
-                    height: noTxt.height + 15
+                    width: noTxt.width + 80
+                    height: noTxt.height + 20
 
                     property Item nextItem: yes
                     property Item prevItem: yes
@@ -196,6 +199,7 @@ Item {
                             family: Style.family
                             weight: Font.DemiBold
                             pixelSize: Style.fontSizeMd
+                            styleName: "DemiBold"
                         }
                     }
 

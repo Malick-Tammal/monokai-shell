@@ -72,7 +72,7 @@ QtObject {
     property int fontSizeSm: 12
     property int fontSizeMd: 14
     property int fontSizeLg: 18
-    property int fontSizeXl: 18
+    property int fontSizeXl: 20
     property int fontSize2Xl: 25
 
     property string family: "SF Pro Rounded"
