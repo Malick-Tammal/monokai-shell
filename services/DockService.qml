@@ -10,83 +10,75 @@ Singleton {
     property var appList: []
 
     property var pinnedApps: [
-        {
-            class: "io.github.kolunmi.Bazaar",
-            exec: "bazaar"
-        },
-        {
-            class: "org.gnome.Nautilus",
-            exec: "nautilus --new-window"
-        },
-        {
-            class: "firefox",
-            exec: "firefox"
-        },
-        {
-            class: "kitty",
-            exec: "kitty"
-        },
-        {
-            class: "neovim",
-            exec: "kitty --class neovim -e nvim"
-        },
-        {
-            class: "code",
-            exec: "code"
-        },
-        {
-            class: "codium",
-            exec: "vscodium"
-        },
-        {
-            class: "figma-linux",
-            exec: "figma-linux"
-        },
-        {
-            class: "upscayl",
-            exec: "flatpak run org.upscayl.Upscayl"
-        },
-        {
-            class: "gimp",
-            exec: "gimp"
-        },
-        {
-            class: "obsidian",
-            exec: "obsidian"
-        },
-        {
-            class: "foliate",
-            exec: "flatpak run com.github.johnfactotum.Foliate"
-        },
-        {
-            class: "io.github.alainm23.planify",
-            exec: "flatpak run io.github.alainm23.planify"
-        },
-        {
-            class: "org.gnome.Evince",
-            exec: "evince"
-        },
-        {
-            class: "steam",
-            exec: "steam"
-        },
-        {
-            class: "discord",
-            exec: "discord"
-        },
-        {
-            class: "vesktop",
-            exec: "vesktop"
-        },
-        {
-            class: "vlc",
-            exec: "vlc"
-        }
+    {
+        class: "io.github.kolunmi.Bazaar",
+        exec: "bazaar"
+    },
+    {
+        class: "org.gnome.Nautilus",
+        exec: "nautilus --new-window"
+    },
+    {
+        class: "firefox",
+        exec: "firefox"
+    },
+    {
+        class: "kitty",
+        exec: "kitty"
+    },
+    {
+        class: "neovim",
+        exec: "kitty --class neovim -e nvim"
+    },
+    {
+        class: "code",
+        exec: "code"
+    },
+    {
+        class: "codium",
+        exec: "vscodium"
+    },
+    {
+        class: "figma-linux",
+        exec: "figma-linux"
+    },
+    {
+        class: "upscayl",
+        exec: "flatpak run org.upscayl.Upscayl"
+    },
+    {
+        class: "gimp",
+        exec: "gimp"
+    },
+    {
+        class: "org.inkscape.Inkscape",
+        exec: "inkscape"
+    },
+    {
+        class: "obsidian",
+        exec: "obsidian"
+    },
+    {
+        class: "steam",
+        exec: "steam"
+    },
+    {
+        class: "discord",
+        exec: "discord"
+    },
+    {
+        class: "vesktop",
+        exec: "vesktop"
+    },
+    {
+        class: "vlc",
+        exec: "vlc"
+    }
     ]
 
     function getDisplayName(className) {
         if (!className)
-            return "Unknown";
+        return "Unknown";
         const lower = className.toLowerCase();
 
         const nameOverrides = {
@@ -101,13 +93,13 @@ Singleton {
         };
 
         if (nameOverrides[lower])
-            return nameOverrides[lower];
+        return nameOverrides[lower];
 
         try {
             if (typeof DesktopEntries !== "undefined" && typeof DesktopEntries.heuristicLookup === "function") {
                 const entry = DesktopEntries.heuristicLookup(className);
                 if (entry && entry.name)
-                    return entry.name;
+                return entry.name;
             }
         } catch (e) {
             console.warn("Display name lookup failed for " + className);
@@ -120,7 +112,7 @@ Singleton {
 
     function getIconName(className) {
         if (!className)
-            return "unknown";
+        return "unknown";
         const lower = className.toLowerCase();
 
         const iconOverrides = {
@@ -135,13 +127,13 @@ Singleton {
         };
 
         if (iconOverrides[lower])
-            return iconOverrides[lower];
+        return iconOverrides[lower];
 
         try {
             if (typeof DesktopEntries !== "undefined" && typeof DesktopEntries.heuristicLookup === "function") {
                 const appEntry = DesktopEntries.heuristicLookup(className);
                 if (appEntry && appEntry.icon)
-                    return appEntry.icon;
+                return appEntry.icon;
             }
         } catch (e) {
             console.warn("Auto-lookup failed for " + className);
@@ -155,47 +147,47 @@ Singleton {
         let runningMap = {};
 
         clients.forEach(win => {
-            if (!win.class)
+                if (!win.class)
                 return;
-            let cls = win.class.toLowerCase();
+                let cls = win.class.toLowerCase();
 
-            if (!runningMap[cls]) {
-                runningMap[cls] = {
-                    class: win.class,
-                    count: 0,
-                    windows: []
-                };
-            }
-            runningMap[cls].windows.push(win);
-            runningMap[cls].count++;
+                if (!runningMap[cls]) {
+                    runningMap[cls] = {
+                        class: win.class,
+                        count: 0,
+                        windows: []
+                    };
+                }
+                runningMap[cls].windows.push(win);
+                runningMap[cls].count++;
         });
 
         let mergedList = [];
 
         root.pinnedApps.forEach(pinned => {
-            let cls = pinned.class.toLowerCase();
-            let isRunning = runningMap[cls] !== undefined;
+                let cls = pinned.class.toLowerCase();
+                let isRunning = runningMap[cls] !== undefined;
 
-            mergedList.push({
-                class: pinned.class,
-                exec: pinned.exec,
-                isPinned: true,
-                count: isRunning ? runningMap[cls].count : 0,
-                windows: isRunning ? runningMap[cls].windows : []
-            });
+                mergedList.push({
+                        class: pinned.class,
+                        exec: pinned.exec,
+                        isPinned: true,
+                        count: isRunning ? runningMap[cls].count : 0,
+                        windows: isRunning ? runningMap[cls].windows : []
+                });
 
-            if (isRunning)
+                if (isRunning)
                 delete runningMap[cls];
         });
 
         Object.values(runningMap).forEach(app => {
-            mergedList.push({
-                class: app.class,
-                exec: "",
-                isPinned: false,
-                count: app.count,
-                windows: app.windows
-            });
+                mergedList.push({
+                        class: app.class,
+                        exec: "",
+                        isPinned: false,
+                        count: app.count,
+                        windows: app.windows
+                });
         });
 
         root.appList = mergedList;
