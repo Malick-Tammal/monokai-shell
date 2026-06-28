@@ -6,6 +6,10 @@
 
 import Quickshell
 import QtQuick
+import Quickshell.Wayland
+import Quickshell.Io
+import qs.services
+import "./modules/lockscreen/"
 
 ShellRoot {
     id: root
@@ -29,6 +33,18 @@ ShellRoot {
         delegate: Main {
             required property var modelData
             screen: modelData
+        }
+    }
+
+    WlSessionLock {
+        id: lock
+
+        locked: LockScreenService.locked
+
+        WlSessionLockSurface {
+            LockSurface {
+                context: LockScreenService
+            }
         }
     }
 }

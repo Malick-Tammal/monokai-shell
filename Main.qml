@@ -2,6 +2,7 @@ import QtQuick
 import "./modules/cornors/"
 import "./modules/bar/"
 import "./modules/dock/"
+// import "./modules/lockscreen/"
 
 Item {
     id: root
@@ -22,4 +23,9 @@ Item {
         id: dock
         screen: root.screen
     }
+
+    // LockSurface {
+    //     id: lockscreen
+    //     screen: root.screen
+    // }
 }

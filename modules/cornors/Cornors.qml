@@ -3,11 +3,13 @@ import Quickshell.Wayland
 import QtQuick
 import qs.components
 import qs.theme
+import qs
 
 PanelWindow {
     id: root
 
     property int rounding: 25
+
     property color cornerColor: Style.black
 
     exclusionMode: ExclusionMode.Ignore

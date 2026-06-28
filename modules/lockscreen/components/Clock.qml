@@ -1,0 +1,60 @@
+import QtQuick
+import qs.components
+import qs.services
+import qs.theme
+
+Item {
+    id: root
+    height: column.height
+    width: column.width
+
+    Loader {
+        id: pywal
+        source: "file:///home/malick-tammal/.cache/wal/colors.qml"
+        asynchronous : true
+    }
+
+    Column {
+        spacing: 0
+        anchors.centerIn: parent
+
+        Column {
+            id: column
+            spacing: -50
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Sliding {
+                text: DateTime.hours
+                size: 200
+                textColor: Style.fg
+                weight: Font.Black
+                styleName: "Black"
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            Sliding {
+                text: DateTime.minutes
+                size: 200
+                textColor: pywal.item.color5Light
+                weight: Font.Black
+                styleName: "Black"
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
+        Text {
+            text: DateTime.date
+            color: Style.fg
+            anchors.horizontalCenter: parent.horizontalCenter
+            opacity: 0.85
+
+            font {
+                family: Style.family
+                pixelSize: 40
+                weight: Font.Bold
+                styleName: "Bold"
+                letterSpacing: 3
+            }
+        }
+
+    }
+}

@@ -204,7 +204,7 @@ PanelWindow {
 
                         onActivated: {
                             GlobalStates.powerMenuVisible = false;
-                            Hyprland.dispatch(`hl.dsp.exec_cmd("sh -c 'sleep 0.1; hyprlock'")`);
+                            LockScreenService.locked = true;
                         }
                     }
 

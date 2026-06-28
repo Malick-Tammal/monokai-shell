@@ -27,7 +27,7 @@ Text {
             "wght": weight,
             "FILL": 1,
             "GRAD": 200,
-            "opsz": 20
+            "opsz": 24
         }
     }
 }
