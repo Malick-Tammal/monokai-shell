@@ -6,7 +6,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
 import qs.services
-import qs
+import qs.core
 
 Singleton {
     id: root

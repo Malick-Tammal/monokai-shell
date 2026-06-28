@@ -1,6 +1,6 @@
 import QtQuick
-import "./modules/powermenu/"
-import "./modules/walli/"
+import "../modules/powermenu/"
+import "../modules/walli/"
 
 Item {
     id: root

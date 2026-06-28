@@ -9,6 +9,7 @@ import QtQuick
 import Quickshell.Wayland
 import Quickshell.Io
 import qs.services
+import qs.core
 import "./modules/lockscreen/"
 
 ShellRoot {
@@ -20,11 +21,11 @@ ShellRoot {
     }
 
     Timer {
-        interval: 100
+        interval: 1000
         running: true
         repeat: false
         onTriggered: {
-            popupsLoader.source = "Popups.qml";
+            popupsLoader.source = "./core/Popups.qml";
         }
     }
 

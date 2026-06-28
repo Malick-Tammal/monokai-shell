@@ -7,7 +7,7 @@ import Quickshell.Io
 import "./components"
 import qs.theme
 import qs.services
-import qs
+import qs.core
 
 PanelWindow {
     id: root

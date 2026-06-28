@@ -1,9 +1,9 @@
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
-import "./modules/"
+import "./layouts/"
 import qs.services
-import qs
+import qs.core
 
 PanelWindow {
     id: root

@@ -6,7 +6,7 @@ import Qt.labs.folderlistmodel
 import qs.components
 import qs.services
 import qs.theme
-import qs
+import qs.core
 
 PanelWindow {
     id: window

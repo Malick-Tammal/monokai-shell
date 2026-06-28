@@ -4,7 +4,7 @@ import Quickshell.Wayland
 import QtQuick
 import qs.theme
 import qs.services
-import qs
+import qs.core
 import "./components/"
 
 PanelWindow {

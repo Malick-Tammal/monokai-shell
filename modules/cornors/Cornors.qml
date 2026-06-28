@@ -3,7 +3,6 @@ import Quickshell.Wayland
 import QtQuick
 import qs.components
 import qs.theme
-import qs
 
 PanelWindow {
     id: root

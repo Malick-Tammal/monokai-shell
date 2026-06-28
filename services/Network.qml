@@ -24,29 +24,29 @@ Singleton {
 
     property string symbol: {
         if (root.ethernet)
-            return "lan";
+        return "lan";
 
         if (!root.wifiEnabled || root.wifiStatus === "disabled") {
             return "signal_wifi_bad";
         }
 
         if (root.wifiStatus === "disconnected")
-            return "wifi_find";
+        return "wifi_find";
         if (root.wifiStatus === "connecting")
-            return "wifi_add";
+        return "wifi_add";
 
         if (root.wifiStatus === "connected" && root.networkName !== "Disconnected" && root.networkName !== "") {
             let s = root.networkStrength;
             if (s > 83)
-                return "signal_wifi_4_bar";
+            return "signal_wifi_4_bar";
             if (s > 67)
-                return "network_wifi";
+            return "network_wifi";
             if (s > 50)
-                return "network_wifi_3_bar";
+            return "network_wifi_3_bar";
             if (s > 33)
-                return "network_wifi_2_bar";
+            return "network_wifi_2_bar";
             if (s > 17)
-                return "network_wifi_1_bar";
+            return "network_wifi_1_bar";
             return "signal_wifi_0_bar";
         }
 
@@ -86,7 +86,7 @@ Singleton {
         environment: ({
                 LANG: "C",
                 LC_ALL: "C"
-            })
+        })
         stdout: StdioCollector {
             onStreamFinished: {
                 const PLACEHOLDER = "STRINGWHICHHOPEFULLYWONTBEUSED";
@@ -94,15 +94,15 @@ Singleton {
                 const rep2 = new RegExp(PLACEHOLDER, "g");
 
                 const allNetworks = text.trim().split("\n").map(n => {
-                    const net = n.replace(rep, PLACEHOLDER).split(":");
-                    return {
-                        active: net[0] === "yes",
-                        strength: parseInt(net[1]) || 0,
-                        frequency: parseInt(net[2]) || 0,
-                        ssid: net[3] || "",
-                        bssid: net[4]?.replace(rep2, ":") ?? "",
-                        security: net[5] || ""
-                    };
+                        const net = n.replace(rep, PLACEHOLDER).split(":");
+                        return {
+                            active: net[0] === "yes",
+                            strength: parseInt(net[1]) || 0,
+                            frequency: parseInt(net[2]) || 0,
+                            ssid: net[3] || "",
+                            bssid: net[4]?.replace(rep2, ":") ?? "",
+                            security: net[5] || ""
+                        };
                 }).filter(n => n.ssid && n.ssid.length > 0);
 
                 const networkMap = new Map();
@@ -170,7 +170,7 @@ Singleton {
         environment: ({
                 LANG: "C",
                 LC_ALL: "C"
-            })
+        })
         stdout: SplitParser {
             onRead: data => {
                 let enabled = data.trim() === "enabled";
@@ -200,7 +200,7 @@ Singleton {
         onExited: (exitCode, exitStatus) => {
             const lines = updateConnectionType.buffer.trim().split('\n');
             if (lines.length === 0 || lines[0] === "")
-                return;
+            return;
 
             const connectivity = lines.pop();
             let hasEthernet = false;
@@ -208,24 +208,24 @@ Singleton {
             let newWifiStatus = root.wifiEnabled ? "disconnected" : "disabled";
 
             lines.forEach(line => {
-                if (line.startsWith("ethernet:") && line.includes("connected")) {
-                    hasEthernet = true;
-                } else if (line.startsWith("wifi:")) {
-                    if (line.includes("connected")) {
-                        hasWifi = true;
-                        newWifiStatus = "connected";
-                        if (connectivity === "limited") {
-                            hasWifi = false;
-                            newWifiStatus = "limited";
-                        }
-                    } else if (newWifiStatus !== "connected") {
-                        if (line.includes("connecting")) {
-                            newWifiStatus = "connecting";
-                        } else if (line.includes("disconnected") && newWifiStatus !== "connecting") {
-                            newWifiStatus = "disconnected";
+                    if (line.startsWith("ethernet:") && line.includes("connected")) {
+                        hasEthernet = true;
+                    } else if (line.startsWith("wifi:")) {
+                        if (line.includes("connected")) {
+                            hasWifi = true;
+                            newWifiStatus = "connected";
+                            if (connectivity === "limited") {
+                                hasWifi = false;
+                                newWifiStatus = "limited";
+                            }
+                        } else if (newWifiStatus !== "connected") {
+                            if (line.includes("connecting")) {
+                                newWifiStatus = "connecting";
+                            } else if (line.includes("disconnected") && newWifiStatus !== "connecting") {
+                                newWifiStatus = "disconnected";
+                            }
                         }
                     }
-                }
             });
 
             root.wifiStatus = newWifiStatus;

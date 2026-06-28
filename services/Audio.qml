@@ -16,7 +16,7 @@ Singleton {
     readonly property bool isMicMuted: source?.audio?.muted ?? false
     readonly property bool isBluetooth: {
         if (!sink)
-            return false;
+        return false;
         let info = (sink.name + " " + sink.description + " " + sink.nickname).toLowerCase();
         return info.includes("bluez") || info.includes("bluetooth");
     }
@@ -26,13 +26,13 @@ Singleton {
 
     function friendlyDeviceName(node) {
         if (!node)
-            return "Unknown";
+        return "Unknown";
         return node.nickname || node.description || "Unknown";
     }
 
     function appNodeDisplayName(node) {
         if (!node)
-            return "Unknown";
+        return "Unknown";
         return node.properties["application.name"] || node.description || node.name || "Unknown";
     }
 
@@ -44,33 +44,33 @@ Singleton {
 
     readonly property string symbol: {
         if (isMuted || volume === 0)
-            return "volume_off";
+        return "volume_off";
 
         if (isBluetooth)
-            return "bluetooth_audio";
+        return "bluetooth_audio";
 
         if (volume < 0.33)
-            return "volume_mute";
+        return "volume_mute";
 
         if (volume < 0.67)
-            return "volume_down";
+        return "volume_down";
 
         return "volume_up";
     }
 
     function toggleMute() {
         if (sink?.audio)
-            sink.audio.muted = !sink.audio.muted;
+        sink.audio.muted = !sink.audio.muted;
     }
 
     function toggleMicMute() {
         if (source?.audio)
-            source.audio.muted = !source.audio.muted;
+        source.audio.muted = !source.audio.muted;
     }
 
     function changeVolume(amount) {
         if (!sink?.audio)
-            return;
+        return;
 
         let newVolume = sink.audio.volume + amount;
         sink.audio.volume = Math.max(0.0, Math.min(hardMaxValue, newVolume));
@@ -86,23 +86,23 @@ Singleton {
 
     function setDefaultSink(node) {
         if (node)
-            Pipewire.preferredDefaultAudioSink = node;
+        Pipewire.preferredDefaultAudioSink = node;
     }
 
     function setDefaultSource(node) {
         if (node)
-            Pipewire.preferredDefaultAudioSource = node;
+        Pipewire.preferredDefaultAudioSource = node;
     }
 
     function playSystemSound(soundName) {
         const cmd = `
-            for ext in oga ogg wav; do
-                file="/usr/share/sounds/${root.audioTheme}/stereo/${soundName}.$ext"
-                if [ -f "$file" ]; then
-                    paplay "$file"
-                    break
-                fi
-            done
+        for ext in oga ogg wav; do
+        file="/usr/share/sounds/${root.audioTheme}/stereo/${soundName}.$ext"
+        if [ -f "$file" ]; then
+        paplay "$file"
+        break
+        fi
+        done
         `;
 
         Quickshell.execDetached(["bash", "-c", cmd]);
