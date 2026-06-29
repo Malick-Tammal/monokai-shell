@@ -62,12 +62,12 @@ Singleton {
         awwwProc.command[2] = full;
         cacheWall.command[1] = full;
         sddmWall.command[1] = full;
-        pywal.command[2] = full;
 
         awwwProc.running = true;
         cacheWall.running = true;
         sddmWall.running = true;
-        pywal.running = true;
+
+        Pywal.generateColors(full);
 
         const cleanName = name.replace(/\.[^/.]+$/, "");
         NotifyService.send("walli", cleanName, cache);
@@ -145,35 +145,6 @@ Singleton {
                     const cleanName = filename.replace(/\.[^/.]+$/, "");
 
                     root.currentWall = cleanName;
-                }
-            }
-        }
-    }
-
-    Process {
-        id: pywal
-        command: ["wal", "-i", "", "-s", "-n"]
-
-        onExited: {
-            readPywalColorsProc.running = true;
-        }
-    }
-
-    Process {
-        id: readPywalColorsProc
-        command: ["cat", Quickshell.env("HOME") + "/.cache/wal/colors.json"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                try {
-                    const data = JSON.parse(this.text);
-                    const color = data.colors.color4;
-                    console.log("Pywal color:", color);
-
-                    ledStrip.command[2] = color;
-                    ledStrip.running = true;
-                } catch (err) {
-                    console.log("Failed to parse JSON:", err);
                 }
             }
         }

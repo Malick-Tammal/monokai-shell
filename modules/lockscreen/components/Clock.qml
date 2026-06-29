@@ -8,12 +8,6 @@ Item {
     height: column.height
     width: column.width
 
-    Loader {
-        id: pywal
-        source: "file:///home/malick-tammal/.cache/wal/colors.qml"
-        asynchronous : true
-    }
-
     Column {
         spacing: 0
         anchors.centerIn: parent
@@ -35,7 +29,7 @@ Item {
             Sliding {
                 text: DateTime.minutes
                 size: 200
-                textColor: pywal.item.color5Light
+                textColor: Qt.lighter(Pywal.colors.color1, 1.8)
                 weight: Font.Black
                 styleName: "Black"
                 anchors.horizontalCenter: parent.horizontalCenter
