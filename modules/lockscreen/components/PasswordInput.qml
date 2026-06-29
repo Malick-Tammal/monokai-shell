@@ -185,8 +185,9 @@ Item {
                     Keys.onEscapePressed: root.clearAndHide()
 
                     onAccepted: {
-                        if (text.length === 0) return
-                        passwordInput.text = ""
+                        if (this.text.length === 0) return
+                        LockScreenService.currentText = this.text
+                        this.text = ""
                         LockScreenService.tryUnlock()
                     }
                 }

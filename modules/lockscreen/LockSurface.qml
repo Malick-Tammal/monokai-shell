@@ -34,6 +34,7 @@ Rectangle {
         blur: 0.6
         blurMax: 80
         blurMultiplier: 0.1
+        brightness: -0.1
     }
 
     Rectangle {
