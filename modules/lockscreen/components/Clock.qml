@@ -38,9 +38,8 @@ Item {
 
         Text {
             text: DateTime.date
-            color: Style.fg
+            color: Pywal.special.foreground
             anchors.horizontalCenter: parent.horizontalCenter
-            opacity: 0.8
 
             font {
                 family: Style.family

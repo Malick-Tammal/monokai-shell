@@ -12,6 +12,7 @@ Rectangle {
 
     required property var context
     property int borderWidth: 20
+    color: Style.dark5
 
     anchors {
         fill: parent
@@ -24,7 +25,6 @@ Rectangle {
         fillMode: Image.PreserveAspectCrop
         sourceSize.width: parent.width > 0 ? parent.width : 1920
         sourceSize.height: parent.height > 0 ? parent.height : 1080
-        asynchronous: true
         visible : true
         z: 0
     }
@@ -33,10 +33,11 @@ Rectangle {
         source: background
         anchors.fill: background
         blurEnabled: true
-        blur: 0.6
-        blurMax: 80
-        blurMultiplier: 0.1
-        brightness: -0.1
+        autoPaddingEnabled: false
+        blur: 0.85
+        blurMax: 64
+        blurMultiplier: 0.15
+        brightness: -0.12
     }
 
     Rectangle {

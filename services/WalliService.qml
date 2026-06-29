@@ -60,11 +60,9 @@ Singleton {
         const full = root.wallsFolder + name;
 
         awwwProc.command[2] = full;
-        cacheWall.command[1] = full;
         sddmWall.command[1] = full;
 
         awwwProc.running = true;
-        cacheWall.running = true;
         sddmWall.running = true;
 
         Pywal.generateColors(full);
@@ -118,12 +116,7 @@ Singleton {
         }
     }
 
-    // Helper Processes (Cache & SDDM)
-    Process {
-        id: cacheWall
-        command: ["cp", "", Quickshell.env("HOME") + "/.cache/current-wallpaper.png"]
-    }
-
+    // Cache wallpaper for SDDM
     Process {
         id: sddmWall
         command: ["cp", "", "/usr/share/sddm/themes/sddm-modern/wallpaper.png"]
