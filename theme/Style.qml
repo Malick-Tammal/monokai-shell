@@ -6,7 +6,7 @@ QtObject {
     property color fg: Style.white
     property color border: yellow5
 
-    property color black: Style.gray9
+    property color black: "#000000"
     property color white: "#FDFFF1"
 
     property color dark7: "#11120F"

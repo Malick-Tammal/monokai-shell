@@ -2,6 +2,8 @@ import QtQuick
 import qs.theme
 import qs.components
 
+//  INFO: This will need it when we start making the vertical bar
+
 Item {
     id: root
     width: rounding

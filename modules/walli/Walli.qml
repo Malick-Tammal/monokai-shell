@@ -250,7 +250,7 @@ PanelWindow {
                                 }
                             }
 
-                            Inverted {
+                            InvertedCornor {
                                 anchors {
                                     bottom: selWallName.top
                                     right: selWallName.right
@@ -262,7 +262,7 @@ PanelWindow {
                                 rotation: 90
                             }
 
-                            Inverted {
+                            InvertedCornor {
                                 anchors {
                                     bottom: selWallName.top
                                     left: selWallName.left

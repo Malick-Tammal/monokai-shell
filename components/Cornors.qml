@@ -4,28 +4,11 @@ import QtQuick
 import qs.components
 import qs.theme
 
-PanelWindow {
+Item {
     id: root
 
     property int rounding: 25
-
     property color cornerColor: Style.black
-
-    exclusionMode: ExclusionMode.Ignore
-    WlrLayershell.layer: WlrLayer.Overlay
-    exclusiveZone: 0
-    WlrLayershell.namespace: "cornors"
-
-    mask: Region {}
-
-    anchors {
-        top: true
-        left: true
-        right: true
-        bottom: true
-    }
-
-    color: "transparent"
 
     Item {
         anchors.fill: parent
@@ -56,7 +39,7 @@ PanelWindow {
             }
             ]
 
-            delegate: Inverted {
+            delegate: InvertedCornor {
                 anchors.top: modelData.anchorTop ? parent.top : undefined
                 anchors.bottom: modelData.anchorBottom ? parent.bottom : undefined
                 anchors.left: modelData.anchorLeft ? parent.left : undefined

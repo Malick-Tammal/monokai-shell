@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Wayland
 import qs.theme
 import qs.components
+import qs.services
 import "./components/"
 
 Rectangle {
@@ -19,10 +20,11 @@ Rectangle {
     Image {
         id: background
         anchors.fill: parent
-        source: Quickshell.env("HOME") + "/.cache/current-wallpaper.png"
+        source: Pywal.wallpaper
         fillMode: Image.PreserveAspectCrop
-        sourceSize.width: parent.width
-        sourceSize.height: parent.height
+        sourceSize.width: parent.width > 0 ? parent.width : 1920
+        sourceSize.height: parent.height > 0 ? parent.height : 1080
+        asynchronous: true
         visible : true
         z: 0
     }
@@ -91,7 +93,7 @@ Rectangle {
             }
             ]
 
-            delegate: Inverted {
+            delegate: InvertedCornor {
                 anchors {
                     top: modelData.anchorTop ? parent.top : undefined
                     bottom: modelData.anchorBottom ? parent.bottom : undefined
@@ -132,6 +134,12 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: root.borderWidth
         z:3
+    }
+
+    Cornors {
+        anchors.fill: parent
+        rounding: 45
+        z: 99
     }
 
     //  INFO: Handy for testing

@@ -35,18 +35,19 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
             }
         }
+
         Text {
             text: DateTime.date
             color: Style.fg
             anchors.horizontalCenter: parent.horizontalCenter
-            opacity: 0.85
+            opacity: 0.8
 
             font {
                 family: Style.family
                 pixelSize: 40
                 weight: Font.Bold
                 styleName: "Bold"
-                letterSpacing: 3
+                letterSpacing: 1
             }
         }
 
