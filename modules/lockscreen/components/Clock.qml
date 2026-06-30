@@ -29,7 +29,7 @@ Item {
             Sliding {
                 text: DateTime.minutes
                 size: 200
-                textColor: Qt.lighter(ColorEngine.pywal.colors.color1, 1.8)
+                textColor: Qt.lighter(ColorEngine.pywal.colors.color3, 1.8)
                 weight: Font.Black
                 styleName: "Black"
                 anchors.horizontalCenter: parent.horizontalCenter

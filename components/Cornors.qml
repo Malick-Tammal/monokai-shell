@@ -8,7 +8,7 @@ Item {
     id: root
 
     property int rounding: 25
-    property color cornerColor: ColorEngine.monokai_fusion.dark5
+    property color cornerColor: ColorEngine.monokai_fusion.black
 
     Item {
         anchors.fill: parent

@@ -124,8 +124,8 @@ Item {
             width: 500
             height: 80
             color: ColorEngine.monokai_fusion.dark5
-            topLeftRadius: 999
-            topRightRadius: 999
+            topLeftRadius: 100
+            topRightRadius: 100
             bottomLeftRadius: 0
             bottomRightRadius: 0
 
@@ -133,10 +133,10 @@ Item {
                 id: passwordContainer
                 anchors.fill: parent
                 anchors {
-                    topMargin: 13
-                    leftMargin: 13
-                    rightMargin: 13
-                    bottomMargin: 0
+                    topMargin: 10
+                    leftMargin: 10
+                    rightMargin: 10
+                    bottomMargin: 5
                 }
                 color: ColorEngine.monokai_fusion.dark4
                 border.color: ColorEngine.monokai_fusion.dark2
@@ -248,7 +248,7 @@ Item {
                         Symbols {
                             icon: "circle"
                             size: 23
-                            iconColor: ColorEngine.monokai_fusion.gray2
+                            iconColor: ColorEngine.monokai_fusion.gray1
                             anchors.centerIn: parent
                         }
                     }

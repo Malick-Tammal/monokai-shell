@@ -14,6 +14,14 @@ Rectangle {
     property int borderWidth: 20
     color: ColorEngine.monokai_fusion.dark5
 
+    // Rounded corners
+    Cornors {
+        anchors.fill: parent
+        rounding: 45
+        z: 99
+    }
+
+    // Background
     Image {
         id: background
         anchors.fill: parent
@@ -36,20 +44,21 @@ Rectangle {
         brightness: -0.05
     }
 
+    // Border with rounded corners
     Rectangle {
         id: border
         anchors.fill: parent
         color: "transparent"
         border.width: root.borderWidth
         border.color: ColorEngine.monokai_fusion.dark5
-        z:1
+        z: 10
     }
 
     Item {
         id: cornors
         anchors.fill: parent
         enabled: false
-        z: 2
+        z: 10
 
         Repeater {
             model: [
@@ -134,12 +143,6 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: root.borderWidth
         z:4
-    }
-
-    Cornors {
-        anchors.fill: parent
-        rounding: 45
-        z: 99
     }
 
     //  INFO: Handy for testing
