@@ -6,13 +6,15 @@ QtObject {
     property color fg: ColorEngine.monokai_fusion.white
     property color border: ColorEngine.monokai_fusion.yellow5
 
+    property int fontSizeXXs: 8
     property int fontSizeXs: 10
     property int fontSizeSm: 12
     property int fontSizeMd: 14
     property int fontSizeLg: 18
     property int fontSizeXl: 20
     property int fontSize2Xl: 25
-    property int fontSize3Xl: 50
+    property int fontSize3Xl: 30
+    property int fontSize4Xl: 40
 
     property string family: "SF Pro Rounded"
     property string nerdFamily: "JetBrains Nerd Font"

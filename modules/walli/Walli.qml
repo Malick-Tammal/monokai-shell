@@ -119,6 +119,9 @@ PanelWindow {
 
             ListView {
                 id: wallpapers
+
+                property int visibleWallpaperCount : 6
+
                 orientation: ListView.Horizontal
                 spacing: 10
                 anchors {
@@ -139,13 +142,21 @@ PanelWindow {
                 cacheBuffer: 1000
 
                 Keys.onPressed: event => {
-                    if (event.text === "h" || event.key === Qt.Key_Left) {
+                    const isShift = (event.modifiers & Qt.ShiftModifier);
+
+                    if ((event.nativeScanCode === 43 && !isShift) || event.key === Qt.Key_Left) {
                         decrementCurrentIndex();
                         event.accepted = true;
-                    } else if (event.text === "l" || event.key === Qt.Key_Right) {
+                    } else if ((event.nativeScanCode === 46 && !isShift) || event.key === Qt.Key_Right) {
                         incrementCurrentIndex();
                         event.accepted = true;
-                    } else if (event.text === "k" || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                    } else if (event.nativeScanCode === 43 && isShift) {
+                        wallpapers.currentIndex = Math.max(0, wallpapers.currentIndex - (visibleWallpaperCount - 1));
+                        event.accepted = true;
+                    } else if (event.nativeScanCode === 46 && isShift) {
+                        wallpapers.currentIndex = Math.max(0, wallpapers.currentIndex + (visibleWallpaperCount - 1));
+                        event.accepted = true;
+                    } else if ((event.nativeScanCode === 45 && !isShift) || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                         const fileName = wallpapers.model.get(wallpapers.currentIndex, "fileName");
                         WalliService.activateWall(fileName);
                         event.accepted = true;
@@ -162,7 +173,7 @@ PanelWindow {
 
                 delegate: Item {
                     id: wrapper
-                    width: (wallpapers.width - (5 * wallpapers.spacing)) / 6
+                    width: (wallpapers.width - (5 * wallpapers.spacing)) / wallpapers.visibleWallpaperCount
                     height: wallpapers.height
 
                     property bool isSelected: index === wallpapers.currentIndex
@@ -207,8 +218,7 @@ PanelWindow {
 
                         Behavior on maskMargin {
                             NumberAnimation {
-                                duration: 100
-                                easing.type: Easing.Bezier
+                                duration: 70
                             }
                         }
 
@@ -224,6 +234,7 @@ PanelWindow {
                                 radius: 15
                             }
                         }
+
                         Rectangle {
                             id: selWallName
                             height: parent.height / 6
@@ -232,20 +243,9 @@ PanelWindow {
                             visible: isSelected ? true : false
                             opacity: isSelected ? 1.0 : 0.0
 
-                            transform: Translate {
-                                y: isSelected ? 0 : 100
-
-                                Behavior on y {
-                                    NumberAnimation {
-                                        duration: 100
-                                        easing.type: Easing.Bezier
-                                    }
-                                }
-                            }
-
                             Behavior on opacity {
                                 NumberAnimation {
-                                    duration: 50
+                                    duration: 100
                                     easing.type: Easing.Bezier
                                 }
                             }
@@ -283,6 +283,10 @@ PanelWindow {
 
                             Text {
                                 id: wallName
+                                color: ColorEngine.monokai_fusion.yellow9
+                                opacity: isSelected ? 1.0 : 0.0
+                                anchors.centerIn: parent
+
                                 text: {
                                     var cleanName = fileName.replace(/\.[^/.]+$/, "");
                                     var maxLength = 20;
@@ -292,16 +296,30 @@ PanelWindow {
                                     }
                                     return cleanName;
                                 }
-                                anchors.centerIn: parent
 
                                 font {
                                     family: Style.family
-                                    pixelSize: Style.fontSizeXl
-                                    weight: Font.Medium
-                                    styleName: "Medium"
+                                    pixelSize: Style.fontSizeLg
+                                    weight: Font.Bold
+                                    styleName: "Bold"
                                 }
 
-                                color: Style.bg
+                                transform: Translate {
+                                    y: isSelected ? 0 : -200
+                                    Behavior on y {
+                                        NumberAnimation {
+                                            duration: 200
+                                            easing.type: Easing.OutBack
+                                            easing.overshoot: 2
+                                        }
+                                    }
+                                }
+
+                                Behavior on opacity {
+                                    NumberAnimation {
+                                        duration: 250
+                                    }
+                                }
                             }
                         }
                     }
