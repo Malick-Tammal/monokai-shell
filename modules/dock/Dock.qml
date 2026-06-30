@@ -50,7 +50,7 @@ PanelWindow {
         if (Hypr.windowList.length === 0)
         return false;
 
-        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - (GlobalStates.padding + 3);
+        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - (Style.globalPadding + 3);
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
 
         return Hypr.windowList.some(win => {

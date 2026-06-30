@@ -4,11 +4,12 @@ import QtQuick
 import "./layouts/"
 import qs.services
 import qs.core
+import qs.theme
 
 PanelWindow {
     id: root
     color: "transparent"
-    implicitHeight: BarService.barHeight + GlobalStates.padding + bounceBuffer
+    implicitHeight: BarService.barHeight + Style.globalPadding + bounceBuffer
 
     anchors {
         top: true
@@ -18,7 +19,7 @@ PanelWindow {
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "bar"
-    exclusiveZone: GlobalStates.barVisible ? (BarService.barHeight + GlobalStates.padding) : 0
+    exclusiveZone: GlobalStates.barVisible ? (BarService.barHeight + Style.globalPadding) : 0
 
     property int bounceBuffer: 10
     property bool activeHover: false
@@ -65,7 +66,7 @@ PanelWindow {
         x: 0
         y: 0
         width: root.width
-        height: Math.max(trigger.height, BarService.barHeight + GlobalStates.padding + root.bounceBuffer + barTranslate.y)
+        height: Math.max(trigger.height, BarService.barHeight + Style.globalPadding + root.bounceBuffer + barTranslate.y)
     }
 
     Connections {
@@ -105,9 +106,9 @@ PanelWindow {
             top: parent.top
             left: parent.left
             right: parent.right
-            topMargin: GlobalStates.padding + 1
-            leftMargin: GlobalStates.padding
-            rightMargin: GlobalStates.padding
+            topMargin: Style.globalPadding + 1
+            leftMargin:Style.globalPadding
+            rightMargin: Style.globalPadding
         }
 
         Right {

@@ -18,4 +18,5 @@ QtObject {
     property string nerdFamily: "JetBrains Nerd Font"
 
     property int symbolSize: 15
+    property int globalPadding: 10
 }

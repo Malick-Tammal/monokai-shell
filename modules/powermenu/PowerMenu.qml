@@ -91,9 +91,9 @@ PanelWindow {
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: BarService.isBarEffectivelyVisible ? BarService.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
+            topMargin: BarService.isBarEffectivelyVisible ? BarService.barHeight + Style.globalPadding * 2 :Style.globalPadding
 
-            rightMargin: GlobalStates.padding
+            rightMargin: Style.globalPadding
 
             Behavior on topMargin {
                 SpringAnimation {

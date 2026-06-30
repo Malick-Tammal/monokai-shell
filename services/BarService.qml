@@ -7,6 +7,7 @@ import Quickshell.Io
 import Quickshell.Hyprland
 import qs.services
 import qs.core
+import qs.theme
 
 Singleton {
     id: root
@@ -37,7 +38,7 @@ Singleton {
         if (!Hypr.windowList || Hypr.windowList.length === 0)
         return false;
 
-        const barBottomEdge = root.barHeight + GlobalStates.padding;
+        const barBottomEdge = root.barHeight + Style.globalPadding;
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
 
         return Hypr.windowList.some(win => {

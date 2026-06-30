@@ -85,9 +85,9 @@ PanelWindow {
             top: parent.top
             right: parent.right
             horizontalCenter: parent.horizontalCenter
-            leftMargin: GlobalStates.padding
-            rightMargin: GlobalStates.padding
-            topMargin: BarService.isBarEffectivelyVisible ? BarService.barHeight + GlobalStates.padding * 2 : GlobalStates.padding
+            leftMargin: Style.globalPadding
+            rightMargin:Style.globalPadding
+            topMargin: BarService.isBarEffectivelyVisible ? BarService.barHeight + Style.globalPadding * 2 : Style.globalPadding
 
             Behavior on topMargin {
                 SpringAnimation {
