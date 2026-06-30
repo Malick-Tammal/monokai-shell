@@ -154,11 +154,11 @@ PanelWindow {
                         nextItem: reboot
                         focus: true
 
-                        activeColor: Style.red5
-                        activeBorderColor: Style.red3
+                        activeColor: ColorEngine.monokai_fusion.red5
+                        activeBorderColor: ColorEngine.monokai_fusion.red3
                         iconName: "power_settings_new"
-                        iconColor: Style.gray2
-                        activeIconColor: Style.red9
+                        iconColor: ColorEngine.monokai_fusion.gray2
+                        activeIconColor: ColorEngine.monokai_fusion.red9
 
                         onActivated: requestExecute("systemctl poweroff", poweroff)
                     }
@@ -168,11 +168,11 @@ PanelWindow {
                         prevItem: poweroff
                         nextItem: sleep
 
-                        activeColor: Style.green5
-                        activeBorderColor: Style.green3
+                        activeColor: ColorEngine.monokai_fusion.green5
+                        activeBorderColor: ColorEngine.monokai_fusion.green3
                         iconName: "replay"
-                        iconColor: Style.gray2
-                        activeIconColor: Style.green9
+                        iconColor: ColorEngine.monokai_fusion.gray2
+                        activeIconColor: ColorEngine.monokai_fusion.green9
 
                         onActivated: requestExecute("systemctl reboot", reboot)
                     }
@@ -182,11 +182,11 @@ PanelWindow {
                         prevItem: reboot
                         nextItem: lock
 
-                        activeColor: Style.yellow5
-                        activeBorderColor: Style.yellow3
+                        activeColor: ColorEngine.monokai_fusion.yellow5
+                        activeBorderColor: ColorEngine.monokai_fusion.yellow3
                         iconName: "bedtime"
-                        iconColor: Style.gray2
-                        activeIconColor: Style.yellow9
+                        iconColor: ColorEngine.monokai_fusion.gray2
+                        activeIconColor: ColorEngine.monokai_fusion.yellow9
 
                         onActivated: requestExecute("systemctl suspend", sleep)
                     }
@@ -196,11 +196,11 @@ PanelWindow {
                         prevItem: sleep
                         nextItem: logout
 
-                        activeColor: Style.purple5
-                        activeBorderColor: Style.purple3
+                        activeColor: ColorEngine.monokai_fusion.purple5
+                        activeBorderColor: ColorEngine.monokai_fusion.purple3
                         iconName: "lock"
-                        iconColor: Style.gray2
-                        activeIconColor: Style.purple9
+                        iconColor: ColorEngine.monokai_fusion.gray2
+                        activeIconColor: ColorEngine.monokai_fusion.purple9
 
                         onActivated: {
                             GlobalStates.powerMenuVisible = false;
@@ -212,11 +212,11 @@ PanelWindow {
                         id: logout
                         prevItem: lock
                         nextItem: poweroff
-                        activeColor: Style.orange5
-                        activeBorderColor: Style.orange3
+                        activeColor: ColorEngine.monokai_fusion.orange5
+                        activeBorderColor: ColorEngine.monokai_fusion.orange3
                         iconName: "logout"
-                        iconColor: Style.gray2
-                        activeIconColor: Style.orange9
+                        iconColor: ColorEngine.monokai_fusion.gray2
+                        activeIconColor: ColorEngine.monokai_fusion.orange9
                         onActivated: requestExecute("hyprctl dispatch 'hl.dsp.exit()'", logout)
                     }
                 }

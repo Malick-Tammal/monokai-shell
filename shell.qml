@@ -10,6 +10,7 @@ import Quickshell.Wayland
 import Quickshell.Io
 import qs.services
 import qs.core
+import qs.theme
 import "./modules/lockscreen/"
 
 ShellRoot {
@@ -44,8 +45,13 @@ ShellRoot {
 
         WlSessionLockSurface {
             LockSurface {
+                anchors.fill: parent
                 context: LockScreenService
             }
         }
+    }
+
+    Component.onCompleted: {
+        ColorEngine
     }
 }

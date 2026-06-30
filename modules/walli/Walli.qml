@@ -189,7 +189,7 @@ PanelWindow {
                         id: container
                         anchors.fill: parent
                         radius: 15
-                        color: isSelected || hoverHandler.hovered ? Style.yellow5 : Style.gray4
+                        color: isSelected || hoverHandler.hovered ? ColorEngine.monokai_fusion.yellow5 : ColorEngine.monokai_fusion.gray4
 
                         Image {
                             id: img
@@ -228,7 +228,7 @@ PanelWindow {
                             id: selWallName
                             height: parent.height / 6
                             width: parent.width + 5
-                            color: Style.yellow5
+                            color: ColorEngine.monokai_fusion.yellow5
                             visible: isSelected ? true : false
                             opacity: isSelected ? 1.0 : 0.0
 
@@ -258,7 +258,7 @@ PanelWindow {
                                 rounding: 15
                                 z: 2
                                 visible: isSelected ? true : false
-                                roundingColor: Style.yellow5
+                                roundingColor: ColorEngine.monokai_fusion.yellow5
                                 rotation: 90
                             }
 
@@ -270,7 +270,7 @@ PanelWindow {
                                 rounding: 15
                                 z: 2
                                 visible: isSelected ? true : false
-                                roundingColor: Style.yellow5
+                                roundingColor: ColorEngine.monokai_fusion.yellow5
                                 rotation: 180
                             }
 
@@ -343,7 +343,7 @@ PanelWindow {
                     font.family: Style.family
                     font.pixelSize: Style.fontSizeLg
                     font.weight: Font.Medium
-                    color: Style.yellow5
+                    color: ColorEngine.monokai_fusion.yellow5
                 }
 
                 MouseArea {

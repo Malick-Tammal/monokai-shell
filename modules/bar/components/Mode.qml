@@ -31,8 +31,8 @@ Item {
     Rectangle {
         id: indicatorCircle
         radius: 9999
-        color: Style[ModeService.themeColor + "5"] || Style.gray5
-        border.color: Style[ModeService.themeColor + "2"] || Style.gray2
+        color: ColorEngine.monokai_fusion[ModeService.themeColor + "5"] || ColorEngine.monokai_fusion.gray5
+        border.color: ColorEngine.monokai_fusion[ModeService.themeColor + "2"] || ColorEngine.monokai_fusion.gray2
         border.width: 2
 
         anchors {
@@ -42,7 +42,7 @@ Item {
         Symbols {
             icon: ModeService.currentIcon
             size: 16
-            iconColor: Style[ModeService.themeColor + "9"] || Style.gray9
+            iconColor: ColorEngine.monokai_fusion[ModeService.themeColor + "9"] || ColorEngine.monokai_fusion.gray9
             weight: Font.Black
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)

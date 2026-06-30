@@ -12,11 +12,7 @@ Rectangle {
 
     required property var context
     property int borderWidth: 20
-    color: Style.dark5
-
-    anchors {
-        fill: parent
-    }
+    color: ColorEngine.monokai_fusion.dark5
 
     Image {
         id: background
@@ -25,19 +21,19 @@ Rectangle {
         fillMode: Image.PreserveAspectCrop
         sourceSize.width: parent.width > 0 ? parent.width : 1920
         sourceSize.height: parent.height > 0 ? parent.height : 1080
-        visible : true
+        visible : false
         z: 0
     }
 
     MultiEffect {
         source: background
-        anchors.fill: background
+        anchors.fill: parent
         blurEnabled: true
         autoPaddingEnabled: false
         blur: 0.85
         blurMax: 64
         blurMultiplier: 0.15
-        brightness: -0.12
+        brightness: -0.05
     }
 
     Rectangle {
@@ -45,15 +41,15 @@ Rectangle {
         anchors.fill: parent
         color: "transparent"
         border.width: root.borderWidth
-        border.color: Style.dark5
-        z:4
+        border.color: ColorEngine.monokai_fusion.dark5
+        z:1
     }
 
     Item {
         id: cornors
         anchors.fill: parent
         enabled: false
-        z: 5
+        z: 2
 
         Repeater {
             model: [
@@ -109,22 +105,25 @@ Rectangle {
 
                 rotation: modelData.rot
                 rounding : 30
-                roundingColor : Style.dark5
+                roundingColor : ColorEngine.monokai_fusion.dark5
             }
         }
     }
 
     Clock {
         id: clock
-        anchors.centerIn: parent
-        transform: Translate {
-            y: passwordInput.rowVisible ? -100 : 0
-            Behavior on y {
-                NumberAnimation {
-                    duration: 150
-                    easing.type: Easing.OutBack
-                    easing.overshoot: 0
-                }
+        z: 3
+
+        anchors {
+            centerIn: parent
+            verticalCenterOffset: passwordInput.rowVisible ? -100 : 0
+        }
+
+        Behavior on anchors.verticalCenterOffset {
+            SpringAnimation {
+                spring: 10
+                damping: 0.4
+                mass: 1.8
             }
         }
     }
@@ -134,7 +133,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: root.borderWidth
-        z:3
+        z:4
     }
 
     Cornors {
@@ -148,14 +147,14 @@ Rectangle {
     //     width: text.width + 20
     //     height: 50
     //     z: 2
-    //     color: Style.dark5
+    //     color: ColorEngine.monokai_fusion.dark5
     //     radius: 20
     //
     //     Text {
     //         id: text
     //         text: "Its not working, let me out"
     //         anchors.centerIn: parent
-    //         color: Style.dark1
+    //         color: ColorEngine.monokai_fusion.dark1
     //     }
     //
     //     MouseArea {

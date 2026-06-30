@@ -46,10 +46,10 @@ Rectangle {
         var forceUpdate = updateTrigger;
         if (isRoot) {
             if (!targetItem)
-                return 0;
+            return 0;
             var globalPos = targetItem.mapToGlobal(0, 0);
             if (!globalPos)
-                return 0;
+            return 0;
             return globalPos.x - (implicitWidth / 2) + (targetItem.width / 2);
         } else {
             return -implicitWidth - 10;
@@ -60,10 +60,10 @@ Rectangle {
         var forceUpdate = updateTrigger;
         if (isRoot) {
             if (!targetItem)
-                return 55;
+            return 55;
             var globalPos = targetItem.mapToGlobal(0, 0);
             if (!globalPos)
-                return 55;
+            return 55;
             return globalPos.y + targetItem.height + 20;
         } else {
             return -5;
@@ -98,7 +98,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.minimumWidth: Math.max(180, menuItem.isSeparator ? 0 : contentRow.implicitWidth + 40)
                 Layout.preferredHeight: menuItem.isSeparator ? 10 : 32
-                color: isHoveredOrOpen && !menuItem.isSeparator ? Style.yellow5 : "transparent"
+                color: isHoveredOrOpen && !menuItem.isSeparator ? ColorEngine.monokai_fusion.yellow5 : "transparent"
                 radius: 10
                 visible: menuItem.visible !== false
 
@@ -107,11 +107,11 @@ Rectangle {
                         var comp = Qt.createComponent("TrayMenuPanel.qml");
                         if (comp.status === Component.Ready) {
                             subMenuPanel = comp.createObject(delegateRect, {
-                                "menuData": delegateRect.menuItem,
-                                "targetItem": delegateRect,
-                                "rootMenuWindow": panel.rootMenuWindow,
-                                "isRoot": false,
-                                "isOpen": false
+                                    "menuData": delegateRect.menuItem,
+                                    "targetItem": delegateRect,
+                                    "rootMenuWindow": panel.rootMenuWindow,
+                                    "isRoot": false,
+                                    "isOpen": false
                             });
                         } else {
                             console.error("Failed to load submenu panel:", comp.errorString());
@@ -119,7 +119,7 @@ Rectangle {
                         }
                     }
                     Qt.callLater(() => {
-                        if (subMenuPanel)
+                            if (subMenuPanel)
                             subMenuPanel.isOpen = true;
                     });
                     panel.activeSubMenuDelegate = delegateRect;
@@ -137,7 +137,7 @@ Rectangle {
                     anchors.centerIn: parent
                     width: parent.width - 10
                     height: 1
-                    color: Style.dark2
+                    color: ColorEngine.monokai_fusion.dark2
                     visible: menuItem.isSeparator === true
                 }
 
@@ -158,7 +158,7 @@ Rectangle {
 
                     Text {
                         text: menuItem.text || ""
-                        color: isHoveredOrOpen && !menuItem.isSeparator ? Style.dark5 : Style.fg
+                        color: isHoveredOrOpen && !menuItem.isSeparator ? ColorEngine.monokai_fusion.dark5 : Style.fg
                         anchors.verticalCenter: parent.verticalCenter
                         renderType: Text.NativeRendering
                         font {
@@ -172,7 +172,7 @@ Rectangle {
                 Symbols {
                     icon: "arrow_right"
                     size: 18
-                    iconColor: isHoveredOrOpen ? Style.dark5 : Style.gray2
+                    iconColor: isHoveredOrOpen ? ColorEngine.monokai_fusion.dark5 : ColorEngine.monokai_fusion.gray2
                     visible: menuItem.hasChildren === true
                     weight: 700
                     anchors.verticalCenter: parent.verticalCenter

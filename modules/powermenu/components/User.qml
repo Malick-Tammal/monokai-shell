@@ -8,7 +8,7 @@ Rectangle {
     id: user
     width: 200
     Layout.preferredHeight: 32
-    color: Style.yellow5
+    color: ColorEngine.monokai_fusion.yellow5
     radius: 8
 
     Rectangle {
@@ -35,7 +35,7 @@ Rectangle {
 
         Text {
             id: userName
-            color: Style.yellow5
+            color: ColorEngine.monokai_fusion.yellow5
             font {
                 family: Style.family
                 pixelSize: Style.fontSizeMd
@@ -64,12 +64,12 @@ Rectangle {
             Symbols {
                 icon: "person"
                 size: 19
-                iconColor: Style.orange9
+                iconColor: ColorEngine.monokai_fusion.orange9
             }
 
             Text {
                 text: "User"
-                color: Style.orange9
+                color: ColorEngine.monokai_fusion.orange9
                 font {
                     family: Style.family
                     pixelSize: Style.fontSizeLg

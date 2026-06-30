@@ -65,8 +65,8 @@ Item {
 
                     anchors.verticalCenter: parent.verticalCenter
 
-                    color: isFocused ? (hoverHandler.hovered ? Style.green4 : Style.green5) : (hoverHandler.hovered ? Style.gray5 : Style.gray6)
-                    border.color: isFocused ? Style.green7 : Style.dark1
+                    color: isFocused ? (hoverHandler.hovered ? ColorEngine.monokai_fusion.green4 : ColorEngine.monokai_fusion.green5) : (hoverHandler.hovered ? ColorEngine.monokai_fusion.gray5 : ColorEngine.monokai_fusion.gray6)
+                    border.color: isFocused ? ColorEngine.monokai_fusion.green7 : ColorEngine.monokai_fusion.dark1
                     border.width: isFocused ? 5 : 1
 
                     clip: true
@@ -74,7 +74,7 @@ Item {
                     Text {
                         text: wsId
                         visible: !isFocused
-                        color: hasWindows ? Style.fg : Style.gray3
+                        color: hasWindows ? Style.fg : ColorEngine.monokai_fusion.gray3
                         renderType: Text.NativeRendering
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter

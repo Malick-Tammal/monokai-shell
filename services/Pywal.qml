@@ -4,6 +4,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.theme
 
 Singleton {
     id: root
@@ -18,6 +19,7 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
+                if (!this.text.trim()) return;
                 try {
                     let data = JSON.parse(this.text);
 

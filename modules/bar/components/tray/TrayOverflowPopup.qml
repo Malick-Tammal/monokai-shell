@@ -24,7 +24,7 @@ PopupWindow {
     MouseArea {
         anchors.fill: parent
         onPressed: if (rootContext)
-            rootContext.isExpanded = false
+        rootContext.isExpanded = false
     }
 
     Rectangle {
@@ -60,10 +60,10 @@ PopupWindow {
         x: {
             var forceUpdate = updateTrigger;
             if (!anchorItem)
-                return 0;
+            return 0;
             var globalPos = anchorItem.mapToGlobal(0, 0);
             if (!globalPos)
-                return 0;
+            return 0;
             return globalPos.x - (implicitWidth / 2) + (anchorItem.width / 2);
         }
         y: 53

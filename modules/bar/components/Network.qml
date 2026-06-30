@@ -17,8 +17,8 @@ Item {
         height: parent.height
         width: row.implicitWidth + 20
         radius: 10
-        color: hoverHandler.hovered ? Style.purple4 : Style.purple5
-        border.color: Style.purple3
+        color: hoverHandler.hovered ? ColorEngine.monokai_fusion.purple4 : ColorEngine.monokai_fusion.purple5
+        border.color: ColorEngine.monokai_fusion.purple3
 
         Behavior on color {
             ColorAnimation {
@@ -42,7 +42,7 @@ Item {
                 icon: Network.symbol
                 size: Style.symbolSize
                 weight: Font.Bold
-                iconColor: Style.purple9
+                iconColor: ColorEngine.monokai_fusion.purple9
             }
 
             Text {
@@ -66,7 +66,7 @@ Item {
                     }
                 }
 
-                color: Style.purple9
+                color: ColorEngine.monokai_fusion.purple9
                 renderType: Text.NativeRendering
                 elide: Text.ElideRight
                 width: Math.min(implicitWidth, 80)

@@ -24,7 +24,7 @@ Item {
         height: parent.height
         width: row.implicitWidth + 20
         radius: 10
-        color: Battery.acConnected ? Style.green2 : (Battery.percentage <= 0.15 ? Style.red2 : Style.orange2)
+        color: Battery.acConnected ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
 
         Item {
             id: fillSource
@@ -38,12 +38,12 @@ Item {
 
                 color: {
                     if (Battery.acConnected) {
-                        return hoverHandler.hovered ? Style.green4 : Style.green5;
+                        return hoverHandler.hovered ? ColorEngine.monokai_fusion.green4 : ColorEngine.monokai_fusion.green5;
                     }
                     if (Battery.percentage <= 0.15) {
-                        return hoverHandler.hovered ? Style.red4 : Style.red5;
+                        return hoverHandler.hovered ? ColorEngine.monokai_fusion.red4 : ColorEngine.monokai_fusion.red5;
                     }
-                    return hoverHandler.hovered ? Style.orange4 : Style.orange5;
+                    return hoverHandler.hovered ? ColorEngine.monokai_fusion.orange4 : ColorEngine.monokai_fusion.orange5;
                 }
 
                 SequentialAnimation on x {
@@ -131,10 +131,10 @@ Item {
 
                 iconColor: {
                     if (Battery.acConnected)
-                    return Style.green9;
+                    return ColorEngine.monokai_fusion.green9;
                     if (Battery.percentage <= 0.15)
-                    return Style.red9;
-                    return Style.orange9;
+                    return ColorEngine.monokai_fusion.red9;
+                    return ColorEngine.monokai_fusion.orange9;
                 }
 
                 icon: "battery_android_full"
@@ -226,10 +226,10 @@ Item {
                 text: Math.round(Battery.percentage * 100)
                 color: {
                     if (Battery.acConnected)
-                    return Style.green9;
+                    return ColorEngine.monokai_fusion.green9;
                     if (Battery.percentage <= 0.15)
-                    return Style.red9;
-                    return Style.orange9;
+                    return ColorEngine.monokai_fusion.red9;
+                    return ColorEngine.monokai_fusion.orange9;
                 }
                 renderType: Text.NativeRendering
                 renderTypeQuality: Text.VeryHighRenderTypeQuality
@@ -248,7 +248,7 @@ Item {
         Rectangle {
             anchors.fill: parent
             color: "transparent"
-            border.color: Battery.acConnected ? Style.green2 : (Battery.percentage <= 0.15 ? Style.red2 : Style.orange2)
+            border.color: Battery.acConnected ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
             border.width: 1
             radius: con.radius
             z: 2

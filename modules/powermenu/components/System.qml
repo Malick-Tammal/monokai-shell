@@ -8,7 +8,7 @@ Rectangle {
     id: system
     Layout.fillWidth: true
     Layout.preferredHeight: 32
-    color: Style.yellow5
+    color: ColorEngine.monokai_fusion.yellow5
     radius: 8
 
     Rectangle {
@@ -26,7 +26,7 @@ Rectangle {
         Text {
             id: upTime
             text: DateTime.upTime
-            color: Style.yellow5
+            color: ColorEngine.monokai_fusion.yellow5
             font {
                 family: Style.family
                 pixelSize: Style.fontSizeMd
@@ -55,12 +55,12 @@ Rectangle {
             Nerd {
                 icon: "󰣇"
                 size: 19
-                color: Style.orange9
+                color: ColorEngine.monokai_fusion.orange9
             }
 
             Text {
                 text: "System"
-                color: Style.orange9
+                color: ColorEngine.monokai_fusion.orange9
 
                 font {
                     family: Style.family

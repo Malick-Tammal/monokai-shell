@@ -23,7 +23,7 @@ Item {
         id: overlay
         width: parent.width - 2
         height: parent.height - 2
-        color: Style.black
+        color: ColorEngine.monokai_fusion.black
         opacity: root.isActive ? 0.5 : 0
         anchors.centerIn: parent
         radius: 15
@@ -99,8 +99,8 @@ Item {
                     property Item nextItem: no
                     property Item prevItem: no
 
-                    color: (activeFocus || yesMouseArea.containsMouse) ? Style.green5 : Style.gray6
-                    border.color: activeFocus ? Style.green2 : Style.gray4
+                    color: (activeFocus || yesMouseArea.containsMouse) ? ColorEngine.monokai_fusion.green5 : ColorEngine.monokai_fusion.gray6
+                    border.color: activeFocus ? ColorEngine.monokai_fusion.green2 : ColorEngine.monokai_fusion.gray4
                     radius: 10
                     focus: true
 
@@ -130,7 +130,7 @@ Item {
                     Text {
                         id: yesTxt
                         text: "Yes"
-                        color: (yes.activeFocus || yesMouseArea.containsMouse) ? Style.green9 : Style.fg
+                        color: (yes.activeFocus || yesMouseArea.containsMouse) ? ColorEngine.monokai_fusion.green9 : Style.fg
                         anchors.centerIn: parent
 
                         font {
@@ -161,8 +161,8 @@ Item {
                     property Item nextItem: yes
                     property Item prevItem: yes
 
-                    color: (activeFocus || noMouseArea.containsMouse) ? Style.red5 : Style.gray6
-                    border.color: activeFocus ? Style.red3 : Style.gray4
+                    color: (activeFocus || noMouseArea.containsMouse) ? ColorEngine.monokai_fusion.red5 : ColorEngine.monokai_fusion.gray6
+                    border.color: activeFocus ? ColorEngine.monokai_fusion.red3 : ColorEngine.monokai_fusion.gray4
                     radius: 10
                     focus: true
 
@@ -192,7 +192,7 @@ Item {
                     Text {
                         id: noTxt
                         text: "No"
-                        color: (no.activeFocus || noMouseArea.containsMouse) ? Style.green9 : Style.fg
+                        color: (no.activeFocus || noMouseArea.containsMouse) ? ColorEngine.monokai_fusion.green9 : Style.fg
                         anchors.centerIn: parent
 
                         font {

@@ -7,8 +7,8 @@ Rectangle {
     width: 90
     height: 90
     radius: 10
-    color: (activeFocus || mouseArea.containsMouse) ? activeColor : Style.gray6
-    border.color: (activeFocus || mouseArea.containsMouse) ? activeBorderColor : Style.gray4
+    color: (activeFocus || mouseArea.containsMouse) ? activeColor : ColorEngine.monokai_fusion.gray6
+    border.color: (activeFocus || mouseArea.containsMouse) ? activeBorderColor : ColorEngine.monokai_fusion.gray4
     KeyNavigation.left: prevItem
     KeyNavigation.right: nextItem
 

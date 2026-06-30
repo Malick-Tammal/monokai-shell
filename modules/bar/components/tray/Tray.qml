@@ -88,7 +88,7 @@ Item {
                     icon: "keyboard_arrow_up"
                     size: 18
                     anchors.centerIn: parent
-                    color: Style.gray1
+                    color: ColorEngine.monokai_fusion.gray1
                     rotation: root.isExpanded ? 180 : 0
 
                     Behavior on rotation {

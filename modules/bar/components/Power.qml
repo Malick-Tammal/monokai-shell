@@ -15,13 +15,13 @@ Item {
     Rectangle {
         anchors.fill: parent
         radius: 10
-        color: hoverHandler.hovered ? Style.red4 : Style.red5
-        border.color: Style.red3
+        color: hoverHandler.hovered ? ColorEngine.monokai_fusion.red4 : ColorEngine.monokai_fusion.red5
+        border.color: ColorEngine.monokai_fusion.red3
 
         Symbols {
             icon : "mode_off_on"
             size: Style.symbolSize
-            color: Style.red9
+            color: ColorEngine.monokai_fusion.red9
 
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)

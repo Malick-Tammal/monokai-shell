@@ -11,7 +11,7 @@ Item {
     z: 5
 
     required property Item target
-    property color borderColor: Style.dark4
+    property color borderColor: ColorEngine.monokai_fusion.dark4
     property string position: "top"
     property int rounding: 20
     property bool haveBorder: true

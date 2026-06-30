@@ -14,7 +14,7 @@ Item {
         width: 5
         height: 5
         anchors.centerIn: parent
-        color: Style.gray2
+        color: ColorEngine.monokai_fusion.gray2
         radius: 10
     }
 }

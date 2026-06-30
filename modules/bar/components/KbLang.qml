@@ -45,12 +45,12 @@ Item {
         Symbols {
             icon: "keyboard"
             size: Style.symbolSize
-            iconColor: Style.gray1
+            iconColor: ColorEngine.monokai_fusion.gray1
         }
 
         Text {
             text: KbService.shortLayout
-            color: Style.gray1
+            color: ColorEngine.monokai_fusion.gray1
             renderType: Text.NativeRendering
             renderTypeQuality: Text.VeryHighRenderTypeQuality
 
