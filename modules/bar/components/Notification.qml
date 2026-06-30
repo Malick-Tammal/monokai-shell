@@ -15,7 +15,7 @@ Item {
         width: row.width + 20
         radius: 10
         color: mouseArea.containsMouse ? ColorEngine.monokai_fusion.orange4 : ColorEngine.monokai_fusion.orange5
-        border.color: ColorEngine.monokai_fusion.orange3
+        border.color: ColorEngine.monokai_fusion.orange2
 
         Behavior on color {
             ColorAnimation {

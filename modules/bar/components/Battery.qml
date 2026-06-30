@@ -248,7 +248,16 @@ Item {
         Rectangle {
             anchors.fill: parent
             color: "transparent"
-            border.color: Battery.acConnected ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
+            // border.color: Battery.acConnected ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
+            border.color: {
+                if(Battery.acConnected) {
+                    return ColorEngine.monokai_fusion.green2;
+                }
+                if(Battery.percentage <= 0.15) {
+                    return ColorEngine.monokai_fusion.red2;
+                }
+                return ColorEngine.monokai_fusion.orange2;
+            }
             border.width: 1
             radius: con.radius
             z: 2

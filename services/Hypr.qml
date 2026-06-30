@@ -40,6 +40,15 @@ Singleton {
 
     property bool hyprbars: true
 
+    function getWorkspace(id) {
+        return Hyprland.workspaces.values.find(w => w.id === id) || null
+    }
+
+    function isUrgent(id) {
+        let ws = getWorkspace(id);
+        return ws ? ws.urgent : false;
+    }
+
     function hasWindows(id) {
         return Hyprland.workspaces.values.some(w => w.id === id);
     }
@@ -113,6 +122,8 @@ Singleton {
         onTriggered: getClients.running = true
     }
 
+    signal urgentPulse(int id)
+
     Connections {
         target: Hyprland
         function onRawEvent(event) {
@@ -120,6 +131,15 @@ Singleton {
 
             if (event.name === "configreloaded") {
                 checkHyprbars.running = true;
+            }
+
+            if (event.name === "urgent") {
+                let addr = event.data.startsWith("0x") ? event.data : "0x" + event.data;
+                let client = root.windowList.find(c => c.address === addr);
+
+                if (client && client.workspace) {
+                    root.urgentPulse(client.workspace.id);
+                }
             }
         }
     }

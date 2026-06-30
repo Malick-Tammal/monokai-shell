@@ -9,8 +9,6 @@ import qs.services
 Singleton {
     id: root
 
-    //  TODO: Coming soon
-
     property var monokai_fusion: ({
             "black": "#000000",
             "white": "#FDFFF1",
@@ -26,8 +24,8 @@ Singleton {
             "dark1": "#606453",
 
             "green9": "#222C18",
-            "green8": "#222C18",
-            "green7": "#44582F",
+            "green8": "#44582F",
+            "green7": "#658447",
             "green6": "#87B05E",
             "green5": "#A9DC76",
             "green4": "#BAE391",

@@ -51,7 +51,7 @@ Item {
             return ColorEngine.monokai_fusion.gray6;
             return hoverHandler.hovered ? ColorEngine.monokai_fusion.green4 : ColorEngine.monokai_fusion.green5;
         }
-        border.color: Bluetooth.isAvailable ? ColorEngine.monokai_fusion.green3 : ColorEngine.monokai_fusion.dark1
+        border.color: Bluetooth.isAvailable ? ColorEngine.monokai_fusion.green2 : ColorEngine.monokai_fusion.dark1
 
         Behavior on color {
             ColorAnimation {

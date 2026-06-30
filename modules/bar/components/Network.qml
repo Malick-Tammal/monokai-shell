@@ -18,7 +18,7 @@ Item {
         width: row.implicitWidth + 20
         radius: 10
         color: hoverHandler.hovered ? ColorEngine.monokai_fusion.purple4 : ColorEngine.monokai_fusion.purple5
-        border.color: ColorEngine.monokai_fusion.purple3
+        border.color: ColorEngine.monokai_fusion.purple2
 
         Behavior on color {
             ColorAnimation {

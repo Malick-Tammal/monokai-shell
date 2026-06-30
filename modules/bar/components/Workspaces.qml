@@ -2,6 +2,7 @@ import QtQuick
 import qs.theme
 import qs.services
 import qs.components
+import Quickshell.Hyprland
 
 Item {
     id: root
@@ -51,6 +52,37 @@ Item {
                     property int wsId: index + 1
                     property bool isFocused: Hypr.focusedWorkspaceId === wsId
                     property bool hasWindows: Hypr.hasWindows(wsId)
+                    property bool isUrgent: Hypr.isUrgent(wsId)
+                    property double lastUrgentTime: 0
+
+                    onIsUrgentChanged: {
+                        if (isUrgent) {
+                            lastUrgentTime = Date.now();
+                        } else {
+                            lastUrgentTime = 0;
+                        }
+                    }
+
+                    Connections {
+                        target: Hypr
+                        function onUrgentPulse(id) {
+                            if (id === wsId) {
+                                let elapsed = Date.now() - lastUrgentTime;
+
+                                if (isUrgent && elapsed > 200) {
+                                    flashAnim.restart();
+                                }
+                            }
+                        }
+                    }
+
+                    SequentialAnimation {
+                        id: flashAnim
+                        NumberAnimation { target: ws; property: "opacity"; to: 0.3; duration: 120 }
+                        NumberAnimation { target: ws; property: "opacity"; to: 1.0; duration: 120 }
+                        NumberAnimation { target: ws; property: "opacity"; to: 0.3; duration: 120 }
+                        NumberAnimation { target: ws; property: "opacity"; to: 1.0; duration: 120 }
+                    }
 
                     HoverHandler {
                         id: hoverHandler
@@ -65,8 +97,38 @@ Item {
 
                     anchors.verticalCenter: parent.verticalCenter
 
-                    color: isFocused ? (hoverHandler.hovered ? ColorEngine.monokai_fusion.green4 : ColorEngine.monokai_fusion.green5) : (hoverHandler.hovered ? ColorEngine.monokai_fusion.gray5 : ColorEngine.monokai_fusion.gray6)
-                    border.color: isFocused ? ColorEngine.monokai_fusion.green7 : ColorEngine.monokai_fusion.dark1
+                    color: {
+                        if (isUrgent) {
+                            return ColorEngine.monokai_fusion.yellow5;
+                        }
+
+                        if (isFocused) {
+                            if (hoverHandler.hovered) {
+                                return ColorEngine.monokai_fusion.green4;
+                            } else {
+                                return ColorEngine.monokai_fusion.green5;
+                            }
+                        }
+
+                        if (hoverHandler.hovered) {
+                            return ColorEngine.monokai_fusion.gray5;
+                        } else {
+                            return ColorEngine.monokai_fusion.gray6;
+                        }
+                    }
+
+                    border.color: {
+                        if (isUrgent) {
+                            return ColorEngine.monokai_fusion.yellow2;
+                        }
+
+                        if (isFocused) {
+                            return ColorEngine.monokai_fusion.green7;
+                        } else {
+                            return ColorEngine.monokai_fusion.dark1;
+                        }
+                    }
+
                     border.width: isFocused ? 5 : 1
 
                     clip: true
@@ -74,7 +136,16 @@ Item {
                     Text {
                         text: wsId
                         visible: !isFocused
-                        color: hasWindows ? Style.fg : ColorEngine.monokai_fusion.gray3
+                        color: {
+                            if (isUrgent) {
+                                return ColorEngine.monokai_fusion.yellow9;
+                            }
+                            if (hasWindows) {
+                                return Style.fg;
+                            } else {
+                                return ColorEngine.monokai_fusion.gray3;
+                            }
+                        }
                         renderType: Text.NativeRendering
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
