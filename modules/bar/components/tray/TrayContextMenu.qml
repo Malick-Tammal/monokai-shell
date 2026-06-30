@@ -1,10 +1,11 @@
 import Quickshell
 import QtQuick
+import qs.core
 
 PopupWindow {
     id: customMenu
     color: "transparent"
-    visible: false
+    visible: GlobalStates.trayVisible
 
     implicitWidth: Screen.width
     implicitHeight: Screen.height
@@ -21,7 +22,7 @@ PopupWindow {
 
     onVisibleChanged: {
         if (!rootContext)
-            return;
+        return;
         if (visible) {
             if (rootContext.activeMenu && rootContext.activeMenu !== customMenu) {
                 rootContext.activeMenu.visible = false;
@@ -40,7 +41,7 @@ PopupWindow {
 
     MouseArea {
         anchors.fill: parent
-        onPressed: customMenu.visible = false
+        onPressed: GlobalStates.trayVisible = false
     }
 
     TrayMenuPanel {
@@ -49,6 +50,5 @@ PopupWindow {
         targetItem: customMenu.targetItem
         isRoot: true
         rootMenuWindow: customMenu
-        isOpen: customMenu.visible
     }
 }

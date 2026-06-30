@@ -1,6 +1,7 @@
 import Quickshell.Widgets
 import QtQuick
 import qs.theme
+import qs.core
 
 Item {
     id: trayItemRoot
@@ -60,7 +61,7 @@ Item {
                 trayItemRoot.trayItem.activate();
             } else if (mouse.button === Qt.RightButton) {
                 if (trayItemRoot.trayItem.hasMenu) {
-                    customMenu.visible = !customMenu.visible;
+                    GlobalStates.trayVisible = !GlobalStates.trayVisible;
                 } else {
                     trayItemRoot.trayItem.secondaryActivate();
                 }

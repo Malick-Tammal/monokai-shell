@@ -20,11 +20,9 @@ PanelWindow {
     WlrLayershell.namespace: "bar"
     exclusiveZone: GlobalStates.barVisible ? (BarService.barHeight + GlobalStates.padding) : 0
 
-    //  TIP: This is a hack to prevent the bar from clipping when it's hovered
     property int bounceBuffer: 10
-
-    //  INFO: Hover logic (fixed intented mouse movement out and in)
     property bool activeHover: false
+
     readonly property bool rawHovered: triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
     readonly property bool isHovered: !BarService.effectivelyOverlapped || activeHover
 
@@ -86,7 +84,7 @@ PanelWindow {
 
         transform: Translate {
             id: barTranslate
-            readonly property bool shouldShow: GlobalStates.barVisible || root.isHovered
+            readonly property bool shouldShow: GlobalStates.barVisible || GlobalStates.trayVisible ||root.isHovered
 
             y: shouldShow ? 0 : -BarService.barHeight * 2
 

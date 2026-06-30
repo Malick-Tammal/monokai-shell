@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.theme
 import qs.components
+import qs.core
 
 Rectangle {
     id: panel
@@ -13,7 +14,7 @@ Rectangle {
     property var rootMenuWindow: null
     property bool isRoot: false
     property var activeSubMenuDelegate: null
-    property bool isOpen: false
+    property bool isOpen: GlobalStates.trayVisible
 
     implicitWidth: menuColumn.implicitWidth + 10
     implicitHeight: menuColumn.implicitHeight + 10
@@ -23,8 +24,8 @@ Rectangle {
     radius: 15
 
     transformOrigin: Item.Top
-    opacity: isOpen ? 1.0 : 0.0
-    scale: isOpen ? 1.0 : 0.8
+    opacity: GlobalStates.trayVisible ? 1.0 : 0.0
+    scale: GlobalStates.trayVisible ? 1.0 : 0.8
 
     Behavior on opacity {
         NumberAnimation {
@@ -40,7 +41,7 @@ Rectangle {
         }
     }
 
-    property bool updateTrigger: isOpen
+    property bool updateTrigger:GlobalStates.trayVisible
 
     x: {
         var forceUpdate = updateTrigger;
