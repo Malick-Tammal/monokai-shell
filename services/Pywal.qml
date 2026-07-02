@@ -27,9 +27,11 @@ Singleton {
                     root.special = data.special;
                     root.wallpaper = data.wallpaper;
 
+                    root.wallpaperChanged();
                     root.colorsChanged();
                     root.specialChanged();
-                    root.wallpaperChanged();
+
+                    root._log()
 
                 } catch(e) {
                     console.error("❌ JSON Parsing failed: " + e);
@@ -44,15 +46,11 @@ Singleton {
 
         onExited: code => {
             if (code === 0) {
-                root.reload();
+                pywalReader.running = true;
             } else {
                 console.error("❌ Pywal exited with error code: " + code);
             }
         }
-    }
-
-    function reload() {
-        pywalReader.running = true;
     }
 
     function generateColors(wallpaperPath) {
@@ -61,6 +59,13 @@ Singleton {
     }
 
     Component.onCompleted: {
-        root.reload();
+        pywalReader.running = true;
+    }
+
+    function _log() {
+        console.log('-------------------- Pywal Log --------------------')
+        console.log(`wallpaper path : ${root.wallpaper}`)
+        console.log(`colors : ${root.colors}`)
+        console.log(`special colors : ${root.special}`);
     }
 }
