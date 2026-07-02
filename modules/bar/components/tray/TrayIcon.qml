@@ -5,8 +5,8 @@ import qs.core
 
 Item {
     id: trayItemRoot
-    width: 30
-    height: 30
+    width: 32
+    height: 32
 
     property var trayItem: null
     property var rootContext: null
@@ -22,7 +22,7 @@ Item {
         anchors.fill: parent
         radius: 6
         color: Style.textPrimary
-        opacity: trayMouseArea.containsMouse ? 0.2 : 0.0
+        opacity: trayMouseArea.containsMouse ? 0.3: 0.0
         Behavior on opacity {
             NumberAnimation {
                 duration: 150
@@ -61,7 +61,8 @@ Item {
                 trayItemRoot.trayItem.activate();
             } else if (mouse.button === Qt.RightButton) {
                 if (trayItemRoot.trayItem.hasMenu) {
-                    GlobalStates.trayVisible = !GlobalStates.trayVisible;
+                    customMenu.isOpen = !customMenu.isOpen;
+                    GlobalStates.trayVisible = customMenu.isOpen;
                 } else {
                     trayItemRoot.trayItem.secondaryActivate();
                 }

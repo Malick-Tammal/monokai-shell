@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import Quickshell
 import qs.theme
 import qs.services
+import qs.core
 
 PopupWindow {
     id: overflowPopup
@@ -30,8 +31,8 @@ PopupWindow {
     Rectangle {
         id: popupContainer
 
-        implicitWidth: Math.max(40, overflowGrid.implicitWidth + 20)
-        implicitHeight: Math.max(40, overflowGrid.implicitHeight + 20)
+        implicitWidth: Math.max(40, overflowGrid.implicitWidth + 25)
+        implicitHeight: Math.max(40, overflowGrid.implicitHeight + 25)
 
         color: Style.background
         border.color: Style.border
@@ -66,7 +67,14 @@ PopupWindow {
             return 0;
             return globalPos.x - (implicitWidth / 2) + (anchorItem.width / 2);
         }
-        y: 53
+
+        y: {
+            var forceUpdate = updateTrigger;
+            if (!anchorItem) return 63;
+            var globalPos = anchorItem.mapToGlobal(0, 0);
+            if (!globalPos) return 63;
+            return globalPos.y + anchorItem.height + 15;
+        }
 
         MouseArea {
             anchors.fill: parent
@@ -77,8 +85,8 @@ PopupWindow {
             id: overflowGrid
             anchors.centerIn: parent
             columns: 3
-            rowSpacing: 4
-            columnSpacing: 4
+            rowSpacing: 12
+            columnSpacing: 12
 
             Repeater {
                 model: TrayService.items

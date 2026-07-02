@@ -2,6 +2,7 @@ import QtQuick
 import qs.theme
 import qs.components
 import qs.services
+import qs.core
 
 Item {
     id: root
@@ -25,6 +26,10 @@ Item {
     property var barWindowId: null
     property var activeMenu: null
     property bool isExpanded: false
+
+    onIsExpandedChanged: {
+        GlobalStates.trayOverflowVisible = isExpanded;
+    }
 
     Rectangle {
         id: backgroundRect

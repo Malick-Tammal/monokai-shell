@@ -5,7 +5,9 @@ import qs.core
 PopupWindow {
     id: customMenu
     color: "transparent"
-    visible: GlobalStates.trayVisible
+
+    property bool isOpen: false
+    visible: isOpen || rootPanel.opacity > 0.01
 
     implicitWidth: Screen.width
     implicitHeight: Screen.height
@@ -20,17 +22,18 @@ PopupWindow {
         item: targetItem
     }
 
-    onVisibleChanged: {
+    onIsOpenChanged: {
         if (!rootContext)
         return;
-        if (visible) {
+        if (isOpen) {
             if (rootContext.activeMenu && rootContext.activeMenu !== customMenu) {
-                rootContext.activeMenu.visible = false;
+                rootContext.activeMenu.isOpen = false;
             }
             rootContext.activeMenu = customMenu;
         } else {
             if (rootContext.activeMenu === customMenu) {
                 rootContext.activeMenu = null;
+                GlobalStates.trayVisible = false;
             }
 
             if (rootPanel && rootPanel.activeSubMenuDelegate) {
@@ -41,7 +44,10 @@ PopupWindow {
 
     MouseArea {
         anchors.fill: parent
-        onPressed: GlobalStates.trayVisible = false
+        onPressed: {
+            customMenu.isOpen = false;
+            GlobalStates.trayVisible = false;
+        }
     }
 
     TrayMenuPanel {
@@ -50,5 +56,6 @@ PopupWindow {
         targetItem: customMenu.targetItem
         isRoot: true
         rootMenuWindow: customMenu
+        isOpen: customMenu.isOpen
     }
 }

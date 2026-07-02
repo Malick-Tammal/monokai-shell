@@ -14,7 +14,7 @@ Rectangle {
     property var rootMenuWindow: null
     property bool isRoot: false
     property var activeSubMenuDelegate: null
-    property bool isOpen: GlobalStates.trayVisible
+    property bool isOpen: false
 
     implicitWidth: menuColumn.implicitWidth + 10
     implicitHeight: menuColumn.implicitHeight + 10
@@ -24,8 +24,8 @@ Rectangle {
     radius: 15
 
     transformOrigin: Item.Top
-    opacity: GlobalStates.trayVisible ? 1.0 : 0.0
-    scale: GlobalStates.trayVisible ? 1.0 : 0.8
+    opacity: isOpen ? 1.0 : 0.0
+    scale: isOpen ? 1.0 : 0.8
 
     Behavior on opacity {
         NumberAnimation {
@@ -41,7 +41,7 @@ Rectangle {
         }
     }
 
-    property bool updateTrigger:GlobalStates.trayVisible
+    property bool updateTrigger: isOpen
 
     x: {
         var forceUpdate = updateTrigger;
@@ -53,7 +53,9 @@ Rectangle {
             return 0;
             return globalPos.x - (implicitWidth / 2) + (targetItem.width / 2);
         } else {
-            return -implicitWidth - 10;
+            if (!targetItem || !panel.parent) return -implicitWidth - 10;
+            var mappedPos = targetItem.mapToItem(panel.parent, 0, 0);
+            return mappedPos.x - implicitWidth - 10;
         }
     }
 
@@ -67,7 +69,9 @@ Rectangle {
             return 55;
             return globalPos.y + targetItem.height + 20;
         } else {
-            return -5;
+            if (!targetItem || !panel.parent) return -5;
+            var mappedPos = targetItem.mapToItem(panel.parent, 0, 0);
+            return mappedPos.y - 5;
         }
     }
 
@@ -107,12 +111,12 @@ Rectangle {
                     if (!subMenuPanel) {
                         var comp = Qt.createComponent("TrayMenuPanel.qml");
                         if (comp.status === Component.Ready) {
-                            subMenuPanel = comp.createObject(delegateRect, {
+                            subMenuPanel = comp.createObject(panel, {
                                     "menuData": delegateRect.menuItem,
                                     "targetItem": delegateRect,
                                     "rootMenuWindow": panel.rootMenuWindow,
                                     "isRoot": false,
-                                    "isOpen": false
+                                    "isOpen": false,
                             });
                         } else {
                             console.error("Failed to load submenu panel:", comp.errorString());
@@ -228,7 +232,7 @@ Rectangle {
                             }
 
                             if (panel.rootMenuWindow) {
-                                panel.rootMenuWindow.visible = false;
+                                panel.rootMenuWindow.isOpen = false;
                             }
                         }
                     }

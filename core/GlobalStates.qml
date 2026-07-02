@@ -11,4 +11,5 @@ Singleton {
     property bool walliVisible: false
     property bool barVisible: false
     property bool trayVisible: false
+    property bool trayOverflowVisible: false
 }

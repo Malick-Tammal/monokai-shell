@@ -85,7 +85,7 @@ PanelWindow {
 
         transform: Translate {
             id: barTranslate
-            readonly property bool shouldShow: GlobalStates.barVisible || GlobalStates.trayVisible ||root.isHovered
+            readonly property bool shouldShow: GlobalStates.barVisible || GlobalStates.trayVisible || GlobalStates.trayOverflowVisible || root.isHovered
 
             y: shouldShow ? 0 : -BarService.barHeight * 2
 
