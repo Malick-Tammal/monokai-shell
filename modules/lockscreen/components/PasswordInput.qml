@@ -16,6 +16,7 @@ Item {
         passwordInput.text = ""
         rowVisible = false
         hideTimer.stop()
+        resetUI()
     }
 
     ListModel { id: passwordChars }
@@ -35,9 +36,7 @@ Item {
         onTriggered: {
             if (LockScreenService.showFailure) {
                 passwordStatus.text = "Type your password..."
-                passwordStatus.color = ColorEngine.monokai_fusion.dark1
-                passwordContainer.border.color = ColorEngine.monokai_fusion.dark2
-                passwordContainerMask.border.color = ColorEngine.monokai_fusion.dark2
+                resetUI()
             }
         }
     }
@@ -48,6 +47,7 @@ Item {
         passwordStatus.color = ColorEngine.monokai_fusion.dark1
         passwordContainer.border.color = ColorEngine.monokai_fusion.dark2
         passwordContainerMask.border.color = ColorEngine.monokai_fusion.dark2
+        passwordContainer.color = ColorEngine.monokai_fusion.dark4
     }
 
     function updateUIState() {
@@ -58,6 +58,7 @@ Item {
             passwordStatus.color = ColorEngine.monokai_fusion.yellow5
             passwordContainer.border.color = ColorEngine.monokai_fusion.yellow5
             passwordContainerMask.border.color = ColorEngine.monokai_fusion.yellow5
+            passwordContainer.color = ColorEngine.monokai_fusion.yellow8
 
         } else if (LockScreenService.showFailure) {
             passwordInput.readOnly = false
@@ -66,6 +67,7 @@ Item {
             passwordStatus.color = ColorEngine.monokai_fusion.red5
             passwordContainer.border.color = ColorEngine.monokai_fusion.red5
             passwordContainerMask.border.color = ColorEngine.monokai_fusion.red5
+            passwordContainer.color = ColorEngine.monokai_fusion.red8
             resetFailed.start()
         } else {
             resetUI()
@@ -84,6 +86,7 @@ Item {
             if (LockScreenService.showFailure) {
                 passwordInput.text = ""
                 LockScreenService.currentText = ""
+                shakeAnimation.start()
             }
             updateUIState()
         }
@@ -101,6 +104,7 @@ Item {
         id: row
 
         transform: Translate {
+            id: rowTransform
             y: root.rowVisible ? 0 : row.height + 12
             Behavior on y {
                 NumberAnimation {
@@ -109,6 +113,18 @@ Item {
                     easing.overshoot: 1.4
                 }
             }
+        }
+
+        SequentialAnimation {
+            id: shakeAnimation
+
+            NumberAnimation { target: rowTransform; property: "x"; to: -20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
+            NumberAnimation { target: rowTransform; property: "x"; to: 20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
+            NumberAnimation { target: rowTransform; property: "x"; to: -20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
+            NumberAnimation { target: rowTransform; property: "x"; to: 20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
+            NumberAnimation { target: rowTransform; property: "x"; to: -20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
+            NumberAnimation { target: rowTransform; property: "x"; to: 20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
+            NumberAnimation { target: rowTransform; property: "x"; to: 0; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
         }
 
         //  INFO: Left corner
