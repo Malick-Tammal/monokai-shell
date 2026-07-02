@@ -143,20 +143,21 @@ PanelWindow {
 
                 Keys.onPressed: event => {
                     const isShift = (event.modifiers & Qt.ShiftModifier);
+                    const code = event.nativeScanCode;
 
-                    if ((event.nativeScanCode === 43 && !isShift) || event.key === Qt.Key_Left) {
+                    if ((code === KbService.keys.key_H && !isShift) || event.key === Qt.Key_Left) {
                         decrementCurrentIndex();
                         event.accepted = true;
-                    } else if ((event.nativeScanCode === 46 && !isShift) || event.key === Qt.Key_Right) {
+                    } else if ((code === KbService.keys.key_L && !isShift) || event.key === Qt.Key_Right) {
                         incrementCurrentIndex();
                         event.accepted = true;
-                    } else if (event.nativeScanCode === 43 && isShift) {
+                    } else if (code === KbService.keys.key_H && isShift) {
                         wallpapers.currentIndex = Math.max(0, wallpapers.currentIndex - (visibleWallpaperCount - 1));
                         event.accepted = true;
-                    } else if (event.nativeScanCode === 46 && isShift) {
+                    } else if (code === KbService.keys.key_L && isShift) {
                         wallpapers.currentIndex = Math.max(0, wallpapers.currentIndex + (visibleWallpaperCount - 1));
                         event.accepted = true;
-                    } else if ((event.nativeScanCode === 45 && !isShift) || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                    } else if ((code === KbService.keys.key_K && !isShift) || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                         const fileName = wallpapers.model.get(wallpapers.currentIndex, "fileName");
                         WalliService.activateWall(fileName);
                         event.accepted = true;

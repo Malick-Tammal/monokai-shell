@@ -15,11 +15,11 @@ Singleton {
         let lower = fullName.toLowerCase();
 
         if (lower.includes("english"))
-            return "EN";
+        return "EN";
         if (lower.includes("arabic"))
-            return "AR";
+        return "AR";
         if (lower.includes("french"))
-            return "FR";
+        return "FR";
 
         return fullName.substring(0, 2).toUpperCase();
     }
@@ -40,4 +40,10 @@ Singleton {
             }
         }
     }
+
+    property var keys: ({
+            "key_H": 43,
+            "key_L": 46,
+            "key_K": 45,
+    })
 }
