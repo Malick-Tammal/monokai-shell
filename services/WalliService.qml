@@ -79,8 +79,8 @@ Singleton {
     }
 
     Connections {
-        target: Pywal
-        function onColorsChanged() {
+        target: ColorEngine
+        function onPywalChanged() {
             ledStrip.command[2] = ColorEngine.pywal.special.accent;
             ledStrip.running = true;
             console.log(`ledstrip color : ${ColorEngine.pywal.special.accent}`);
@@ -119,12 +119,6 @@ Singleton {
     Process {
         id: awwwProc
         command: ["awww", "img", "", "--transition-type", root.animationType, "--transition-pos", root.animationPos, "--transition-step", root.animationStep, "--transition-fps", root.animationFps, "--transition-angle", root.animationAngle, "--transition-bezier", root.animationBezier, "--transition-duration", root.animationDuration]
-
-        onExited: code => {
-            if (code === 0) {
-                GlobalStates.walliVisible = false;
-            }
-        }
     }
 
     // Cache wallpaper for SDDM
@@ -136,19 +130,22 @@ Singleton {
     // Active Wallpaper Query
     Process {
         id: awwwQuery
-        command: ["awww", "query"]
+        command: ["awww", "query", "-j"]
         stdout: StdioCollector {
             onStreamFinished: {
                 const output = this.text.trim();
-                if (!output)
-                return;
-                const parts = output.split(": ");
-                if (parts.length > 1) {
-                    const fullPath = parts[parts.length - 1].trim().split(",")[0];
-                    const filename = fullPath.split("/").pop();
-                    const cleanName = filename.replace(/\.[^/.]+$/, "");
-
-                    root.currentWall = cleanName;
+                if (!output) return;
+                try {
+                    const data = JSON.parse(output);
+                    const monitors = data[""];
+                    if (monitors && monitors.length > 0 && monitors[0].displaying && monitors[0].displaying.image) {
+                        const fullPath = monitors[0].displaying.image;
+                        const filename = fullPath.split("/").pop();
+                        const cleanName = filename.replace(/\.[^/.]+$/, "");
+                        root.currentWall = cleanName;
+                    }
+                } catch(e) {
+                    console.error("Failed to parse awww query JSON: " + e);
                 }
             }
         }
