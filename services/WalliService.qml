@@ -6,6 +6,7 @@ import Quickshell.Io
 import QtQuick
 import qs.services
 import qs.core
+import qs.theme
 
 Singleton {
     id: root
@@ -59,21 +60,31 @@ Singleton {
         const cache = root.cacheFolder + name;
         const full = root.wallsFolder + name;
 
+        Pywal.generateColors(full);
+
         awwwProc.command[2] = full;
         sddmWall.command[1] = full;
 
         awwwProc.running = true;
         sddmWall.running = true;
 
-        Pywal.generateColors(full);
-
         const cleanName = name.replace(/\.[^/.]+$/, "");
         NotifyService.send("walli", cleanName, cache);
 
-        print("cache : " + cache);
-        print("wall : " + full);
+        console.log('-------------------- Walli Log --------------------')
+        console.log(`cache : ${cache}`)
+        console.log(`active wallpaper : ${full}`)
 
         GlobalStates.walliVisible = false;
+    }
+
+    Connections {
+        target: Pywal
+        function onColorsChanged() {
+            ledStrip.command[2] = ColorEngine.pywal.special.accent;
+            ledStrip.running = true;
+            console.log(`ledstrip color : ${ColorEngine.pywal.special.accent}`);
+        }
     }
 
     //  INFO: Processes ---
