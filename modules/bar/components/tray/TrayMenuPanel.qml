@@ -18,7 +18,7 @@ Rectangle {
 
     implicitWidth: menuColumn.implicitWidth + 10
     implicitHeight: menuColumn.implicitHeight + 10
-    color: Style.bg
+    color: Style.background
     border.color: Style.border
     border.width: 1
     radius: 15
@@ -99,7 +99,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.minimumWidth: Math.max(180, menuItem.isSeparator ? 0 : contentRow.implicitWidth + 40)
                 Layout.preferredHeight: menuItem.isSeparator ? 10 : 32
-                color: isHoveredOrOpen && !menuItem.isSeparator ? ColorEngine.monokai_fusion.yellow5 : "transparent"
+                color: isHoveredOrOpen && !menuItem.isSeparator ? Style.warning : "transparent"
                 radius: 10
                 visible: menuItem.visible !== false
 
@@ -138,7 +138,7 @@ Rectangle {
                     anchors.centerIn: parent
                     width: parent.width - 10
                     height: 1
-                    color: ColorEngine.monokai_fusion.dark2
+                    color: Style.surfaceDim
                     visible: menuItem.isSeparator === true
                 }
 
@@ -159,7 +159,7 @@ Rectangle {
 
                     Text {
                         text: menuItem.text || ""
-                        color: isHoveredOrOpen && !menuItem.isSeparator ? ColorEngine.monokai_fusion.dark5 : Style.fg
+                        color: isHoveredOrOpen && !menuItem.isSeparator ? Style.background : Style.textPrimary
                         anchors.verticalCenter: parent.verticalCenter
                         renderType: Text.NativeRendering
                         font {
@@ -173,7 +173,7 @@ Rectangle {
                 Symbols {
                     icon: "arrow_right"
                     size: 18
-                    iconColor: isHoveredOrOpen ? ColorEngine.monokai_fusion.dark5 : ColorEngine.monokai_fusion.gray2
+                    iconColor: isHoveredOrOpen ? Style.background : Style.textTertiary
                     visible: menuItem.hasChildren === true
                     weight: 700
                     anchors.verticalCenter: parent.verticalCenter

@@ -19,7 +19,7 @@ Item {
             id: panel
             height: parent.height
             width: componentsRow.implicitWidth + (componentsRow.anchors.margins * 2)
-            color: Style.bg
+            color: Style.background
             border.color: Style.border
             radius: 15
             antialiasing: true

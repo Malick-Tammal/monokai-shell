@@ -13,7 +13,7 @@ Item {
         id: workspaces
         radius: 9999
         antialiasing: true
-        color: Style.bg
+        color: Style.background
         border.color: Style.border
         anchors.fill: parent
 
@@ -99,14 +99,14 @@ Item {
 
                     color: {
                         if (isUrgent) {
-                            return ColorEngine.monokai_fusion.yellow5;
+                            return Style.warning;
                         }
 
                         if (isFocused) {
                             if (hoverHandler.hovered) {
                                 return ColorEngine.monokai_fusion.green4;
                             } else {
-                                return ColorEngine.monokai_fusion.green5;
+                                return Style.success;
                             }
                         }
 
@@ -138,12 +138,12 @@ Item {
                         visible: !isFocused
                         color: {
                             if (isUrgent) {
-                                return ColorEngine.monokai_fusion.yellow9;
+                                return Style.onWarning;
                             }
                             if (hasWindows) {
-                                return Style.fg;
+                                return Style.textPrimary;
                             } else {
-                                return ColorEngine.monokai_fusion.gray3;
+                                return Style.textDisabled;
                             }
                         }
                         renderType: Text.NativeRendering

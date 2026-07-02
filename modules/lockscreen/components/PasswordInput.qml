@@ -44,30 +44,29 @@ Item {
     function resetUI() {
         passwordInput.readOnly = false
         passwordStatus.text = "Type your password..."
-        passwordStatus.color = ColorEngine.monokai_fusion.dark1
-        passwordContainer.border.color = ColorEngine.monokai_fusion.dark2
-        passwordContainerMask.border.color = ColorEngine.monokai_fusion.dark2
-        passwordContainer.color = ColorEngine.monokai_fusion.dark4
+        passwordStatus.color = Style.textMuted
+        passwordContainer.border.color = Style.surfaceDim
+        passwordContainerMask.border.color = Style.surfaceDim
+        passwordContainer.color = Style.surface
     }
 
     function updateUIState() {
         if (LockScreenService.unlockInProgress) {
             passwordInput.readOnly = true
             passwordStatus.text = "Unlocking..."
-            passwordStatus.color = ColorEngine.monokai_fusion.yellow5
-            passwordStatus.color = ColorEngine.monokai_fusion.yellow5
-            passwordContainer.border.color = ColorEngine.monokai_fusion.yellow5
-            passwordContainerMask.border.color = ColorEngine.monokai_fusion.yellow5
-            passwordContainer.color = ColorEngine.monokai_fusion.yellow8
+            passwordStatus.color = Style.warning
+            passwordContainer.border.color = Style.warning
+            passwordContainerMask.border.color = Style.warning
+            passwordContainer.color = Style.warningContainer
 
         } else if (LockScreenService.showFailure) {
             passwordInput.readOnly = false
             passwordStatus.text = "Wrong password"
-            passwordStatus.color = ColorEngine.monokai_fusion.red5
-            passwordStatus.color = ColorEngine.monokai_fusion.red5
-            passwordContainer.border.color = ColorEngine.monokai_fusion.red5
-            passwordContainerMask.border.color = ColorEngine.monokai_fusion.red5
-            passwordContainer.color = ColorEngine.monokai_fusion.red8
+            passwordStatus.color = Style.error
+            passwordStatus.color = Style.error
+            passwordContainer.border.color = Style.error
+            passwordContainerMask.border.color = Style.error
+            passwordContainer.color = Style.errorContainer
             resetFailed.start()
         } else {
             resetUI()
@@ -132,14 +131,14 @@ Item {
             rounding: 30
             anchors.bottom: parent.bottom
             rotation: 90
-            roundingColor: ColorEngine.monokai_fusion.dark5
+            roundingColor:  Style.background
         }
 
         Rectangle {
             id: main
             width: 500
             height: 80
-            color: ColorEngine.monokai_fusion.dark5
+            color: Style.background
             topLeftRadius: 100
             topRightRadius: 100
             bottomLeftRadius: 0
@@ -154,8 +153,8 @@ Item {
                     rightMargin: 10
                     bottomMargin: 5
                 }
-                color: ColorEngine.monokai_fusion.dark4
-                border.color: ColorEngine.monokai_fusion.dark2
+                color:  Style.surface
+                border.color: Style.surfaceDim
                 border.width: root.borderSize
                 radius: 9999
                 z: 3
@@ -172,7 +171,7 @@ Item {
                     anchors.rightMargin: 20
                     verticalAlignment: TextInput.AlignVCenter
                     focus: true
-                    color: ColorEngine.monokai_fusion.gray1
+                    color: Style.textSecondary
                     echoMode: TextInput.Password
                     opacity: 0
 
@@ -211,7 +210,7 @@ Item {
                 Text {
                     id: passwordStatus
                     text: "Type your password..."
-                    color: ColorEngine.monokai_fusion.dark1
+                    color: Style.textMuted
 
                     anchors.centerIn: parent
                     opacity: passwordInput.text ? 0 : 1
@@ -264,7 +263,7 @@ Item {
                         Symbols {
                             icon: "circle"
                             size: 23
-                            iconColor: ColorEngine.monokai_fusion.gray1
+                            iconColor: Style.textSecondary
                             anchors.centerIn: parent
                         }
                     }
@@ -290,7 +289,7 @@ Item {
                     radius: passwordContainer.radius
                     color: "transparent"
                     z: 10
-                    border.color: ColorEngine.monokai_fusion.dark2
+                    border.color:  Style.surfaceDim
                     border.width: root.borderSize
                     Behavior on border.color { ColorAnimation { duration: 120 } }
 
@@ -299,7 +298,7 @@ Item {
                         height: parent.height + 14
                         radius: passwordContainer.radius
                         color: "transparent"
-                        border.color:  ColorEngine.monokai_fusion.dark5
+                        border.color:  Style.background
                         border.width: 7
                         anchors.centerIn: parent
                     }
@@ -332,7 +331,7 @@ Item {
 
                         radius: 9999
                         color: "transparent"
-                        border.color: ColorEngine.monokai_fusion.red5
+                        border.color: Style.error
                         border.width: root.borderSize
 
                         anchors {
@@ -368,7 +367,7 @@ Item {
 
                         radius: 9999
                         color: "transparent"
-                        border.color: ColorEngine.monokai_fusion.green5
+                        border.color: Style.success
                         border.width: root.borderSize
 
                         anchors {
@@ -404,7 +403,7 @@ Item {
 
                         radius: 9999
                         color: "transparent"
-                        border.color: ColorEngine.monokai_fusion.yellow5
+                        border.color:  Style.warning
                         border.width: root.borderSize
 
                         anchors {
@@ -457,7 +456,7 @@ Item {
             rounding: 30
             anchors.bottom: parent.bottom
             rotation: 180
-            roundingColor: ColorEngine.monokai_fusion.dark5
+            roundingColor: Style.background
         }
     }
 }

@@ -20,7 +20,7 @@ Item {
             Sliding {
                 text: DateTime.hours
                 size: 200
-                textColor: Style.fg
+                textColor: Style.textPrimary
                 weight: Font.Black
                 styleName: "Black"
                 anchors.horizontalCenter: parent.horizontalCenter

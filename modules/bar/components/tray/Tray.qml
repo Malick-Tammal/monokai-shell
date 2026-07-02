@@ -72,7 +72,7 @@ Item {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: Style.fg
+                    color: Style.textPrimary
                     opacity: arrowMouseArea.containsMouse ? 0.2 : 0.0
                     anchors.verticalCenter: parent.verticalCenter
                     radius: 6
@@ -88,7 +88,7 @@ Item {
                     icon: "keyboard_arrow_up"
                     size: 18
                     anchors.centerIn: parent
-                    color: ColorEngine.monokai_fusion.gray1
+                    color: Style.textSecondary
                     rotation: root.isExpanded ? 180 : 0
 
                     Behavior on rotation {

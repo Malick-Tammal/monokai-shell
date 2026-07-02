@@ -8,13 +8,13 @@ Rectangle {
     id: user
     width: 200
     Layout.preferredHeight: 32
-    color: ColorEngine.monokai_fusion.yellow5
+    color: Style.warning
     radius: 8
 
     Rectangle {
         width: parent.width / 2 + 20
         height: parent.height - 2
-        color: Style.bg
+        color: Style.background
         radius: 8
 
         anchors {
@@ -35,7 +35,7 @@ Rectangle {
 
         Text {
             id: userName
-            color: ColorEngine.monokai_fusion.yellow5
+            color: Style.warning
             font {
                 family: Style.family
                 pixelSize: Style.fontSizeMd
@@ -63,16 +63,17 @@ Rectangle {
 
             Symbols {
                 icon: "person"
-                size: 19
-                iconColor: ColorEngine.monokai_fusion.orange9
+                size: 18
+                color: Style.onWarning
             }
 
             Text {
                 text: "User"
-                color: ColorEngine.monokai_fusion.orange9
+                color: Style.onWarning
+
                 font {
                     family: Style.family
-                    pixelSize: Style.fontSizeLg
+                    pixelSize: Style.fontSizeSub
                     weight: 600
                     styleName: "Semibold"
                 }

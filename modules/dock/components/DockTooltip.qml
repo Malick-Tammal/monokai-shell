@@ -38,7 +38,7 @@ PopupWindow {
 
     Rectangle {
         id: tooltipRect
-        color: Style.bg
+        color: Style.background
         border.color: Style.border
         border.width: 1
         radius: 8
@@ -79,7 +79,7 @@ PopupWindow {
         Text {
             id: tooltipText
             text: tooltip.text
-            color: Style.fg
+            color: Style.textPrimary
             anchors.centerIn: parent
             font {
                 pixelSize: Style.fontSizeMd

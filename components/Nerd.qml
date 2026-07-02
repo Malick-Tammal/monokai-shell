@@ -6,7 +6,7 @@ Text {
 
     property string icon: ""
     property int size: 12
-    property color iconColor: Style.fg
+    property color iconColor: Style.textPrimary
     property int weight: Font.Bold
 
     text: icon

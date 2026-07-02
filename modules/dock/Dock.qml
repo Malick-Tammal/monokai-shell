@@ -117,7 +117,7 @@ PanelWindow {
         id: dock
         height: 70
         width: row.implicitWidth + 16
-        color: Style.bg
+        color: Style.background
         border.color: Style.border
         border.width: 1
         radius: 15

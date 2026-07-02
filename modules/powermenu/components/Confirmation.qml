@@ -49,7 +49,7 @@ Item {
         width: parent.width / 2
         height: parent.height / 1.3
         anchors.centerIn: parent
-        color: Style.bg
+        color: Style.background
         radius: 15
         border.color: Style.border
 
@@ -76,7 +76,7 @@ Item {
 
             Text {
                 text: "Are you sure?"
-                color: Style.fg
+                color: Style.textPrimary
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 font {
@@ -99,8 +99,8 @@ Item {
                     property Item nextItem: no
                     property Item prevItem: no
 
-                    color: (activeFocus || yesMouseArea.containsMouse) ? ColorEngine.monokai_fusion.green5 : ColorEngine.monokai_fusion.gray6
-                    border.color: activeFocus ? ColorEngine.monokai_fusion.green2 : ColorEngine.monokai_fusion.gray4
+                    color: (activeFocus || yesMouseArea.containsMouse) ? Style.success : ColorEngine.monokai_fusion.gray6
+                    border.color: activeFocus ? Style.successBorder : Style.borderDim
                     radius: 10
                     focus: true
 
@@ -130,7 +130,7 @@ Item {
                     Text {
                         id: yesTxt
                         text: "Yes"
-                        color: (yes.activeFocus || yesMouseArea.containsMouse) ? ColorEngine.monokai_fusion.green9 : Style.fg
+                        color: (yes.activeFocus || yesMouseArea.containsMouse) ? Style.onSuccess : Style.textPrimary
                         anchors.centerIn: parent
 
                         font {
@@ -161,8 +161,8 @@ Item {
                     property Item nextItem: yes
                     property Item prevItem: yes
 
-                    color: (activeFocus || noMouseArea.containsMouse) ? ColorEngine.monokai_fusion.red5 : ColorEngine.monokai_fusion.gray6
-                    border.color: activeFocus ? ColorEngine.monokai_fusion.red3 : ColorEngine.monokai_fusion.gray4
+                    color: (activeFocus || noMouseArea.containsMouse) ? Style.error : ColorEngine.monokai_fusion.gray6
+                    border.color: activeFocus ? Style.errorBorder : Style.borderDim
                     radius: 10
                     focus: true
 
@@ -192,7 +192,7 @@ Item {
                     Text {
                         id: noTxt
                         text: "No"
-                        color: (no.activeFocus || noMouseArea.containsMouse) ? ColorEngine.monokai_fusion.green9 : Style.fg
+                        color: (no.activeFocus || noMouseArea.containsMouse) ? Style.onSuccess : Style.textPrimary
                         anchors.centerIn: parent
 
                         font {

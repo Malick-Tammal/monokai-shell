@@ -8,7 +8,7 @@ Item {
     clip: true
 
     property string text: "00"
-    property color textColor: Style.fg
+    property color textColor: Style.textPrimary
     property int orientation: Qt.Vertical
     property int size: 17
     property int weight: Font.Black

@@ -64,7 +64,7 @@ Row {
         width: 3
         height: parent.height * 0.6
         anchors.verticalCenter: parent.verticalCenter
-        color: ColorEngine.monokai_fusion.dark1
+        color: Style.divider
         radius: 1
         antialiasing: true
         visible: !root.modelData.isPinned && root.index > 0 && DockService.appList[root.index - 1].isPinned
@@ -166,7 +166,7 @@ Row {
                     height: 4
                     radius: 20
                     antialiasing: true
-                    color: ColorEngine.monokai_fusion.yellow5
+                    color: Style.warning
                 }
             }
         }

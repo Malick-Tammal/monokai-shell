@@ -15,7 +15,7 @@ Item {
         id: panel
         anchors.fill: parent
 
-        color: Style.bg
+        color: Style.background
         border.color: Style.border
         radius: 15
         antialiasing: true

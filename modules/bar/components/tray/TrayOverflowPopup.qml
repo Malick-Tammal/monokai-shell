@@ -33,7 +33,7 @@ PopupWindow {
         implicitWidth: Math.max(40, overflowGrid.implicitWidth + 20)
         implicitHeight: Math.max(40, overflowGrid.implicitHeight + 20)
 
-        color: Style.bg
+        color: Style.background
         border.color: Style.border
         border.width: 1
         radius: 15

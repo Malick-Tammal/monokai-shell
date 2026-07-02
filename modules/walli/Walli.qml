@@ -110,7 +110,7 @@ PanelWindow {
             border.width: 1
             antialiasing: true
 
-            color: Style.bg
+            color: Style.background
             radius: 25
 
             MouseArea {
@@ -201,7 +201,7 @@ PanelWindow {
                         id: container
                         anchors.fill: parent
                         radius: 15
-                        color: isSelected || hoverHandler.hovered ? ColorEngine.monokai_fusion.yellow5 : ColorEngine.monokai_fusion.gray4
+                        color: isSelected || hoverHandler.hovered ? Style.warning : Style.borderDim
 
                         Image {
                             id: img
@@ -240,7 +240,7 @@ PanelWindow {
                             id: selWallName
                             height: parent.height / 6
                             width: parent.width + 5
-                            color: ColorEngine.monokai_fusion.yellow5
+                            color: Style.warning
                             visible: isSelected ? true : false
                             opacity: isSelected ? 1.0 : 0.0
 
@@ -259,7 +259,7 @@ PanelWindow {
                                 rounding: 15
                                 z: 2
                                 visible: isSelected ? true : false
-                                roundingColor: ColorEngine.monokai_fusion.yellow5
+                                roundingColor: Style.warning
                                 rotation: 90
                             }
 
@@ -271,7 +271,7 @@ PanelWindow {
                                 rounding: 15
                                 z: 2
                                 visible: isSelected ? true : false
-                                roundingColor: ColorEngine.monokai_fusion.yellow5
+                                roundingColor: Style.warning
                                 rotation: 180
                             }
 
@@ -284,7 +284,7 @@ PanelWindow {
 
                             Text {
                                 id: wallName
-                                color: ColorEngine.monokai_fusion.yellow9
+                                color: Style.onWarning
                                 opacity: isSelected ? 1.0 : 0.0
                                 anchors.centerIn: parent
 
@@ -332,10 +332,10 @@ PanelWindow {
                 width: parent.width - 3
                 height: parent.height - 3
                 anchors.centerIn: parent
-                radius: 15
+                radius: 25
                 z: 10
 
-                color: Style.bg
+                color: Style.background
                 visible: opacity > 0.01
                 opacity: WalliService.isLoading ? 0.9 : 0.0
 
@@ -359,10 +359,14 @@ PanelWindow {
                 Text {
                     anchors.centerIn: parent
                     text: WalliService.loadingText
-                    font.family: Style.family
-                    font.pixelSize: Style.fontSizeLg
-                    font.weight: Font.Medium
-                    color: ColorEngine.monokai_fusion.yellow5
+                    color: Style.warning
+
+                    font {
+                        family: Style.family
+                        pixelSize: Style.fontSizeLg
+                        weight: Font.Bold
+                        styleName: "Bold"
+                    }
                 }
 
                 MouseArea {

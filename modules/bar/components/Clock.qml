@@ -24,14 +24,14 @@ Item {
             Sliding {
                 text: DateTime.hours
                 size: Style.fontSize2Xl
-                textColor: ColorEngine.monokai_fusion.yellow5
+                textColor: Style.warning
                 weight: Font.Black
                 styleName: "Black"
             }
 
             Text {
                 text: ":"
-                color: Style.fg
+                color: Style.textPrimary
                 anchors.horizontalCenterOffset: 0
                 y: -1
 
@@ -49,7 +49,7 @@ Item {
             Sliding {
                 text: DateTime.minutes
                 size: Style.fontSize2Xl
-                textColor: Style.fg
+                textColor: Style.textPrimary
                 weight: Font.Black
                 styleName: "Black"
             }

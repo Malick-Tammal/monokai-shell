@@ -21,7 +21,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         radius: 6
-        color: Style.fg || "#ffffff"
+        color: Style.textPrimary
         opacity: trayMouseArea.containsMouse ? 0.2 : 0.0
         Behavior on opacity {
             NumberAnimation {

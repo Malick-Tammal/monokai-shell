@@ -248,7 +248,6 @@ Item {
         Rectangle {
             anchors.fill: parent
             color: "transparent"
-            // border.color: Battery.acConnected ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
             border.color: {
                 if(Battery.acConnected) {
                     return ColorEngine.monokai_fusion.green2;

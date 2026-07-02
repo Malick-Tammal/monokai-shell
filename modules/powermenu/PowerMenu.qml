@@ -92,7 +92,6 @@ PanelWindow {
             top: parent.top
             right: parent.right
             topMargin: BarService.isBarEffectivelyVisible ? BarService.barHeight + Style.globalPadding * 2 :Style.globalPadding
-
             rightMargin: Style.globalPadding
 
             Behavior on topMargin {
@@ -109,12 +108,10 @@ PanelWindow {
 
             width: col.implicitWidth + 20
             height: col.implicitHeight + 20
-
             border.color: Style.border
             border.width: 1
             antialiasing: true
-
-            color: Style.bg
+            color: Style.background
             radius: 15
 
             MouseArea {
@@ -154,11 +151,11 @@ PanelWindow {
                         nextItem: reboot
                         focus: true
 
-                        activeColor: ColorEngine.monokai_fusion.red5
-                        activeBorderColor: ColorEngine.monokai_fusion.red3
+                        activeColor:  Style.error
+                        activeBorderColor: Style.errorBorder
                         iconName: "power_settings_new"
-                        iconColor: ColorEngine.monokai_fusion.gray2
-                        activeIconColor: ColorEngine.monokai_fusion.red9
+                        iconColor: Style.textTertiary
+                        activeIconColor:  Style.onError
 
                         onActivated: requestExecute("systemctl poweroff", poweroff)
                     }
@@ -168,11 +165,11 @@ PanelWindow {
                         prevItem: poweroff
                         nextItem: sleep
 
-                        activeColor: ColorEngine.monokai_fusion.green5
-                        activeBorderColor: ColorEngine.monokai_fusion.green3
+                        activeColor: Style.success
+                        activeBorderColor: Style.successBorder
                         iconName: "replay"
-                        iconColor: ColorEngine.monokai_fusion.gray2
-                        activeIconColor: ColorEngine.monokai_fusion.green9
+                        iconColor: Style.textTertiary
+                        activeIconColor: Style.onSuccess
 
                         onActivated: requestExecute("systemctl reboot", reboot)
                     }
@@ -182,11 +179,11 @@ PanelWindow {
                         prevItem: reboot
                         nextItem: lock
 
-                        activeColor: ColorEngine.monokai_fusion.yellow5
-                        activeBorderColor: ColorEngine.monokai_fusion.yellow3
+                        activeColor: Style.warning
+                        activeBorderColor: Style.warningBorder
                         iconName: "bedtime"
-                        iconColor: ColorEngine.monokai_fusion.gray2
-                        activeIconColor: ColorEngine.monokai_fusion.yellow9
+                        iconColor: Style.textTertiary
+                        activeIconColor:  Style.onWarning
 
                         onActivated: requestExecute("systemctl suspend", sleep)
                     }
@@ -199,7 +196,7 @@ PanelWindow {
                         activeColor: ColorEngine.monokai_fusion.purple5
                         activeBorderColor: ColorEngine.monokai_fusion.purple3
                         iconName: "lock"
-                        iconColor: ColorEngine.monokai_fusion.gray2
+                        iconColor: Style.textTertiary
                         activeIconColor: ColorEngine.monokai_fusion.purple9
 
                         onActivated: {
@@ -215,7 +212,7 @@ PanelWindow {
                         activeColor: ColorEngine.monokai_fusion.orange5
                         activeBorderColor: ColorEngine.monokai_fusion.orange3
                         iconName: "logout"
-                        iconColor: ColorEngine.monokai_fusion.gray2
+                        iconColor: Style.textTertiary
                         activeIconColor: ColorEngine.monokai_fusion.orange9
                         onActivated: requestExecute("hyprctl dispatch 'hl.dsp.exit()'", logout)
                     }

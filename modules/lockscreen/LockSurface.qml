@@ -12,7 +12,7 @@ Rectangle {
 
     required property var context
     property int borderWidth: 20
-    color: ColorEngine.monokai_fusion.dark5
+    color: Style.background
 
     // Rounded corners
     Cornors {
@@ -50,7 +50,7 @@ Rectangle {
         anchors.fill: parent
         color: "transparent"
         border.width: root.borderWidth
-        border.color: ColorEngine.monokai_fusion.dark5
+        border.color: Style.background
         z: 10
     }
 
@@ -113,8 +113,8 @@ Rectangle {
                 }
 
                 rotation: modelData.rot
-                rounding : 30
-                roundingColor : ColorEngine.monokai_fusion.dark5
+                rounding: 30
+                roundingColor: Style.background
             }
         }
     }
