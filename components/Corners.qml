@@ -39,7 +39,7 @@ Item {
             }
             ]
 
-            delegate: InvertedCornor {
+            delegate: InvertedCorner {
                 anchors.top: modelData.anchorTop ? parent.top : undefined
                 anchors.bottom: modelData.anchorBottom ? parent.bottom : undefined
                 anchors.left: modelData.anchorLeft ? parent.left : undefined

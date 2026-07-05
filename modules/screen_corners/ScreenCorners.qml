@@ -10,7 +10,7 @@ PanelWindow {
     exclusionMode: ExclusionMode.Ignore
     WlrLayershell.layer: WlrLayer.Overlay
     exclusiveZone: 0
-    WlrLayershell.namespace: "cornors"
+    WlrLayershell.namespace: "corners"
 
     mask: Region {}
 
@@ -23,7 +23,7 @@ PanelWindow {
         bottom: true
     }
 
-    Cornors {
+    Corners {
         anchors.fill: parent
     }
 }

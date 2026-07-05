@@ -1,5 +1,5 @@
 import QtQuick
-import "../modules/screen_cornors/"
+import "../modules/screen_corners/"
 import "../modules/bar/"
 import "../modules/dock/"
 
@@ -8,8 +8,8 @@ Item {
 
     required property var screen
 
-    ScreenCornors {
-        id: screenCornors
+    ScreenCorners {
+        id: screenCorners
         screen: root.screen
     }
 

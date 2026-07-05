@@ -127,7 +127,7 @@ Item {
         }
 
         //  INFO: Left corner
-        InvertedCornor {
+        InvertedCorner {
             rounding: 30
             anchors.bottom: parent.bottom
             rotation: 90
@@ -452,7 +452,7 @@ Item {
         }
 
         //  INFO: Right corner
-        InvertedCornor {
+        InvertedCorner {
             rounding: 30
             anchors.bottom: parent.bottom
             rotation: 180

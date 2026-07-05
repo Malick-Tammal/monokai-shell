@@ -15,7 +15,7 @@ Rectangle {
     color: Style.background
 
     // Rounded corners
-    Cornors {
+    Corners {
         anchors.fill: parent
         rounding: 45
         z: 99
@@ -55,7 +55,7 @@ Rectangle {
     }
 
     Item {
-        id: cornors
+        id: corners
         anchors.fill: parent
         enabled: false
         z: 10
@@ -99,7 +99,7 @@ Rectangle {
             }
             ]
 
-            delegate: InvertedCornor {
+            delegate: InvertedCorner {
                 anchors {
                     top: modelData.anchorTop ? parent.top : undefined
                     bottom: modelData.anchorBottom ? parent.bottom : undefined
