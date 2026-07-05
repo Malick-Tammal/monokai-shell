@@ -24,13 +24,13 @@ Singleton {
     readonly property real hardMaxValue: 1.00
     property string audioTheme: "freedesktop"
 
-    function friendlyDeviceName(node) {
+    function friendlyDeviceName(node): string {
         if (!node)
         return "Unknown";
         return node.nickname || node.description || "Unknown";
     }
 
-    function appNodeDisplayName(node) {
+    function appNodeDisplayName(node): string {
         if (!node)
         return "Unknown";
         return node.properties["application.name"] || node.description || node.name || "Unknown";
@@ -58,17 +58,17 @@ Singleton {
         return "volume_up";
     }
 
-    function toggleMute() {
+    function toggleMute(): void {
         if (sink?.audio)
         sink.audio.muted = !sink.audio.muted;
     }
 
-    function toggleMicMute() {
+    function toggleMicMute(): void {
         if (source?.audio)
         source.audio.muted = !source.audio.muted;
     }
 
-    function changeVolume(amount) {
+    function changeVolume(amount): void {
         if (!sink?.audio)
         return;
 
@@ -84,17 +84,17 @@ Singleton {
         changeVolume(-by || -0.05);
     }
 
-    function setDefaultSink(node) {
+    function setDefaultSink(node): void {
         if (node)
         Pipewire.preferredDefaultAudioSink = node;
     }
 
-    function setDefaultSource(node) {
+    function setDefaultSource(node): void {
         if (node)
         Pipewire.preferredDefaultAudioSource = node;
     }
 
-    function playSystemSound(soundName) {
+    function playSystemSound(soundName): void {
         const cmd = `
         for ext in oga ogg wav; do
         file="/usr/share/sounds/${root.audioTheme}/stereo/${soundName}.$ext"
@@ -108,7 +108,7 @@ Singleton {
         Quickshell.execDetached(["bash", "-c", cmd]);
     }
 
-    function switchToDevice(node) {
+    function switchToDevice(node): void {
         if (node) {
             Pipewire.preferredDefaultAudioSink = node;
         }

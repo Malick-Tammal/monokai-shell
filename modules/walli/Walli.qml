@@ -87,7 +87,7 @@ PanelWindow {
             horizontalCenter: parent.horizontalCenter
             leftMargin: Style.globalPadding
             rightMargin:Style.globalPadding
-            topMargin: BarService.isBarEffectivelyVisible ? BarService.barHeight + Style.globalPadding * 2 : Style.globalPadding
+            topMargin: (!BarService.effectivelyOverlapped || GlobalStates.barVisible) ? BarService.barHeight + Style.globalPadding * 2 : Style.globalPadding
 
             Behavior on topMargin {
                 SpringAnimation {
