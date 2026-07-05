@@ -1,5 +1,7 @@
 import QtQuick
 import qs.theme
+import QtQuick.Layouts
+import qs.components
 
 Item {
     id: root
@@ -46,8 +48,8 @@ Item {
 
     Rectangle {
         id: window
-        width: parent.width / 2
-        height: parent.height / 1.3
+        width: row.implicitWidth + 20
+        height: row.implicitHeight + 20
         anchors.centerIn: parent
         color: Style.background
         radius: 15
@@ -59,8 +61,9 @@ Item {
             Behavior on y {
                 NumberAnimation {
                     id: slideAnim
-                    duration: 150
-                    easing.type: Easing.OutQuart
+                    duration: 200
+                    easing.type: Easing.OutBack
+                    easing.overshoot: 1.8
                 }
             }
         }
@@ -69,40 +72,52 @@ Item {
             anchors.fill: parent
         }
 
-        Column {
-            anchors.fill: parent
-            anchors.margins: 15
+        RowLayout {
+            id: row
             spacing: 20
+            anchors.centerIn: parent
 
             Text {
                 text: "Are you sure?"
-                color: Style.textPrimary
-                anchors.horizontalCenter: parent.horizontalCenter
+                color: Style.primary
+                leftPadding: 10
 
                 font {
                     family: Style.family
-                    weight: Font.Bold
-                    pixelSize: Style.fontSizeLg
-                    styleName: "Bold"
+                    weight: Font.DemiBold
+                    pixelSize: Style.fontSizeXl
+                    styleName: "SemiBold"
                 }
             }
 
             Row {
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: 20
+                spacing: 10
 
                 Rectangle {
                     id: yes
-                    width: noTxt.width + 80
-                    height: noTxt.height + 20
 
                     property Item nextItem: no
                     property Item prevItem: no
 
+                    height: 70
+                    width: 70
+                    radius: 10
                     color: (activeFocus || yesMouseArea.containsMouse) ? Style.success : ColorEngine.monokai_fusion.gray6
                     border.color: activeFocus ? Style.successBorder : Style.borderDim
-                    radius: 10
                     focus: true
+
+                    Symbols {
+                        icon: "check"
+                        iconColor: (yes.activeFocus || yesMouseArea.containsMouse) ? Style.onSuccess : Style.textSecondary
+                        anchors.centerIn: parent
+                        size: 30
+                    }
+
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 100
+                        }
+                    }
 
                     Keys.onPressed: event => {
                         if (event.text === "h" || event.key === Qt.Key_Left) {
@@ -118,26 +133,6 @@ Item {
                         } else if (event.text === "k" || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                             root.confirm();
                             event.accepted = true;
-                        }
-                    }
-
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: 100
-                        }
-                    }
-
-                    Text {
-                        id: yesTxt
-                        text: "Yes"
-                        color: (yes.activeFocus || yesMouseArea.containsMouse) ? Style.onSuccess : Style.textPrimary
-                        anchors.centerIn: parent
-
-                        font {
-                            family: Style.family
-                            weight: Font.DemiBold
-                            pixelSize: Style.fontSizeMd
-                            styleName: "DemiBold"
                         }
                     }
 
@@ -151,20 +146,34 @@ Item {
                             root.confirm();
                         }
                     }
+
                 }
 
                 Rectangle {
                     id: no
-                    width: noTxt.width + 80
-                    height: noTxt.height + 20
 
                     property Item nextItem: yes
                     property Item prevItem: yes
 
+                    height: 70
+                    width: 70
+                    radius: 10
                     color: (activeFocus || noMouseArea.containsMouse) ? Style.error : ColorEngine.monokai_fusion.gray6
                     border.color: activeFocus ? Style.errorBorder : Style.borderDim
-                    radius: 10
                     focus: true
+
+                    Symbols {
+                        icon: "close"
+                        iconColor: (no.activeFocus || noMouseArea.containsMouse) ? Style.onError : Style.textSecondary
+                        anchors.centerIn: parent
+                        size: 30
+                    }
+
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 100
+                        }
+                    }
 
                     Keys.onPressed: event => {
                         if (event.text === "h" || event.key === Qt.Key_Left) {
@@ -183,26 +192,6 @@ Item {
                         }
                     }
 
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: 100
-                        }
-                    }
-
-                    Text {
-                        id: noTxt
-                        text: "No"
-                        color: (no.activeFocus || noMouseArea.containsMouse) ? Style.onSuccess : Style.textPrimary
-                        anchors.centerIn: parent
-
-                        font {
-                            family: Style.family
-                            weight: Font.DemiBold
-                            pixelSize: Style.fontSizeMd
-                            styleName: "DemiBold"
-                        }
-                    }
-
                     MouseArea {
                         id: noMouseArea
                         anchors.fill: parent
@@ -210,9 +199,10 @@ Item {
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
                             no.forceActiveFocus();
-                            root.cancel();
+                            root.confirm();
                         }
                     }
+
                 }
             }
         }
