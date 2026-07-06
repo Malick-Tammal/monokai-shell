@@ -16,7 +16,7 @@ Singleton {
 
     Process {
         id: loadPinnedAppsProcess
-        command: ["sh", "-c", "cat ${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/data/pinned_apps.jsonc 2>/dev/null || cat ./data/pinned_apps.jsonc"]
+        command: ["sh", "-c", "cat ${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/data/pinned_apps.json 2>/dev/null || cat ./data/pinned_apps.json"]
         stdout: StdioCollector {
             onStreamFinished: {
                 try {

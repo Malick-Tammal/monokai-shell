@@ -1,0 +1,18 @@
+[
+  { "class": "io.github.kolunmi.Bazaar" },
+  { "class": "org.gnome.Nautilus", "exec": "nautilus --new-window" },
+  { "class": "firefox" },
+  { "class": "kitty" },
+  { "class": "neovim", "exec": "kitty --class neovim -e nvim" },
+  { "class": "code" },
+  { "class": "codium" },
+  { "class": "figma-linux" },
+  { "class": "org.upscayl.Upscayl" },
+  { "class": "org.inkscape.Inkscape" },
+  { "class": "obsidian" },
+  { "class": "io.github.alainm23.planify" },
+  { "class": "steam" },
+  { "class": "discord" },
+  { "class": "vesktop" },
+  { "class": "vlc" }
+]
