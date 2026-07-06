@@ -26,10 +26,10 @@ PanelWindow {
     property real dockMouseX: -1
 
     readonly property bool isHovered: gapBridge.containsMouse || dockMouseArea.containsMouse || activatorMouseArea.containsMouse || hoveredIconCount > 0
-    readonly property bool shouldHide: overlapsWindow && !activeHover
+    readonly property bool shouldHide: DockService.shouldIntellihide(Hypr.windowList, Hyprland.focusedWorkspace?.id, root.screen.y, root.screen.height, dock.height, Style.globalPadding) && !activeHover
 
     Timer {
-        id: hideTimer
+        id: hoverGraceTimer
         interval: 300
         repeat: false
         onTriggered: root.activeHover = false
@@ -37,31 +37,12 @@ PanelWindow {
 
     onIsHoveredChanged: {
         if (isHovered) {
-            hideTimer.stop();
+            hoverGraceTimer.stop();
             activeHover = true;
         } else {
-            hideTimer.restart();
+            hoverGraceTimer.restart();
             root.dockMouseX = -1;
         }
-    }
-
-    //  INFO: INTELLIHIDE ---
-    readonly property bool overlapsWindow: {
-        if (Hypr.windowList.length === 0)
-        return false;
-
-        const dockTopEdge = (root.screen.y + root.screen.height) - dock.height - (Style.globalPadding + 3);
-        const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
-
-        return Hypr.windowList.some(win => {
-                if (win.workspace.id !== currentWsId)
-                return false;
-                if (win.at[0] === -32000)
-                return false;
-
-                const winBottomEdge = win.at[1] + win.size[1];
-                return winBottomEdge > dockTopEdge;
-        });
     }
 
     property alias animY: dockTranslate.y
@@ -173,17 +154,33 @@ PanelWindow {
             }
         }
 
+        state: root.shouldHide ? "hidden" : "visible"
+
         transform: Translate {
             id: dockTranslate
-            y: root.shouldHide ? root.implicitHeight : 0
-            Behavior on y {
-                SpringAnimation {
-                    spring: 10
-                    damping: 0.5
-                    mass: 1.5
-                }
-            }
         }
+
+        states: [
+        State {
+            name: "visible"
+            PropertyChanges { target: dockTranslate; y: 0 }
+        },
+        State {
+            name: "hidden"
+            PropertyChanges { target: dockTranslate; y: root.implicitHeight }
+        }
+        ]
+
+        transitions: [
+        Transition {
+            to: "visible"
+            SpringAnimation { target: dockTranslate; property: "y"; spring: 10; damping: 0.5; mass: 1.5 }
+        },
+        Transition {
+            to: "hidden"
+            SpringAnimation { target: barTranslate; property: "y"; spring: 5; damping: 0.2; mass: 1.1 }
+        }
+        ]
     }
 
     Rectangle {

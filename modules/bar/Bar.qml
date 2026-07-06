@@ -23,7 +23,7 @@ PanelWindow {
 
     property bool isIntentionallyHovered: false
     readonly property bool rawHovered: triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
-    readonly property bool isHovered: !BarService.effectivelyOverlapped || isIntentionallyHovered
+    readonly property bool isHovered: !BarService.shouldIntellihide || isIntentionallyHovered
 
     Timer {
         id: hoverGraceTimer

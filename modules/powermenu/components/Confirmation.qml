@@ -202,7 +202,6 @@ Item {
                             root.cancel();
                         }
                     }
-
                 }
             }
         }

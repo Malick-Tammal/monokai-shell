@@ -142,6 +142,27 @@ Singleton {
         return lower;
     }
 
+    function shouldIntellihide(windowList, currentWsId, screenY, screenHeight, dockHeight, globalPadding) {
+        if (!windowList || windowList.length === 0) return false;
+
+        const dockTopEdge = (screenY + screenHeight) - dockHeight - (globalPadding + 3);
+
+        return windowList.some(win => {
+                const isSpecialWs = (win.workspace.name && win.workspace.name.indexOf("special") !== -1) || win.workspace.id < 0;
+                if (win.workspace.id !== currentWsId && !isSpecialWs)
+                return false;
+
+                if (win.at[0] === -32000 || win.mapped === false || win.hidden === true)
+                return false;
+
+                if (win.fullscreen)
+                return true;
+
+                const winBottomEdge = win.at[1] + win.size[1];
+                return winBottomEdge > dockTopEdge;
+        });
+    }
+
     function updateAppList() {
         let clients = Hypr.windowList;
         let runningMap = {};

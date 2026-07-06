@@ -20,7 +20,7 @@ Singleton {
 
     readonly property bool isWorkspaceEmpty: Hypr.isWorkspaceEmpty
 
-    readonly property bool barOverlapsWindow: {
+    readonly property bool hasPhysicalOverlap: {
         if (!Hypr.windowList || Hypr.windowList.length === 0)
         return false;
 
@@ -43,7 +43,7 @@ Singleton {
         });
     }
 
-    readonly property bool effectivelyOverlapped: {
+    readonly property bool shouldIntellihide: {
         if (!GlobalStates.barVisible) {
             const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
             const hasPredictableOverlap = Hypr.windowList.some(win => {
@@ -57,7 +57,7 @@ Singleton {
             if (hasPredictableOverlap) return true;
         }
 
-        return barOverlapsWindow;
+        return hasPhysicalOverlap;
     }
 
     IpcHandler {
