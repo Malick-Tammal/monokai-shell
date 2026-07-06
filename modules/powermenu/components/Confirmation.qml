@@ -199,7 +199,7 @@ Item {
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
                             no.forceActiveFocus();
-                            root.confirm();
+                            root.cancel();
                         }
                     }
 
