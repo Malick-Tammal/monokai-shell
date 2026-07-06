@@ -77,19 +77,61 @@ Row {
         anchors.bottom: parent.bottom
 
         readonly property real iconCenterX: root.x + x + width / 2
+        property string resolvedIconName: DockService.getCachedIconName(root.modelData.class)
+        property bool isIconReady: resolvedIconName !== ""
 
-        Image {
-            source: Quickshell.iconPath(DockService.getIconName(root.modelData.class), true)
+        Timer {
+            id: lazyLoadTimer
+            interval: 100 + (root.index * 15)
+            running: iconSlot.resolvedIconName === ""
+            repeat: false
+            onTriggered: {
+                iconSlot.resolvedIconName = DockService.getIconName(root.modelData.class);
+            }
+        }
+
+        Timer {
+            id: fadeInDelay
+            interval: 200
+            repeat: false
+            onTriggered: iconSlot.isIconReady = true
+        }
+
+        Rectangle {
+            id: iconPlaceholder
+            width: parent.width * 0.9
+            height: parent.width * 0.9
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottomMargin: parent.width * 0.05
+            radius: width / 4
+            color: Style.surfaceAlt
+            opacity: iconSlot.isIconReady ? 0 : 1
+            antialiasing: true
+
+            Behavior on opacity {
+                NumberAnimation { duration: 200 }
+            }
+        }
+
+        IconImage {
+            id: actualIcon
+            source: Quickshell.iconPath(iconSlot.resolvedIconName === "" ? "unknown" : iconSlot.resolvedIconName, true)
             width: parent.width
             height: parent.width
             anchors.bottom: parent.bottom
             transformOrigin: Item.Bottom
-            asynchronous: true
+            opacity: iconSlot.isIconReady ? 1 : 0
 
-            sourceSize.width: parent.width * 2
-            sourceSize.height: parent.width * 2
-            smooth: true
-            mipmap: true
+            onStatusChanged: {
+                if (status === Image.Ready && !iconSlot.isIconReady) {
+                    fadeInDelay.restart();
+                }
+            }
+
+            Behavior on opacity {
+                NumberAnimation { duration: 200 }
+            }
 
             scale: {
                 if (iconMouseArea.pressed)
@@ -211,7 +253,7 @@ Row {
                         return;
                         root.isLaunching = true;
                         launchTimeout.restart();
-                        Hyprland.dispatch(`hl.dsp.exec_cmd("${root.modelData.exec}")`);
+                        DockService.launchApp(root.modelData.class, root.modelData.exec);
                     }
                 } else if (mouse.button === Qt.MiddleButton) {
                     if (root.modelData.count > 0) {

@@ -3,78 +3,42 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
+import Quickshell.Hyprland
 
 Singleton {
     id: root
 
     property var appList: []
+    property bool isReady: false
 
-    property var pinnedApps: [
-    {
-        class: "io.github.kolunmi.Bazaar",
-        exec: "bazaar"
-    },
-    {
-        class: "org.gnome.Nautilus",
-        exec: "nautilus --new-window"
-    },
-    {
-        class: "firefox",
-        exec: "firefox"
-    },
-    {
-        class: "kitty",
-        exec: "kitty"
-    },
-    {
-        class: "neovim",
-        exec: "kitty --class neovim -e nvim"
-    },
-    {
-        class: "code",
-        exec: "code"
-    },
-    {
-        class: "codium",
-        exec: "vscodium"
-    },
-    {
-        class: "figma-linux",
-        exec: "figma-linux"
-    },
-    {
-        class: "upscayl",
-        exec: "flatpak run org.upscayl.Upscayl"
-    },
-    {
-        class: "gimp",
-        exec: "gimp"
-    },
-    {
-        class: "org.inkscape.Inkscape",
-        exec: "inkscape"
-    },
-    {
-        class: "obsidian",
-        exec: "obsidian"
-    },
-    {
-        class: "steam",
-        exec: "steam"
-    },
-    {
-        class: "discord",
-        exec: "discord"
-    },
-    {
-        class: "vesktop",
-        exec: "vesktop"
-    },
-    {
-        class: "vlc",
-        exec: "vlc"
+    property var pinnedApps: []
+
+    Process {
+        id: loadPinnedAppsProcess
+        command: ["sh", "-c", "cat ${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/data/pinned_apps.jsonc 2>/dev/null || cat ./data/pinned_apps.jsonc"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    const rawData = JSON.parse(text);
+                    let resolvedApps = [];
+
+                    rawData.forEach(app => {
+                            resolvedApps.push({
+                                    class: app.class,
+                                    exec: app.exec || ""
+                            });
+                    });
+
+                    root.pinnedApps = resolvedApps;
+                    root.updateAppList();
+                    root.isReady = true;
+                } catch (e) {
+                    console.error("Failed to load pinned apps JSON: " + e);
+                }
+            }
+        }
     }
-    ]
 
     function getDisplayName(className) {
         if (!className)
@@ -110,9 +74,32 @@ Singleton {
         return last.split(/(?=[A-Z])|[\s\-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
     }
 
-    function getIconName(className) {
+    property var _iconCache: ({})
+
+    function launchApp(className, overrideExec) {
+        if (overrideExec && overrideExec !== "") {
+            Hyprland.dispatch(`hl.dsp.exec_cmd("${overrideExec}")`);
+            return;
+        }
+
+        Hyprland.dispatch(`hl.dsp.exec_cmd("gtk-launch ${className}")`);
+    }
+
+    function getCachedIconName(className) {
         if (!className)
         return "unknown";
+        const lower = className.toLowerCase();
+
+        if (root._iconCache[lower] !== undefined)
+        return root._iconCache[lower];
+
+        return "";
+    }
+
+    function getIconName(className) {
+        let cached = getCachedIconName(className);
+        if (cached !== "") return cached;
+
         const lower = className.toLowerCase();
 
         const iconOverrides = {
@@ -126,19 +113,24 @@ Singleton {
             "io.github.kolunmi.bazaar": "software-store"
         };
 
-        if (iconOverrides[lower])
-        return iconOverrides[lower];
+        if (iconOverrides[lower]) {
+            root._iconCache[lower] = iconOverrides[lower];
+            return iconOverrides[lower];
+        }
 
         try {
             if (typeof DesktopEntries !== "undefined" && typeof DesktopEntries.heuristicLookup === "function") {
                 const appEntry = DesktopEntries.heuristicLookup(className);
-                if (appEntry && appEntry.icon)
-                return appEntry.icon;
+                if (appEntry && appEntry.icon) {
+                    root._iconCache[lower] = appEntry.icon;
+                    return appEntry.icon;
+                }
             }
         } catch (e) {
             console.warn("Auto-lookup failed for " + className);
         }
 
+        root._iconCache[lower] = lower;
         return lower;
     }
 
@@ -222,6 +214,7 @@ Singleton {
     }
 
     Component.onCompleted: {
+        loadPinnedAppsProcess.running = true;
         updateAppList();
     }
 }

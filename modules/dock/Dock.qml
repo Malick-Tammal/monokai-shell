@@ -105,6 +105,11 @@ PanelWindow {
         antialiasing: true
         clip: false
 
+        opacity: DockService.isReady ? 1 : 0
+        Behavior on opacity {
+            NumberAnimation { duration: 300; easing.type: Easing.OutCubic }
+        }
+
         anchors {
             bottom: parent.bottom
             bottomMargin: 15
@@ -178,7 +183,7 @@ PanelWindow {
         },
         Transition {
             to: "hidden"
-            SpringAnimation { target: barTranslate; property: "y"; spring: 5; damping: 0.2; mass: 1.1 }
+            SpringAnimation { target: dockTranslate; property: "y"; spring: 5; damping: 0.2; mass: 1.1 }
         }
         ]
     }
