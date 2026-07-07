@@ -5,6 +5,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
+import qs.utils
 
 Singleton {
     id: root
@@ -14,29 +15,25 @@ Singleton {
 
     property var pinnedApps: []
 
-    Process {
-        id: loadPinnedAppsProcess
-        command: ["sh", "-c", "cat ${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/data/pinned_apps.json 2>/dev/null || cat ./data/pinned_apps.json"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                try {
-                    const rawData = JSON.parse(text);
-                    let resolvedApps = [];
+    FileView {
+        id: pinnedAppsFile
+        path: Qt.resolvedUrl("../data/pinned_apps.jsonc")
+        blockLoading: true
+        watchChanges: true
+        onFileChanged: loadPinnedApps()
+    }
 
-                    rawData.forEach(app => {
-                            resolvedApps.push({
-                                    class: app.class,
-                                    exec: app.exec || ""
-                            });
-                    });
-
-                    root.pinnedApps = resolvedApps;
-                    root.updateAppList();
-                    root.isReady = true;
-                } catch (e) {
-                    console.error("Failed to load pinned apps JSON: " + e);
-                }
-            }
+    function loadPinnedApps() {
+        try {
+            const rawData = JsoncParser.parse(pinnedAppsFile.text());
+            root.pinnedApps = rawData.map(app => ({
+                        class: app.class,
+                        exec: app.exec || ""
+            }));
+            root.updateAppList();
+            root.isReady = true;
+        } catch (e) {
+            console.error("Failed to load pinned apps JSONC: " + e);
         }
     }
 
@@ -214,7 +211,7 @@ Singleton {
     }
 
     Component.onCompleted: {
-        loadPinnedAppsProcess.running = true;
+        loadPinnedApps();
         updateAppList();
     }
 }
