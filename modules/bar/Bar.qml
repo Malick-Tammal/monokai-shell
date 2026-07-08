@@ -24,7 +24,7 @@ PanelWindow {
 
     property bool isIntentionallyHovered: false
     readonly property bool rawHovered: triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
-    readonly property bool isHovered: !Intellihide.shouldHide(root.screen, Intellihide.Edge.Top, root.screen.width,BarService.barHeight) || isIntentionallyHovered
+    readonly property bool isHovered: !Intellihide.shouldHide(root.screen, Intellihide.Edge.Top, root.screen.width, BarService.barHeight, Style.globalPadding) || isIntentionallyHovered
 
     Timer {
         id: hoverGraceTimer

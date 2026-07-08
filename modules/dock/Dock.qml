@@ -32,7 +32,8 @@ PanelWindow {
         root.screen,
         Intellihide.Edge.Bottom,
         dock.width,
-        dock.height
+        dock.height,
+        15
     ) && !activeHover
 
     Timer {

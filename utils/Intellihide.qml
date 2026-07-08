@@ -17,9 +17,9 @@ Singleton {
         Right
     }
 
-    property int edgeOffset: 7
+    property int edgeOffset: 3
 
-    function shouldHide(screen, edgeType, componentWidth, componentHeight) {
+    function shouldHide(screen, edgeType, componentWidth, componentHeight, componentPadding) {
         if (!screen || !Hypr.windowList || Hypr.windowList.length === 0) return false;
 
         const screenX = screen.x;
@@ -32,7 +32,7 @@ Singleton {
         const currentNormalWsId = Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id : 1;
 
         let boundaryEdge = 0;
-        const totalPadding = Style.globalPadding + root.edgeOffset;
+        const totalPadding = componentPadding + root.edgeOffset;
 
         switch (edgeType) {
             case Intellihide.Edge.Bottom:
