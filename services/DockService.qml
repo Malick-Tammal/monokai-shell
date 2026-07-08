@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
 import qs.utils
+import qs.theme
 
 Singleton {
     id: root
@@ -131,19 +132,25 @@ Singleton {
         return lower;
     }
 
-    function shouldIntellihide(windowList, currentWsId, screenY, screenHeight, dockHeight, globalPadding) {
+    function shouldIntellihide(windowList, currentWsId, screenY, screenHeight, dockHeight) {
         if (!windowList || windowList.length === 0) return false;
 
-        const dockTopEdge = (screenY + screenHeight) - dockHeight - (globalPadding + 3);
+        const activeWinWs = Hyprland.activeToplevel?.workspace;
+        const activeSpecialWsName = (activeWinWs && activeWinWs.name.indexOf("special:") !== -1) ? activeWinWs.name : "";
+        const currentNormalWsId = Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id : 1;
+        const dockTopEdge = (screenY + screenHeight) - dockHeight - (Style.globalPadding + 3);
 
         return windowList.some(win => {
-                const isSpecialWs = (win.workspace.name && win.workspace.name.indexOf("special") !== -1) || win.workspace.id < 0;
-                if (win.workspace.id !== currentWsId && !isSpecialWs)
-                return false;
-
                 if (win.at[0] === -32000 || win.mapped === false || win.hidden === true)
                 return false;
-
+                const winIsSpecial = (win.workspace.name && win.workspace.name.indexOf("special:") !== -1) || win.workspace.id < 0;
+                if (activeSpecialWsName !== "") {
+                    if (win.workspace.name !== activeSpecialWsName)
+                    return false;
+                } else {
+                    if (winIsSpecial || win.workspace.id !== currentNormalWsId)
+                    return false;
+                }
                 if (win.fullscreen)
                 return true;
 

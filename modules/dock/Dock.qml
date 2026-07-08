@@ -5,6 +5,7 @@ import QtQuick
 import qs.theme
 import qs.services
 import qs.core
+import qs.utils
 import "./components/"
 
 PanelWindow {
@@ -26,7 +27,13 @@ PanelWindow {
     property real dockMouseX: -1
 
     readonly property bool isHovered: gapBridge.containsMouse || dockMouseArea.containsMouse || activatorMouseArea.containsMouse || hoveredIconCount > 0
-    readonly property bool shouldHide: DockService.shouldIntellihide(Hypr.windowList, Hyprland.focusedWorkspace?.id, root.screen.y, root.screen.height, dock.height, Style.globalPadding) && !activeHover
+
+    readonly property bool shouldHide: Intellihide.shouldHide(
+        root.screen,
+        Intellihide.Edge.Bottom,
+        dock.width,
+        dock.height
+    ) && !activeHover
 
     Timer {
         id: hoverGraceTimer
