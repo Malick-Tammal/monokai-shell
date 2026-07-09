@@ -2,6 +2,7 @@ import QtQuick
 import qs.theme
 import QtQuick.Layouts
 import qs.components
+import qs.services
 
 Item {
     id: root
@@ -120,17 +121,19 @@ Item {
                     }
 
                     Keys.onPressed: event => {
-                        if (event.text === "h" || event.key === Qt.Key_Left) {
+                        const code = event.nativeScanCode;
+
+                        if (code === KbService.keys.key_H || event.key === Qt.Key_Left) {
                             if (prevItem) {
                                 prevItem.forceActiveFocus();
                                 event.accepted = true;
                             }
-                        } else if (event.text === "l" || event.key === Qt.Key_Right) {
+                        } else if (code === KbService.keys.key_L || event.key === Qt.Key_Right) {
                             if (nextItem) {
                                 nextItem.forceActiveFocus();
                                 event.accepted = true;
                             }
-                        } else if (event.text === "k" || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                        } else if (code === KbService.keys.key_K || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                             root.confirm();
                             event.accepted = true;
                         }
@@ -176,17 +179,19 @@ Item {
                     }
 
                     Keys.onPressed: event => {
-                        if (event.text === "h" || event.key === Qt.Key_Left) {
+                        const code = event.nativeScanCode;
+
+                        if (code === KbService.keys.key_H || event.key === Qt.Key_Left) {
                             if (prevItem) {
                                 prevItem.forceActiveFocus();
                                 event.accepted = true;
                             }
-                        } else if (event.text === "l" || event.key === Qt.Key_Right) {
+                        } else if (code === KbService.keys.key_L || event.key === Qt.Key_Right) {
                             if (nextItem) {
                                 nextItem.forceActiveFocus();
                                 event.accepted = true;
                             }
-                        } else if (event.text === "k" || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                        } else if (code === KbService.keys.key_K || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                             root.cancel();
                             event.accepted = true;
                         }
