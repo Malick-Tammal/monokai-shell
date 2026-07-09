@@ -91,7 +91,7 @@ PanelWindow {
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: (!BarService.shouldIntellihide || GlobalStates.barVisible) ? BarService.barHeight + Style.globalPadding * 2 :Style.globalPadding
+            topMargin: (GlobalStates.isBarHovered || GlobalStates.barVisible) ? BarService.barHeight + Style.globalPadding * 2 :Style.globalPadding
             rightMargin: Style.globalPadding
 
             Behavior on topMargin {

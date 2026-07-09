@@ -26,6 +26,8 @@ PanelWindow {
     readonly property bool rawHovered: triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
     readonly property bool isHovered: !Intellihide.shouldHide(root.screen, Intellihide.Edge.Top, root.screen.width, BarService.barHeight, Style.globalPadding) || isIntentionallyHovered
 
+    onIsHoveredChanged: GlobalStates.isBarHovered = isHovered
+
     Timer {
         id: hoverGraceTimer
         interval: 300
