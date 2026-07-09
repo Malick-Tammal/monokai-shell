@@ -8,6 +8,7 @@ import "./components"
 import qs.theme
 import qs.services
 import qs.core
+import QtQuick.Effects
 
 PanelWindow {
     id: root
@@ -128,6 +129,15 @@ PanelWindow {
                 }
 
                 spacing: 10
+
+                layer.enabled: root.inConfirmation
+
+                layer.effect: MultiEffect {
+                    blurEnabled: true
+                    blur: 0.55
+                    blurMax: 45
+                    blurMultiplier: 0.22
+                }
 
                 RowLayout {
                     id: header

@@ -27,7 +27,8 @@ Item {
         width: parent.width - 2
         height: parent.height - 2
         color: ColorEngine.monokai_fusion.black
-        opacity: root.isActive ? 0.5 : 0
+        opacity: root.isActive ? 0.4 : 0
+        visible: root.isActive
         anchors.centerIn: parent
         radius: 15
         antialiasing: true
