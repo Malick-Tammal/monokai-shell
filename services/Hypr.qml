@@ -11,6 +11,8 @@ Singleton {
 
     property var windowList: []
 
+    property string activeSpecialWorkspace: ""
+
     readonly property int focusedWorkspaceId: Hyprland.focusedWorkspace?.id ?? 0
 
     readonly property int lastVisibleWs: {
@@ -131,6 +133,12 @@ Singleton {
 
             if (event.name === "configreloaded") {
                 checkHyprbars.running = true;
+            }
+
+            if (event.name === "activespecial") {
+                const commaIdx = event.data.indexOf(",");
+                const wsName = commaIdx > 0 ? event.data.substring(0, commaIdx).trim() : "";
+                root.activeSpecialWorkspace = wsName;
             }
 
             if (event.name === "urgent") {

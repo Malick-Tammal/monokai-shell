@@ -27,8 +27,7 @@ Singleton {
         const screenWidth = screen.width;
         const screenHeight = screen.height;
 
-        const activeWinWs = Hyprland.activeToplevel?.workspace;
-        const activeSpecialWsName = (activeWinWs && activeWinWs.name.indexOf("special:") !== -1) ? activeWinWs.name : "";
+        const activeSpecialWsName = Hypr.activeSpecialWorkspace;
         const currentNormalWsId = Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id : 1;
 
         let boundaryEdge = 0;
