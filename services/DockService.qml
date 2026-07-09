@@ -19,12 +19,22 @@ Singleton {
     FileView {
         id: pinnedAppsFile
         path: Qt.resolvedUrl("../data/pinned_apps.jsonc")
-        blockLoading: true
         watchChanges: true
-        onFileChanged: loadPinnedApps()
+
+        onFileChanged: {
+            pinnedAppsFile.reload();
+        }
+
+        onLoaded: {
+            processFileContent();
+        }
+
+        onLoadFailed: error => {
+            console.error("Failed to load pinned apps file: " + error);
+        }
     }
 
-    function loadPinnedApps() {
+    function processFileContent() {
         try {
             const rawData = JsoncParser.parse(pinnedAppsFile.text());
             root.pinnedApps = rawData.map(app => ({
@@ -34,7 +44,7 @@ Singleton {
             root.updateAppList();
             root.isReady = true;
         } catch (e) {
-            console.error("Failed to load pinned apps JSONC: " + e);
+            console.error("Failed to parse pinned apps JSONC: " + e);
         }
     }
 
@@ -78,6 +88,18 @@ Singleton {
         if (overrideExec && overrideExec !== "") {
             Hyprland.dispatch(`hl.dsp.exec_cmd("${overrideExec}")`);
             return;
+        }
+
+        try {
+            if (typeof DesktopEntries !== "undefined" && typeof DesktopEntries.heuristicLookup === "function") {
+                const entry = DesktopEntries.heuristicLookup(className);
+                if (entry && entry.desktopEntryName) {
+                    Hyprland.dispatch(`hl.dsp.exec_cmd("gtk-launch ${entry.desktopEntryName}")`);
+                    return;
+                }
+            }
+        } catch (e) {
+            console.warn("Desktop entry lookup failed for " + className);
         }
 
         Hyprland.dispatch(`hl.dsp.exec_cmd("gtk-launch ${className}")`);
@@ -191,7 +213,6 @@ Singleton {
     }
 
     Component.onCompleted: {
-        loadPinnedApps();
-        updateAppList();
+        root.updateAppList();
     }
 }
