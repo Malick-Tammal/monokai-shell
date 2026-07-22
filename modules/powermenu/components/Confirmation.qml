@@ -110,7 +110,7 @@ Item {
 
                     Symbols {
                         icon: "check"
-                        iconColor: (yes.activeFocus || yesMouseArea.containsMouse) ? Style.onSuccess : Style.textSecondary
+                        iconColor: (yes.activeFocus || yesMouseArea.containsMouse) ? Style.textOnSuccess : Style.textSecondary
                         anchors.centerIn: parent
                         size: 30
                     }
@@ -168,7 +168,7 @@ Item {
 
                     Symbols {
                         icon: "close"
-                        iconColor: (no.activeFocus || noMouseArea.containsMouse) ? Style.onError : Style.textSecondary
+                        iconColor: (no.activeFocus || noMouseArea.containsMouse) ? Style.textOnError : Style.textSecondary
                         anchors.centerIn: parent
                         size: 30
                     }

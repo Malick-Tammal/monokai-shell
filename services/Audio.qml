@@ -3,16 +3,20 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 
 Singleton {
     id: root
 
+    signal interactionTriggered()
+
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var source: Pipewire.defaultAudioSource
 
-    readonly property real volume: sink?.audio?.volume ?? 0.0
+    readonly property real volume: sink?.audio?.volume ?? 0.
     readonly property bool isMuted: sink?.audio?.muted ?? false
+
     readonly property bool isMicMuted: source?.audio?.muted ?? false
     readonly property bool isBluetooth: {
         if (!sink)
@@ -23,6 +27,25 @@ Singleton {
 
     readonly property real hardMaxValue: 1.00
     property string audioTheme: "freedesktop"
+
+    IpcHandler {
+        target: "volume"
+
+        function increase(){
+            incrementVolume()
+            interactionTriggered()
+        }
+
+        function decrease(){
+            decrementVolume()
+            interactionTriggered()
+        }
+
+        function mute(){
+            toggleMute()
+            interactionTriggered()
+        }
+    }
 
     function friendlyDeviceName(node): string {
         if (!node)
@@ -61,11 +84,13 @@ Singleton {
     function toggleMute(): void {
         if (sink?.audio)
         sink.audio.muted = !sink.audio.muted;
+        interactionTriggered()
     }
 
     function toggleMicMute(): void {
         if (source?.audio)
         source.audio.muted = !source.audio.muted;
+
     }
 
     function changeVolume(amount): void {

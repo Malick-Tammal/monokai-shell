@@ -165,7 +165,7 @@ PanelWindow {
                         activeBorderColor: Style.errorBorder
                         iconName: "power_settings_new"
                         iconColor: Style.textTertiary
-                        activeIconColor:  Style.onError
+                        activeIconColor:  Style.textOnError
 
                         onActivated: requestExecute("systemctl poweroff", poweroff)
                     }
@@ -179,7 +179,7 @@ PanelWindow {
                         activeBorderColor: Style.successBorder
                         iconName: "replay"
                         iconColor: Style.textTertiary
-                        activeIconColor: Style.onSuccess
+                        activeIconColor: Style.textOnSuccess
 
                         onActivated: requestExecute("systemctl reboot", reboot)
                     }
@@ -193,7 +193,7 @@ PanelWindow {
                         activeBorderColor: Style.warningBorder
                         iconName: "bedtime"
                         iconColor: Style.textTertiary
-                        activeIconColor:  Style.onWarning
+                        activeIconColor:  Style.textOnWarning
 
                         onActivated: requestExecute("systemctl suspend", sleep)
                     }

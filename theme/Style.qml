@@ -2,6 +2,8 @@ pragma Singleton
 import QtQuick
 
 QtObject {
+    id: root
+
     // Accents
     property color accent: ColorEngine.monokai_fusion.yellow5
     property color pywalAccent: ColorEngine.pywal.special.accent
@@ -26,7 +28,7 @@ QtObject {
 
     // Primary
     property color primary: ColorEngine.monokai_fusion.yellow5
-    property color onPrimary: ColorEngine.monokai_fusion.yellow9
+    property color textOnPrimary: ColorEngine.monokai_fusion.yellow9
 
     // Borders and Dividers
     property color border: ColorEngine.monokai_fusion.yellow5
@@ -35,21 +37,21 @@ QtObject {
 
     // Status & Feedback
     property color error: ColorEngine.monokai_fusion.red5
-    property color onError: ColorEngine.monokai_fusion.red9
+    property color textOnError: ColorEngine.monokai_fusion.red9
     property color errorContainer: ColorEngine.monokai_fusion.red8
-    property color onErrorContainer: ColorEngine.monokai_fusion.red5
+    property color textOnErrorContainer: ColorEngine.monokai_fusion.red5
     property color errorBorder: ColorEngine.monokai_fusion.red3
 
     property color warning: ColorEngine.monokai_fusion.yellow5
-    property color onWarning: ColorEngine.monokai_fusion.yellow9
+    property color textOnWarning: ColorEngine.monokai_fusion.yellow9
     property color warningContainer: ColorEngine.monokai_fusion.yellow8
-    property color onWarningContainer: ColorEngine.monokai_fusion.yellow5
+    property color textOnWarningContainer: ColorEngine.monokai_fusion.yellow5
     property color warningBorder: ColorEngine.monokai_fusion.yellow3
 
     property color success: ColorEngine.monokai_fusion.green5
-    property color onSuccess: ColorEngine.monokai_fusion.green9
+    property color textOnSuccess: ColorEngine.monokai_fusion.green9
     property color succesContainer: ColorEngine.monokai_fusion.green8
-    property color onSuccessContainer: ColorEngine.monokai_fusion.green5
+    property color textOnSuccessContainer: ColorEngine.monokai_fusion.green5
     property color successBorder: ColorEngine.monokai_fusion.green3
 
     // Font Sizes
@@ -70,4 +72,8 @@ QtObject {
 
     property int symbolSize: 15
     property int globalPadding: 10
+
+    Component.onCompleted: {
+        console.log(root.onPrimary)
+    }
 }

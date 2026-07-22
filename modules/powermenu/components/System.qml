@@ -55,12 +55,12 @@ Rectangle {
             Nerd {
                 icon: "󰣇"
                 size: 18
-                color: Style.onWarning
+                color: Style.textOnWarning
             }
 
             Text {
                 text: "System"
-                color: Style.onWarning
+                color: Style.textOnWarning
 
                 font {
                     family: Style.family

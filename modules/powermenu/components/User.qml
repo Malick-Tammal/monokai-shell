@@ -64,12 +64,12 @@ Rectangle {
             Symbols {
                 icon: "person"
                 size: 18
-                color: Style.onWarning
+                color: Style.textOnWarning
             }
 
             Text {
                 text: "User"
-                color: Style.onWarning
+                color: Style.textOnWarning
 
                 font {
                     family: Style.family

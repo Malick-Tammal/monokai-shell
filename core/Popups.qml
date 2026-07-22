@@ -1,6 +1,7 @@
 import QtQuick
 import "../modules/powermenu/"
 import "../modules/walli/"
+import "../modules/OSD/"
 
 Item {
     id: root
@@ -11,5 +12,9 @@ Item {
 
     Walli {
         id: walli
+    }
+
+    OSD {
+        id: osd
     }
 }
