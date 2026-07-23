@@ -21,7 +21,7 @@ Item {
         Symbols {
             icon : "mode_off_on"
             size: Style.symbolSize
-            color: Style.onError
+            color: Style.textOnError
 
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)

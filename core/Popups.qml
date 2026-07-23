@@ -14,7 +14,13 @@ Item {
         id: walli
     }
 
-    OSD {
-        id: osd
+    // OSDs
+
+    Volume {
+        id: volume
+    }
+
+    Brightness {
+        id: brightness
     }
 }

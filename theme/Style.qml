@@ -72,8 +72,4 @@ QtObject {
 
     property int symbolSize: 15
     property int globalPadding: 10
-
-    Component.onCompleted: {
-        console.log(root.onPrimary)
-    }
 }
