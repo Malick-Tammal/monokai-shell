@@ -44,8 +44,10 @@ Item {
 
         Symbols {
             icon: "keyboard"
-            size: Style.symbolSize
-            iconColor: ColorEngine.monokai_fusion.gray1
+            size: Style.symbolSizeXl
+            color: ColorEngine.monokai_fusion.gray1
+            filled : false
+            weight: 500
         }
 
         Text {

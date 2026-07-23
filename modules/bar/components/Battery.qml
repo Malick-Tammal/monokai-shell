@@ -129,7 +129,7 @@ Item {
                 y: Math.round((parent.height - height) / 2)
                 size: Style.symbolSize
 
-                iconColor: {
+                color: {
                     if (Battery.acConnected)
                     return ColorEngine.monokai_fusion.green9;
                     if (Battery.percentage <= 0.15)
@@ -194,7 +194,7 @@ Item {
 
                         PropertyAction {
                             target: batteryIcon
-                            properties: "icon,iconColor"
+                            properties: "icon,color"
                         }
 
                         PropertyAction {

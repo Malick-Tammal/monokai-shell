@@ -15,6 +15,7 @@ Item {
     required property color surface
     required property color color
     required property color text
+    property int weight: 600
 
     Rectangle {
         id: main
@@ -62,8 +63,9 @@ Item {
 
         Symbols {
             icon: root.icon
-            iconColor: root.text
+            color: root.text
             anchors.centerIn: parent
+            weight: root.weight
         }
     }
 

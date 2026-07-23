@@ -64,7 +64,7 @@ Rectangle {
         icon: root.iconName
         size: 30
         anchors.centerIn: parent
-        iconColor: (root.activeFocus || mouseArea.containsMouse) ? root.activeIconColor : root.iconColor
+        color: (root.activeFocus || mouseArea.containsMouse) ? root.activeIconColor : root.iconColor
         weight: Font.Bold
     }
 }

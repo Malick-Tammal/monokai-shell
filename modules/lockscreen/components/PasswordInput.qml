@@ -263,7 +263,7 @@ Item {
                         Symbols {
                             icon: "circle"
                             size: 23
-                            iconColor: Style.textSecondary
+                            color: Style.textSecondary
                             anchors.centerIn: parent
                         }
                     }

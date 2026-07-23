@@ -42,7 +42,7 @@ Item {
         Symbols {
             icon: ModeService.currentIcon
             size: 16
-            iconColor: ColorEngine.monokai_fusion[ModeService.themeColor + "9"] || ColorEngine.monokai_fusion.gray9
+            color: ColorEngine.monokai_fusion[ModeService.themeColor + "9"] || ColorEngine.monokai_fusion.gray9
             weight: Font.Black
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)

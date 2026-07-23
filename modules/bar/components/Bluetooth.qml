@@ -77,7 +77,7 @@ Item {
                 icon: Bluetooth.symbol
                 size: Style.symbolSize
                 weight: Font.Bold
-                iconColor: Bluetooth.isAvailable ? ColorEngine.monokai_fusion.green9 : ColorEngine.monokai_fusion.gray3
+                color: Bluetooth.isAvailable ? ColorEngine.monokai_fusion.green9 : ColorEngine.monokai_fusion.gray3
 
                 y: Math.round((parent.height - height) / 2)
 

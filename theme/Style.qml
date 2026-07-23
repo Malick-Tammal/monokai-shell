@@ -70,6 +70,11 @@ QtObject {
     property string family: "SF Pro Rounded"
     property string nerdFamily: "JetBrains Nerd Font"
 
+    // Symbol Sizes
     property int symbolSize: 15
+    property int symbolSizeXl: 18
+    property int symbolSize2Xl: 24
+
+    // Padding
     property int globalPadding: 10
 }

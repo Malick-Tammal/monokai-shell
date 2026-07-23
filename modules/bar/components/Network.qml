@@ -42,7 +42,7 @@ Item {
                 icon: Network.symbol
                 size: Style.symbolSize
                 weight: Font.Bold
-                iconColor: ColorEngine.monokai_fusion.purple9
+                color: ColorEngine.monokai_fusion.purple9
             }
 
             Text {

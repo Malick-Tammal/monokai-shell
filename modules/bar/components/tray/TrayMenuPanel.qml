@@ -177,7 +177,7 @@ Rectangle {
                 Symbols {
                     icon: "arrow_right"
                     size: 18
-                    iconColor: isHoveredOrOpen ? Style.background : Style.textTertiary
+                    color: isHoveredOrOpen ? Style.background : Style.textTertiary
                     visible: menuItem.hasChildren === true
                     weight: 700
                     anchors.verticalCenter: parent.verticalCenter

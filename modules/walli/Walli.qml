@@ -284,7 +284,7 @@ PanelWindow {
 
                             Text {
                                 id: wallName
-                                color: Style.onWarning
+                                color: Style.textOnWarning
                                 opacity: isSelected ? 1.0 : 0.0
                                 anchors.centerIn: parent
 

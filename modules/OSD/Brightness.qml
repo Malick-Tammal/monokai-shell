@@ -55,6 +55,7 @@ PanelWindow {
             color: ColorEngine.monokai_fusion.purple5
             text: ColorEngine.monokai_fusion.purple9
             value: BrightnessService.brightness
+            weight: 500
         }
     }
 }

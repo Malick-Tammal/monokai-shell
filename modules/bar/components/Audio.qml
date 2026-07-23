@@ -84,7 +84,7 @@ Item {
             Symbols {
                 icon: Audio.symbol
                 size: Style.symbolSize
-                iconColor: ColorEngine.monokai_fusion.blue9
+                color: ColorEngine.monokai_fusion.blue9
             }
 
             Sliding {
