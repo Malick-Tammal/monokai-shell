@@ -14,9 +14,10 @@ Singleton {
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var source: Pipewire.defaultAudioSource
 
-    readonly property real volume: sink?.audio?.volume ?? 0.
+    readonly property real volume: (sink?.audio?.volume ?? 0).toFixed(2)
     readonly property bool isMuted: sink?.audio?.muted ?? false
 
+    readonly property real micVolume: (source?.audio?.volume ?? 0).toFixed(2)
     readonly property bool isMicMuted: source?.audio?.muted ?? false
     readonly property bool isBluetooth: {
         if (!sink)
@@ -44,6 +45,14 @@ Singleton {
         function mute(){
             toggleMute()
             interactionTriggered()
+        }
+    }
+
+    IpcHandler {
+        target: "mic"
+
+        function mute(){
+            toggleMicMute()
         }
     }
 
@@ -84,13 +93,11 @@ Singleton {
     function toggleMute(): void {
         if (sink?.audio)
         sink.audio.muted = !sink.audio.muted;
-        interactionTriggered()
     }
 
     function toggleMicMute(): void {
         if (source?.audio)
         source.audio.muted = !source.audio.muted;
-
     }
 
     function changeVolume(amount): void {

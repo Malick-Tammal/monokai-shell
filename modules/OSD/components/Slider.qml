@@ -13,23 +13,24 @@ Item {
     required property real value
     required property string icon
     required property color surface
-    required property color color
-    required property color text
+    required property color accent
+    required property color foreground
+    required property color thumbColor
     property int weight: 600
 
     Rectangle {
-        id: main
+        id: body
         anchors.fill: parent
         color: root.surface
-        border.color: root.color
+        border.color: root.accent
         radius: 15
     }
 
     Rectangle {
-        id: slider
+        id: thumb
         width: parent.width - 8
         height: Math.max(20,(parent.height - (icon.height + 7)) * (root.value ?? 0))
-        color: root.color
+        color: root.thumbColor
         antialiasing: true
         radius: 12
         // border.color: root.color
@@ -56,21 +57,21 @@ Item {
         id: icon
         width: parent.width
         height: 50
-        color: root.color
+        color: root.accent
         anchors.bottom: parent.bottom
         bottomLeftRadius: 15
         bottomRightRadius: 15
 
         Symbols {
             icon: root.icon
-            color: root.text
+            color: root.foreground
             anchors.centerIn: parent
             weight: root.weight
         }
     }
 
     InvertedCorner {
-        roundingColor: root.color
+        roundingColor: root.accent
         rounding: 16
         anchors.bottom: parent.bottom
         anchors.bottomMargin: icon.height
@@ -82,7 +83,7 @@ Item {
     }
 
     InvertedCorner {
-        roundingColor: root.color
+        roundingColor: root.accent
         rounding: 16
         anchors {
             right: parent.right

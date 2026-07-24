@@ -50,12 +50,12 @@ PanelWindow {
         }
 
         sourceComponent: Slider {
+            value: BrightnessService.brightness
             icon: BrightnessService.symbol
             surface: ColorEngine.monokai_fusion.purple9
-            color: ColorEngine.monokai_fusion.purple5
-            text: ColorEngine.monokai_fusion.purple9
-            value: BrightnessService.brightness
-            weight: 500
+            accent: ColorEngine.monokai_fusion.purple5
+            foreground: ColorEngine.monokai_fusion.purple9
+            thumbColor: ColorEngine.monokai_fusion.purple5
         }
     }
 }

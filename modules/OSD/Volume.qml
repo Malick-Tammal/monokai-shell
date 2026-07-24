@@ -22,10 +22,19 @@ PanelWindow {
     color: "transparent"
     visible: GlobalStates.volumeOsd
 
+    property string mode: "volume"
+
     Connections {
         target: Audio
 
         function onInteractionTriggered() {
+            root.mode = "volume";
+            GlobalStates.volumeOsd = true;
+            hideTimer.restart();
+        }
+
+        function onIsMicMutedChanged() {
+            root.mode = "mic";
             GlobalStates.volumeOsd = true;
             hideTimer.restart();
         }
@@ -37,6 +46,7 @@ PanelWindow {
         repeat: false
         onTriggered: {
             GlobalStates.volumeOsd = false;
+            root.mode = "volume";
         }
     }
 
@@ -50,11 +60,15 @@ PanelWindow {
         }
 
         sourceComponent: Slider {
-            icon: Audio.symbol
+            value: root.mode === "mic" ? Audio.micVolume : Audio.volume
+            icon: root.mode === "mic" ? (Audio.isMicMuted ? "mic_off" : "mic") : Audio.symbol
             surface: Style.textOnSuccess
-            color: Style.success
-            text: Style.textOnSuccess
-            value: Audio.volume
+            accent: Style.success
+            foreground: Style.textOnSuccess
+
+            thumbColor: mode === "mic"
+            ? (Audio.isMicMuted ? Style.successContainer : Style.success)
+            : (Audio.isMuted ? Style.successContainer : Style.success)
         }
     }
 }

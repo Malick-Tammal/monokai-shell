@@ -50,7 +50,7 @@ QtObject {
 
     property color success: ColorEngine.monokai_fusion.green5
     property color textOnSuccess: ColorEngine.monokai_fusion.green9
-    property color succesContainer: ColorEngine.monokai_fusion.green8
+    property color successContainer: ColorEngine.monokai_fusion.green8
     property color textOnSuccessContainer: ColorEngine.monokai_fusion.green5
     property color successBorder: ColorEngine.monokai_fusion.green3
 
