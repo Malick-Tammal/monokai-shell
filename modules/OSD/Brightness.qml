@@ -23,7 +23,7 @@ PanelWindow {
     visible: GlobalStates.brightnessOsd
 
     Connections {
-        target:BrightnessService
+        target: BrightnessService
 
         function onInteractionTriggered() {
             GlobalStates.brightnessOsd = true;
@@ -36,6 +36,10 @@ PanelWindow {
         interval: 1000
         repeat: false
         onTriggered: {
+            if (brightnessLoader.item?._dragging || brightnessLoader.item?.hovered) {
+                hideTimer.restart();
+                return;
+            }
             GlobalStates.brightnessOsd = false;
         }
     }
@@ -56,6 +60,17 @@ PanelWindow {
             accent: ColorEngine.monokai_fusion.purple5
             foreground: ColorEngine.monokai_fusion.purple9
             thumbColor: ColorEngine.monokai_fusion.purple5
+
+            onValueChangeRequested: (v) => {
+                BrightnessService.setBrightness(v)
+            }
+
+            on_DraggingChanged: {
+                if (_dragging)
+                    hideTimer.stop()
+                else
+                    hideTimer.restart()
+            }
         }
     }
 }

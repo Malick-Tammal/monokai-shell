@@ -45,6 +45,10 @@ PanelWindow {
         interval: 1000
         repeat: false
         onTriggered: {
+            if (volumeLoader.item?._dragging || volumeLoader.item?.hovered) {
+                hideTimer.restart();
+                return;
+            }
             GlobalStates.volumeOsd = false;
             root.mode = "volume";
         }
@@ -65,10 +69,27 @@ PanelWindow {
             surface: Style.textOnSuccess
             accent: Style.success
             foreground: Style.textOnSuccess
-
-            thumbColor: mode === "mic"
+            thumbColor: root.mode === "mic"
             ? (Audio.isMicMuted ? Style.successContainer : Style.success)
             : (Audio.isMuted ? Style.successContainer : Style.success)
+            allowEmpty: root.mode === "mic"
+
+            onValueChangeRequested: (v) => {
+                if (root.mode === "mic") {
+                    if (Audio.source?.audio)
+                        Audio.source.audio.volume = v
+                } else {
+                    if (Audio.sink?.audio)
+                        Audio.sink.audio.volume = Math.min(v, Audio.hardMaxValue)
+                }
+            }
+
+            on_DraggingChanged: {
+                if (_dragging)
+                    hideTimer.stop()
+                else
+                    hideTimer.restart()
+            }
         }
     }
 }
