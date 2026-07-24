@@ -17,10 +17,15 @@ PanelWindow {
         right: true
     }
 
-    implicitWidth: brightnessLoader.item ? brightnessLoader.implicitWidth + Style.globalPadding * 4 : 0
-    implicitHeight: brightnessLoader.item ? brightnessLoader.implicitHeight : 0
+    implicitWidth: brightnessLoader.implicitWidth + Style.globalPadding * 4
+    implicitHeight: brightnessLoader.implicitHeight
     color: "transparent"
     visible: GlobalStates.brightnessOsd
+
+    onVisibleChanged: {
+        if (visible && !hideTimer.running)
+        hideTimer.restart();
+    }
 
     Connections {
         target: BrightnessService
@@ -67,9 +72,9 @@ PanelWindow {
 
             on_DraggingChanged: {
                 if (_dragging)
-                    hideTimer.stop()
+                hideTimer.stop()
                 else
-                    hideTimer.restart()
+                hideTimer.restart()
             }
         }
     }

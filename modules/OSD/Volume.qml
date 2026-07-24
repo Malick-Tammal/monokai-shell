@@ -17,8 +17,8 @@ PanelWindow {
         left: true
     }
 
-    implicitWidth: volumeLoader.item ? volumeLoader.implicitWidth + Style.globalPadding * 4 : 0
-    implicitHeight: volumeLoader.item ? volumeLoader.implicitHeight : 0
+    implicitWidth: volumeLoader.implicitWidth + Style.globalPadding * 4
+    implicitHeight: volumeLoader.implicitHeight
     color: "transparent"
     visible: GlobalStates.volumeOsd
 
@@ -77,18 +77,18 @@ PanelWindow {
             onValueChangeRequested: (v) => {
                 if (root.mode === "mic") {
                     if (Audio.source?.audio)
-                        Audio.source.audio.volume = v
+                    Audio.source.audio.volume = v
                 } else {
                     if (Audio.sink?.audio)
-                        Audio.sink.audio.volume = Math.min(v, Audio.hardMaxValue)
+                    Audio.sink.audio.volume = Math.min(v, Audio.hardMaxValue)
                 }
             }
 
             on_DraggingChanged: {
                 if (_dragging)
-                    hideTimer.stop()
+                hideTimer.stop()
                 else
-                    hideTimer.restart()
+                hideTimer.restart()
             }
         }
     }
