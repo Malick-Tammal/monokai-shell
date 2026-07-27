@@ -23,4 +23,8 @@ Item {
     Brightness {
         id: brightness
     }
+
+    TopToast {
+        id: topToast
+    }
 }

@@ -18,4 +18,6 @@ Singleton {
 
     property bool volumeOsd
     property bool brightnessOsd
+
+    property bool showToast
 }

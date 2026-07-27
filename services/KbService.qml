@@ -4,38 +4,24 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Quickshell.Hyprland
 
 Singleton {
     id: root
 
-    property string currentLayout: "..."
-    property string shortLayout: ".."
+    property string currentLayout: ""
+    property string shortLayout: ""
 
-    function formatLayout(fullName) {
-        let lower = fullName.toLowerCase();
-
-        if (lower.includes("english"))
-        return "EN";
-        if (lower.includes("arabic"))
-        return "AR";
-        if (lower.includes("french"))
-        return "FR";
-
-        return fullName.substring(0, 2).toUpperCase();
-    }
-
-    Process {
-        id: layoutListener
-
-        command: ["bash", "-c", "hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | .active_keymap' | head -n1; socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do if [[ \"$line\" == activelayout* ]]; then echo \"$line\" | cut -d',' -f2; fi; done"]
-        running: true
-
-        stdout: SplitParser {
-            onRead: data => {
-                let layoutName = data.trim();
-                if (layoutName !== "") {
-                    root.currentLayout = layoutName;
-                    root.shortLayout = root.formatLayout(layoutName);
+    Connections {
+        target: Hyprland
+        function onRawEvent(event) {
+            if (event.name === "activelayout") {
+                let parts = event.data.split(",");
+                if (parts.length >= 2) {
+                    const layout = parts[1].split(" ")[0];
+                    const shortLayout = parts[1].trim().substring(0, 2).toUpperCase();
+                    root.currentLayout = layout;
+                    root.shortLayout = shortLayout;
                 }
             }
         }

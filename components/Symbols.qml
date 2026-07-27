@@ -6,7 +6,6 @@ Text {
 
     required property string icon
     property int size: Style.symbolSize2Xl
-    // property color iconColor: Style.textPrimary
     property int weight: 600
     property bool filled: true
 
