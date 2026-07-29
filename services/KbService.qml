@@ -12,6 +12,20 @@ Singleton {
     property string currentLayout: ""
     property string shortLayout: ""
 
+    property int backlightLevel: 0
+    property int maxBacklightLevel: 2
+    property int backlightPercent: 0
+
+    property string symbol: {
+        if (backlightLevel === 0) {
+            return "backlight_high_off"
+        } else if (backlightLevel === 1) {
+            return "backlight_low"
+        } else if (backlightLevel === 2) {
+            return "backlight_low"
+        }
+    }
+
     Connections {
         target: Hyprland
         function onRawEvent(event) {
@@ -42,16 +56,54 @@ Singleton {
                 const shortLayout = activeKeymap.trim().substring(0, 2).toUpperCase();
                 root.currentLayout = layout;
                 root.shortLayout = shortLayout;
-                console.log(shortLayout)
             }
         }
     }
 
-    Timer {
-        interval: 100
+    Process {
+        id: backlight
+        command: ["brightnessctl", "-m", "-d", "*kbd_backlight*"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (!text) return;
+
+                const parts = text.trim().split(",");
+
+                if (parts.length >= 5) {
+                    const current = parseInt(parts[2]);
+                    const percent = parseInt(parts[3].replace("%", ""));
+                    const max = parseInt(parts[4]);
+
+                    if (current !== root.backlightLevel) {
+                        root.backlightLevel = current;
+                        root.maxBacklightLevel = max;
+                        root.backlightPercent = percent;
+
+                        console.log(`Dell Backlight: Level ${current}/${max} (${percent}%)`);
+                    }
+                }
+            }
+        }
+    }
+
+    Process {
+        id: dellDbusMonitor
         running: true
-        repeat: false
-        onTriggered: getLayout.running = true
+        command: ["dbus-monitor", "--system", "type='signal',interface='org.freedesktop.UPower.KbdBacklight'"]
+        stdout: SplitParser {
+            onRead: data => {
+                if (data.includes("BrightnessChanged")) {
+                    if (!backlight.running) {
+                        backlight.running = true;
+                    }
+                }
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        if (!getLayout.running) { getLayout.running = true }
+        if (!backlight.running) { backlight.running = true }
     }
 
     property var keys: ({

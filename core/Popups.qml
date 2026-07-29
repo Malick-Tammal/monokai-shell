@@ -27,4 +27,8 @@ Item {
     TopToast {
         id: topToast
     }
+
+    Backlight {
+        id: backlight
+    }
 }

@@ -20,7 +20,7 @@ PanelWindow {
     implicitWidth: volumeLoader.implicitWidth + Style.globalPadding * 4
     implicitHeight: volumeLoader.implicitHeight
     color: "transparent"
-    visible: GlobalStates.volumeOsd
+    visible: GlobalStates.showVolumeOsd
 
     property string mode: "volume"
 
@@ -29,13 +29,13 @@ PanelWindow {
 
         function onInteractionTriggered() {
             root.mode = "volume";
-            GlobalStates.volumeOsd = true;
+            GlobalStates.showVolumeOsd = true;
             hideTimer.restart();
         }
 
         function onIsMicMutedChanged() {
             root.mode = "mic";
-            GlobalStates.volumeOsd = true;
+            GlobalStates.showVolumeOsd = true;
             hideTimer.restart();
         }
     }
@@ -49,14 +49,14 @@ PanelWindow {
                 hideTimer.restart();
                 return;
             }
-            GlobalStates.volumeOsd = false;
+            GlobalStates.showVolumeOsd = false;
             root.mode = "volume";
         }
     }
 
     Loader {
         id: volumeLoader
-        active: GlobalStates.volumeOsd
+        active: GlobalStates.showVolumeOsd
 
         anchors {
             left: parent.left

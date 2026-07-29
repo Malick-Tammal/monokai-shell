@@ -46,7 +46,6 @@ Item {
             icon: "keyboard"
             size: Style.symbolSizeXl
             color: ColorEngine.monokai_fusion.gray1
-            filled : false
             weight: 500
         }
 

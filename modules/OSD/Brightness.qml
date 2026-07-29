@@ -20,7 +20,7 @@ PanelWindow {
     implicitWidth: brightnessLoader.implicitWidth + Style.globalPadding * 4
     implicitHeight: brightnessLoader.implicitHeight
     color: "transparent"
-    visible: GlobalStates.brightnessOsd
+    visible: GlobalStates.showBrightnessOsd
 
     onVisibleChanged: {
         if (visible && !hideTimer.running)
@@ -31,7 +31,7 @@ PanelWindow {
         target: BrightnessService
 
         function onInteractionTriggered() {
-            GlobalStates.brightnessOsd = true;
+            GlobalStates.showBrightnessOsd = true;
             hideTimer.restart();
         }
     }
@@ -45,13 +45,13 @@ PanelWindow {
                 hideTimer.restart();
                 return;
             }
-            GlobalStates.brightnessOsd = false;
+            GlobalStates.showBrightnessOsd = false;
         }
     }
 
     Loader {
         id: brightnessLoader
-        active: GlobalStates.brightnessOsd
+        active: GlobalStates.showBrightnessOsd
 
         anchors {
             right: parent.right

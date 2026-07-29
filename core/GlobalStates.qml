@@ -16,8 +16,9 @@ Singleton {
     property bool trayVisible: false
     property bool trayOverflowVisible: false
 
-    property bool volumeOsd
-    property bool brightnessOsd
+    property bool showVolumeOsd
+    property bool showBrightnessOsd
 
     property bool showToast
+    property bool showBacklightOsd
 }
