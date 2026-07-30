@@ -22,7 +22,7 @@ Singleton {
     property bool wifiScanning: false
     property var wifiNetworks: []
 
-    property string symbol: {
+    property string materialSymbol: {
         if (root.ethernet)
         return "lan";
 

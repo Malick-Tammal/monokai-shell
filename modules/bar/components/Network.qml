@@ -39,7 +39,7 @@ Item {
             spacing: 6
 
             Symbols {
-                icon: Network.symbol
+                icon: Network.materialSymbol
                 size: Style.symbolSize
                 weight: Font.Bold
                 color: ColorEngine.monokai_fusion.purple9
