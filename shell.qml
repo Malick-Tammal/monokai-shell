@@ -19,6 +19,13 @@ ShellRoot {
     Loader {
         id: popupsLoader
         sourceComponent: undefined
+        asynchronous: true
+    }
+
+    Loader {
+        id: logsLoader
+        sourceComponent: undefined
+        asynchronous: true
     }
 
     Timer {
@@ -27,6 +34,15 @@ ShellRoot {
         repeat: false
         onTriggered: {
             popupsLoader.source = "./core/Popups.qml";
+        }
+    }
+
+    Timer {
+        interval: 1000
+        running: true
+        repeat: false
+        onTriggered: {
+            logsLoader.source = "./core/Logs.qml";
         }
     }
 
@@ -49,9 +65,5 @@ ShellRoot {
                 context: LockScreenService
             }
         }
-    }
-
-    Component.onCompleted: {
-        ColorEngine
     }
 }
