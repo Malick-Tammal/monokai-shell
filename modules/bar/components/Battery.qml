@@ -24,7 +24,7 @@ Item {
         height: parent.height
         width: row.implicitWidth + 20
         radius: 10
-        color: Battery.acConnected ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
+        color: Battery.isPluggedIn ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
 
         Item {
             id: fillSource
@@ -37,7 +37,7 @@ Item {
                 width: parent.width * Battery.percentage
 
                 color: {
-                    if (Battery.acConnected) {
+                    if (Battery.isPluggedIn) {
                         return hoverHandler.hovered ? ColorEngine.monokai_fusion.green4 : ColorEngine.monokai_fusion.green5;
                     }
                     if (Battery.percentage <= 0.15) {
@@ -47,7 +47,7 @@ Item {
                 }
 
                 SequentialAnimation on x {
-                    running: Battery.percentage <= 0.15 && !Battery.acConnected
+                    running: Battery.percentage <= 0.15 && !Battery.isPluggedIn
                     loops: Animation.Infinite
 
                     NumberAnimation {
@@ -71,7 +71,7 @@ Item {
                 }
 
                 SequentialAnimation on opacity {
-                    running: Battery.acConnected
+                    running: Battery.isPluggedIn
                     loops: Animation.Infinite
                     NumberAnimation {
                         to: 0.7
@@ -85,10 +85,10 @@ Item {
                     }
                 }
 
-                onOpacityChanged: if (!Battery.acConnected)
+                onOpacityChanged: if (!Battery.isPluggedIn)
                 opacity = 1.0
 
-                onXChanged: if (Math.round(Battery.percentage) >= 0.15 || Battery.acConnected)
+                onXChanged: if (Math.round(Battery.percentage) >= 0.15 || Battery.isPluggedIn)
                 x = 0
 
                 Behavior on color {
@@ -130,7 +130,7 @@ Item {
                 size: Style.symbolSize
 
                 color: {
-                    if (Battery.acConnected)
+                    if (Battery.isPluggedIn)
                     return ColorEngine.monokai_fusion.green9;
                     if (Battery.percentage <= 0.15)
                     return ColorEngine.monokai_fusion.red9;
@@ -140,7 +140,7 @@ Item {
                 icon: "battery_android_full"
 
                 state: {
-                    if (Battery.acConnected)
+                    if (Battery.isPluggedIn)
                     return "charging";
                     if (Battery.percentage <= 0.15)
                     return "low";
@@ -225,7 +225,7 @@ Item {
             Text {
                 text: Math.round(Battery.percentage * 100)
                 color: {
-                    if (Battery.acConnected)
+                    if (Battery.isPluggedIn)
                     return ColorEngine.monokai_fusion.green9;
                     if (Battery.percentage <= 0.15)
                     return ColorEngine.monokai_fusion.red9;
@@ -249,7 +249,7 @@ Item {
             anchors.fill: parent
             color: "transparent"
             border.color: {
-                if(Battery.acConnected) {
+                if(Battery.isPluggedIn) {
                     return ColorEngine.monokai_fusion.green2;
                 }
                 if(Battery.percentage <= 0.15) {

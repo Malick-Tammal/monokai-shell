@@ -65,7 +65,7 @@ PanelWindow {
 
         sourceComponent: Slider {
             value: root.mode === "mic" ? Audio.micVolume : Audio.volume
-            icon: root.mode === "mic" ? (Audio.isMicMuted ? "mic_off" : "mic") : Audio.symbol
+            icon: root.mode === "mic" ? (Audio.isMicMuted ? "mic_off" : "mic") : Audio.materialSymbol
             surface: Style.textOnSuccess
             accent: Style.success
             foreground: Style.textOnSuccess

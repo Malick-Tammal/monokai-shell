@@ -26,7 +26,7 @@ PanelWindow {
             };
             case "ac": return {
                 icon: "electrical_services",
-                text: Battery.acConnected ? "Connected" : "Disconnected",
+                text: Battery.isPluggedIn ? "Connected" : "Disconnected",
                 accent: Style.error,
                 surface: Style.textOnError,
                 lightSurface: ColorEngine.monokai_fusion.red2
@@ -64,7 +64,7 @@ PanelWindow {
     Connections {
         target: Battery
 
-        function onAcConnectedChanged() {
+        function onIsPluggedInChanged() {
             root._mode = "ac";
             GlobalStates.showToast = true;
             hideTimer.restart();

@@ -82,7 +82,7 @@ Item {
             z: 1
 
             Symbols {
-                icon: Audio.symbol
+                icon: Audio.materialSymbol
                 size: Style.symbolSize
                 color: ColorEngine.monokai_fusion.blue9
             }

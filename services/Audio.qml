@@ -74,7 +74,7 @@ Singleton {
     readonly property var outputStreams: Pipewire.nodes.values.filter(n => n.isSink && n.isStream && n.audio)
     readonly property var inputStreams: Pipewire.nodes.values.filter(n => !n.isSink && n.isStream && n.audio)
 
-    readonly property string symbol: {
+    readonly property string materialSymbol: {
         if (isMuted || volume === 0)
         return "volume_off";
 
