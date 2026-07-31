@@ -14,7 +14,7 @@ Singleton {
 
     property var colors: ({})
     property var base16: ({})
-    property var palletes: ({})
+    property var palettes: ({})
     property string mode
     property string wallPath
     property bool isDarkMode
@@ -54,7 +54,7 @@ Singleton {
 
         root.colors = newColors;
 
-        root.palletes = data.palettes;
+        root.palettes = data.palettes;
         root.mode = data.mode;
         root.wallPath = data.image;
         root.isDarkMode = data.is_dark_mode;
