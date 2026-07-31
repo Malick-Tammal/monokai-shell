@@ -11,7 +11,7 @@ Item {
     z: 5
 
     required property Item target
-    property color borderColor: ColorEngine.monokai_fusion.dark4
+    property color borderColor: Style.surface
     property string position: "top"
     property int rounding: 20
     property bool haveBorder: true
@@ -72,7 +72,7 @@ Item {
 
     Inverted {
         rounding: parent.width
-        roundingColor: Style.bg
+        roundingColor: Style.background
 
         transform: Translate {
             x: 0

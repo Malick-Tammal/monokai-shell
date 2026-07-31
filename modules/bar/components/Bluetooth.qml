@@ -48,10 +48,10 @@ Item {
 
         color: {
             if (!Bluetooth.isAvailable)
-            return ColorEngine.monokai_fusion.gray6;
-            return hoverHandler.hovered ? ColorEngine.monokai_fusion.green4 : ColorEngine.monokai_fusion.green5;
+            return Style.inactive;
+            return hoverHandler.hovered ? Style.successHover : Style.success;
         }
-        border.color: Bluetooth.isAvailable ? ColorEngine.monokai_fusion.green2 : ColorEngine.monokai_fusion.dark1
+        border.color: Bluetooth.isAvailable ? Style.successBorder : Style.inactiveBorder
 
         Behavior on color {
             ColorAnimation {
@@ -77,7 +77,7 @@ Item {
                 icon: Bluetooth.symbol
                 size: Style.symbolSize
                 weight: Font.Bold
-                color: Bluetooth.isAvailable ? ColorEngine.monokai_fusion.green9 : ColorEngine.monokai_fusion.gray3
+                color: Bluetooth.isAvailable ? Style.textOnSuccess : Style.inactiveText
 
                 y: Math.round((parent.height - height) / 2)
 
@@ -114,7 +114,7 @@ Item {
                     return Bluetooth.currentDeviceName;
                 }
 
-                color: Bluetooth.isAvailable ? ColorEngine.monokai_fusion.green9 : ColorEngine.monokai_fusion.gray3
+                color: Bluetooth.isAvailable ? Style.textOnSuccess : Style.inactiveText
                 renderType: Text.NativeRendering
                 elide: Text.ElideRight
                 width: Math.min(implicitWidth, 150)

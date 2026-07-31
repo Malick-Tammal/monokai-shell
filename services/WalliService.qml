@@ -12,6 +12,7 @@ Singleton {
     id: root
 
     property string currentWall: ""
+    property string currentWallPath: ""
     property bool isLoading: false
     property string loadingText: "Checking wallpapers..."
 
@@ -51,39 +52,51 @@ Singleton {
         interval: 10
         repeat: false
         onTriggered: {
-            root.currentWall = "";
             awwwQuery.running = true;
         }
     }
 
+    Timer {
+        interval: 100
+        repeat: false
+        running: true
+        onTriggered: awwwQuery.running = true;
+    }
+
     function activateWall(name) {
-        const cache = root.cacheFolder + name;
-        const full = root.wallsFolder + name;
+        const cache = root.cacheFolder + name
+        const full = root.wallsFolder + name
+        const cleanName = name.replace(/\.[^/.]+$/, "")
 
-        Pywal.generateColors(full);
+        if (full !== root.currentWallPath) {
+            root.currentWall = cleanName
+            root.currentWallPath = full
 
-        awwwProc.command[2] = full;
-        sddmWall.command[1] = full;
+            MatugenService.generateColors(full)
 
-        awwwProc.running = true;
-        sddmWall.running = true;
+            awwwProc.command[2] = full
+            sddmWall.command[1] = full
 
-        const cleanName = name.replace(/\.[^/.]+$/, "");
-        NotifyService.send("walli", cleanName, cache);
+            awwwProc.running = true
+            sddmWall.running = true
 
-        console.log('-------------------- Walli Log --------------------')
-        console.log(`cache : ${cache}`)
-        console.log(`active wallpaper : ${full}`)
+            NotifyService.send("walli", cleanName, cache)
 
-        GlobalStates.walliVisible = false;
+            console.log('-------------------- Walli Log --------------------')
+            console.log(`cache : ${cache}`)
+            console.log(`active wallpaper : ${full}`)
+        }
+
+        GlobalStates.walliVisible = false
     }
 
     Connections {
-        target: ColorEngine
-        function onPywalChanged() {
-            ledStrip.command[2] = ColorEngine.pywal.special.accent;
+        target: MatugenService
+
+        function onWallPathChanged() {
+            ledStrip.command[2] = MatugenService.colors.primary;
             ledStrip.running = true;
-            console.log(`ledstrip color : ${ColorEngine.pywal.special.accent}`);
+            console.log(`ledstrip color : ${MatugenService.colors.primary}`);
         }
     }
 
@@ -143,6 +156,7 @@ Singleton {
                         const filename = fullPath.split("/").pop();
                         const cleanName = filename.replace(/\.[^/.]+$/, "");
                         root.currentWall = cleanName;
+                        root.currentWallPath = fullPath;
                     }
                 } catch(e) {
                     console.error("Failed to parse awww query JSON: " + e);

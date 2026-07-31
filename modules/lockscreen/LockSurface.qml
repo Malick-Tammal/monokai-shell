@@ -25,7 +25,7 @@ Rectangle {
     Image {
         id: background
         anchors.fill: parent
-        source: Pywal.wallpaper
+        source: WalliService.currentWallPath
         fillMode: Image.PreserveAspectCrop
         sourceSize.width: parent.width > 0 ? parent.width : 1920
         sourceSize.height: parent.height > 0 ? parent.height : 1080

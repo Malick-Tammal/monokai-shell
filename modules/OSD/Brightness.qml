@@ -61,10 +61,10 @@ PanelWindow {
         sourceComponent: Slider {
             value: BrightnessService.brightness
             icon: BrightnessService.symbol
-            surface: ColorEngine.monokai_fusion.purple9
-            accent: ColorEngine.monokai_fusion.purple5
-            foreground: ColorEngine.monokai_fusion.purple9
-            thumbColor: ColorEngine.monokai_fusion.purple5
+            surface: Style.textOnInfo
+            accent: Style.info
+            foreground: Style.textOnInfo
+            thumbColor: Style.info
 
             onValueChangeRequested: (v) => {
                 BrightnessService.setBrightness(v)

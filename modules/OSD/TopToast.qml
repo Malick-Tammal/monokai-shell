@@ -22,14 +22,14 @@ PanelWindow {
                 text: KbService.shortLayout,
                 accent: Style.primary,
                 surface: Style.textOnPrimary,
-                lightSurface: ColorEngine.monokai_fusion.yellow2
+                lightSurface: Style.warningLight
             };
             case "ac": return {
                 icon: "electrical_services",
                 text: Battery.isPluggedIn ? "Connected" : "Disconnected",
                 accent: Style.error,
                 surface: Style.textOnError,
-                lightSurface: ColorEngine.monokai_fusion.red2
+                lightSurface: Style.errorBorder
             };
             default: return {
                 icon: "",

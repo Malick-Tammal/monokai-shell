@@ -15,7 +15,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         radius: 10
-        color: hoverHandler.hovered ? ColorEngine.monokai_fusion.red4 : Style.error
+        color: hoverHandler.hovered ? Style.errorHover : Style.error
         border.color: Style.errorBorder
 
         Symbols {

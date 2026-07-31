@@ -104,28 +104,28 @@ Item {
 
                         if (isFocused) {
                             if (hoverHandler.hovered) {
-                                return ColorEngine.monokai_fusion.green4;
+                                return Style.successHover;
                             } else {
                                 return Style.success;
                             }
                         }
 
                         if (hoverHandler.hovered) {
-                            return ColorEngine.monokai_fusion.gray5;
+                            return Style.indicatorIdle;
                         } else {
-                            return ColorEngine.monokai_fusion.gray6;
+                            return Style.inactive;
                         }
                     }
 
                     border.color: {
                         if (isUrgent) {
-                            return ColorEngine.monokai_fusion.yellow2;
+                            return Style.warningLight;
                         }
 
                         if (isFocused) {
-                            return ColorEngine.monokai_fusion.green7;
+                            return Style.successMuted;
                         } else {
-                            return ColorEngine.monokai_fusion.dark1;
+                            return Style.inactiveBorder;
                         }
                     }
 
@@ -138,7 +138,7 @@ Item {
                         visible: !isFocused
                         color: {
                             if (isUrgent) {
-                                return Style.onWarning;
+                                return Style.textOnWarning;
                             }
                             if (hasWindows) {
                                 return Style.textPrimary;

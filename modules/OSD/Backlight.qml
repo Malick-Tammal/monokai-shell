@@ -47,7 +47,7 @@ PanelWindow {
         id: wrapper
         width: row.implicitWidth + 2
         height: 65
-        color: ColorEngine.monokai_fusion.orange5
+        color: Style.notify
         radius: 15
 
         anchors {
@@ -71,7 +71,7 @@ PanelWindow {
 
             Rectangle {
                 id: icon
-                color: ColorEngine.monokai_fusion.orange5
+        color: Style.notify
                 width: symbol.width + 35
                 height: parent.height
                 topLeftRadius: 15
@@ -81,14 +81,14 @@ PanelWindow {
                     id: symbol
                     icon: KbService.symbol
                     size: 26
-                    color: ColorEngine.monokai_fusion.orange9
+                    color: Style.textOnNotify
                     anchors.centerIn: parent
                 }
             }
 
             Rectangle {
                 id: textIndicator
-                color: ColorEngine.monokai_fusion.orange9
+                color: Style.textOnNotify
                 implicitWidth: barsRow.implicitWidth + 30
                 height: parent.height
                 radius: 15
@@ -102,7 +102,7 @@ PanelWindow {
                         width: 80
                         height: 10
                         radius: 999
-                        color: KbService.backlightLevel >= 1 ? ColorEngine.monokai_fusion.orange2 : ColorEngine.monokai_fusion.orange8
+                        color: KbService.backlightLevel >= 1 ? Style.notifyBorder : Style.notifyContainer
 
                         Behavior on color {
                             ColorAnimation {
@@ -116,7 +116,7 @@ PanelWindow {
                         width: 80
                         height: 10
                         radius: 999
-                        color: KbService.backlightLevel === 2 ? ColorEngine.monokai_fusion.orange2 : ColorEngine.monokai_fusion.orange8
+                        color: KbService.backlightLevel === 2 ? Style.notifyBorder : Style.notifyContainer
 
                         Behavior on color {
                             ColorAnimation {

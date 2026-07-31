@@ -14,8 +14,8 @@ Item {
         height: parent.height
         width: row.width + 20
         radius: 10
-        color: mouseArea.containsMouse ? ColorEngine.monokai_fusion.orange4 : ColorEngine.monokai_fusion.orange5
-        border.color: ColorEngine.monokai_fusion.orange2
+        color: mouseArea.containsMouse ? Style.notifyHover : Style.notify
+        border.color: Style.notifyBorder
 
         Behavior on color {
             ColorAnimation {
@@ -46,7 +46,7 @@ Item {
             Symbols {
                 icon: NotifyService.notifCount > 0 ? "notifications_unread" : "notifications"
                 size: Style.symbolSize
-                color: ColorEngine.monokai_fusion.orange9
+                color: Style.textOnNotify
                 y: Math.round((parent.height - height) / 2)
             }
 
@@ -54,7 +54,7 @@ Item {
                 text: NotifyService.notifCount > 0 ? NotifyService.notifCount.toString() : ""
                 visible: NotifyService.notifCount > 0 ? true : false
                 size: Style.fontSizeMd
-                textColor: ColorEngine.monokai_fusion.orange9
+                textColor: Style.textOnNotify
                 weight: Font.Bold
                 styleName: "Bold"
                 y: Math.round((parent.height - height) / 2)

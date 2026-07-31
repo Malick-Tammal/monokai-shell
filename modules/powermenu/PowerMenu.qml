@@ -203,11 +203,11 @@ PanelWindow {
                         prevItem: sleep
                         nextItem: logout
 
-                        activeColor: ColorEngine.monokai_fusion.purple5
-                        activeBorderColor: ColorEngine.monokai_fusion.purple3
+                        activeColor: Style.info
+                        activeBorderColor: Style.infoBorder
                         iconName: "lock"
                         iconColor: Style.textTertiary
-                        activeIconColor: ColorEngine.monokai_fusion.purple9
+                        activeIconColor: Style.textOnInfo
 
                         onActivated: {
                             GlobalStates.powerMenuVisible = false;
@@ -219,11 +219,11 @@ PanelWindow {
                         id: logout
                         prevItem: lock
                         nextItem: poweroff
-                        activeColor: ColorEngine.monokai_fusion.orange5
-                        activeBorderColor: ColorEngine.monokai_fusion.orange3
+                        activeColor: Style.notify
+                        activeBorderColor: Style.notifyBorder
                         iconName: "logout"
                         iconColor: Style.textTertiary
-                        activeIconColor: ColorEngine.monokai_fusion.orange9
+                        activeIconColor: Style.textOnNotify
                         onActivated: requestExecute("hyprctl dispatch 'hl.dsp.exit()'", logout)
                     }
                 }

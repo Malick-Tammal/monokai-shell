@@ -26,7 +26,7 @@ Item {
         id: overlay
         width: parent.width - 2
         height: parent.height - 2
-        color: ColorEngine.monokai_fusion.black
+        color: Style.trueBlack
         opacity: root.isActive ? 0.4 : 0
         visible: root.isActive
         anchors.centerIn: parent
@@ -104,7 +104,7 @@ Item {
                     height: 70
                     width: 70
                     radius: 10
-                    color: (activeFocus || yesMouseArea.containsMouse) ? Style.success : ColorEngine.monokai_fusion.gray6
+                    color: (activeFocus || yesMouseArea.containsMouse) ? Style.success : Style.inactive
                     border.color: activeFocus ? Style.successBorder : Style.borderDim
                     focus: true
 
@@ -162,7 +162,7 @@ Item {
                     height: 70
                     width: 70
                     radius: 10
-                    color: (activeFocus || noMouseArea.containsMouse) ? Style.error : ColorEngine.monokai_fusion.gray6
+                    color: (activeFocus || noMouseArea.containsMouse) ? Style.error : Style.inactive
                     border.color: activeFocus ? Style.errorBorder : Style.borderDim
                     focus: true
 

@@ -34,9 +34,16 @@ generate_thumbs() {
 
     echo "STATUS:DETECTED"
 
-    local current=1
-    for img in "${missing_thumbs[@]}"; do
-        echo "STATUS:GENERATING:$current:$total"
+    local count_file
+    local lock_file
+    count_file=$(mktemp)
+    lock_file=$(mktemp)
+    echo 0 > "$count_file"
+
+    gen_one() {
+        local img=$1
+        local name
+        local thumb
 
         name=$(basename "$img")
         thumb="$CACHE_DIR/$name"
@@ -44,8 +51,20 @@ generate_thumbs() {
         nice -n 19 magick "${img}[0]" -strip -scale 800x500^ -gravity center -extent 800x500 "$thumb"
         touch -r "$img" "$thumb"
 
-        ((current++))
-    done
+        flock "$lock_file" sh -c '
+            count=$(cat "$count_file")
+            count=$((count + 1))
+            echo "$count" > "$count_file"
+            echo "STATUS:GENERATING:$count:$total"
+        '
+    }
+
+    export -f gen_one
+    export CACHE_DIR count_file lock_file total
+
+    printf '%s\0' "${missing_thumbs[@]}" | xargs -0 -P "$(nproc)" -I{} bash -c 'gen_one "$@"' _ {}
+
+    rm -f "$count_file" "$lock_file"
 }
 
 generate_thumbs

@@ -24,7 +24,7 @@ Item {
             Sliding {
                 text: DateTime.hours
                 size: Style.fontSize2Xl
-                textColor: Style.warning
+                textColor: Style.primary
                 weight: Font.Black
                 styleName: "Black"
             }
@@ -56,7 +56,7 @@ Item {
 
             Text {
                 text: DateTime.ampm
-                color: ColorEngine.monokai_fusion.gray1
+                color: Style.textSecondary
                 width: contentWidth + 10
                 horizontalAlignment: Text.AlignHCenter
 

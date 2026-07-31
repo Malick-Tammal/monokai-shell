@@ -26,6 +26,7 @@ ShellRoot {
         id: logsLoader
         sourceComponent: undefined
         asynchronous: true
+        active: Configs.logs
     }
 
     Timer {

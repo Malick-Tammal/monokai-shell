@@ -14,7 +14,7 @@ Item {
         width: 5
         height: 5
         anchors.centerIn: parent
-        color: ColorEngine.monokai_fusion.gray2
+        color: Style.textTertiary
         radius: 10
     }
 }

@@ -439,7 +439,7 @@ Item {
 
                         radius: 9999
                         color: "transparent"
-                        border.color: ColorEngine.monokai_fusion.purple5
+                        border.color: Style.info
                         border.width: root.borderSize
 
                         anchors {

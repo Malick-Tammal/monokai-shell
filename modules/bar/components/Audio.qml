@@ -43,7 +43,7 @@ Item {
         height: parent.height
         width: row.implicitWidth + 20
         radius: 10
-        color: ColorEngine.monokai_fusion.blue2
+        color: Style.featureBorder
 
         Item {
             id: fillSource
@@ -54,7 +54,7 @@ Item {
                 id: soundPer
                 height: parent.height
                 width: parent.width * Audio.volume
-                color: audioMouseArea.containsMouse ? ColorEngine.monokai_fusion.blue4 : ColorEngine.monokai_fusion.blue5
+                color: audioMouseArea.containsMouse ? Style.featureHover : Style.feature
 
                 Behavior on width {
                     NumberAnimation {
@@ -84,12 +84,12 @@ Item {
             Symbols {
                 icon: Audio.materialSymbol
                 size: Style.symbolSize
-                color: ColorEngine.monokai_fusion.blue9
+                color: Style.textOnFeature
             }
 
             Sliding {
                 text: Math.round(Audio.volume * 100)
-                textColor: ColorEngine.monokai_fusion.blue9
+                textColor: Style.textOnFeature
                 size: Style.fontSizeMd
                 weight: Font.Bold
                 styleName: "Bold"
@@ -103,7 +103,7 @@ Item {
         Rectangle {
             anchors.fill: parent
             color: "transparent"
-            border.color: ColorEngine.monokai_fusion.blue2
+            border.color: Style.featureBorder
             border.width: 1
             radius: con.radius
             z: 2

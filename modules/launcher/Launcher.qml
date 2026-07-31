@@ -46,7 +46,7 @@ PanelWindow {
         width: 700
         height: 600
         anchors.centerIn: parent
-        color: Style.bg
+        color: Style.background
 
         ScriptModel {
             id: filtered
@@ -88,7 +88,7 @@ PanelWindow {
             highlight: Rectangle {
                 radius: 4
                 opacity: 1
-                color: Style.dark5
+                color: Style.background
             }
             snapMode: ListView.SnapToItem
             boundsBehavior: Flickable.StopAtBounds

@@ -24,7 +24,7 @@ Item {
         height: parent.height
         width: row.implicitWidth + 20
         radius: 10
-        color: Battery.isPluggedIn ? ColorEngine.monokai_fusion.green2 : (Battery.percentage <= 0.15 ? ColorEngine.monokai_fusion.red2 : ColorEngine.monokai_fusion.orange2)
+        color: Battery.isPluggedIn ? Style.successBorder : (Battery.percentage <= 0.15 ? Style.errorBorder : Style.notifyBorder)
 
         Item {
             id: fillSource
@@ -38,12 +38,12 @@ Item {
 
                 color: {
                     if (Battery.isPluggedIn) {
-                        return hoverHandler.hovered ? ColorEngine.monokai_fusion.green4 : ColorEngine.monokai_fusion.green5;
+                        return hoverHandler.hovered ? Style.successHover : Style.success;
                     }
                     if (Battery.percentage <= 0.15) {
-                        return hoverHandler.hovered ? ColorEngine.monokai_fusion.red4 : ColorEngine.monokai_fusion.red5;
+                        return hoverHandler.hovered ? Style.errorHover : Style.error;
                     }
-                    return hoverHandler.hovered ? ColorEngine.monokai_fusion.orange4 : ColorEngine.monokai_fusion.orange5;
+                    return hoverHandler.hovered ? Style.notifyHover : Style.notify;
                 }
 
                 SequentialAnimation on x {
@@ -131,10 +131,10 @@ Item {
 
                 color: {
                     if (Battery.isPluggedIn)
-                    return ColorEngine.monokai_fusion.green9;
+                    return Style.textOnSuccess;
                     if (Battery.percentage <= 0.15)
-                    return ColorEngine.monokai_fusion.red9;
-                    return ColorEngine.monokai_fusion.orange9;
+                    return Style.textOnError;
+                    return Style.textOnNotify;
                 }
 
                 icon: "battery_android_full"
@@ -226,10 +226,10 @@ Item {
                 text: Math.round(Battery.percentage * 100)
                 color: {
                     if (Battery.isPluggedIn)
-                    return ColorEngine.monokai_fusion.green9;
+                    return Style.textOnSuccess;
                     if (Battery.percentage <= 0.15)
-                    return ColorEngine.monokai_fusion.red9;
-                    return ColorEngine.monokai_fusion.orange9;
+                    return Style.textOnError;
+                    return Style.textOnNotify;
                 }
                 renderType: Text.NativeRendering
                 renderTypeQuality: Text.VeryHighRenderTypeQuality
@@ -250,12 +250,12 @@ Item {
             color: "transparent"
             border.color: {
                 if(Battery.isPluggedIn) {
-                    return ColorEngine.monokai_fusion.green2;
+                    return Style.successBorder;
                 }
                 if(Battery.percentage <= 0.15) {
-                    return ColorEngine.monokai_fusion.red2;
+                    return Style.errorBorder;
                 }
-                return ColorEngine.monokai_fusion.orange2;
+                return Style.notifyBorder;
             }
             border.width: 1
             radius: con.radius

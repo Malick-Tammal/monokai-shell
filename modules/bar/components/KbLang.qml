@@ -45,13 +45,13 @@ Item {
         Symbols {
             icon: "keyboard"
             size: Style.symbolSizeXl
-            color: ColorEngine.monokai_fusion.gray1
+            color: Style.textSecondary
             weight: 500
         }
 
         Text {
             text: KbService.shortLayout
-            color: ColorEngine.monokai_fusion.gray1
+            color: Style.textSecondary
             renderType: Text.NativeRendering
             renderTypeQuality: Text.VeryHighRenderTypeQuality
 
