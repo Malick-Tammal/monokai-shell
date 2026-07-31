@@ -78,8 +78,6 @@ Singleton {
                         root.backlightLevel = current;
                         root.maxBacklightLevel = max;
                         root.backlightPercent = percent;
-
-                        console.log(`Dell Backlight: Level ${current}/${max} (${percent}%)`);
                     }
                 }
             }

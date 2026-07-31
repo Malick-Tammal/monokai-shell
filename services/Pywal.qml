@@ -31,8 +31,6 @@ Singleton {
                     root.colorsChanged();
                     root.specialChanged();
 
-                    root._log()
-
                 } catch(e) {
                     console.error("❌ JSON Parsing failed: " + e);
                 }
@@ -60,12 +58,5 @@ Singleton {
 
     Component.onCompleted: {
         pywalReader.running = true;
-    }
-
-    function _log() {
-        console.log('-------------------- Pywal Log --------------------')
-        console.log(`wallpaper path : ${root.wallpaper}`)
-        console.log(`colors : ${root.colors}`)
-        console.log(`special colors : ${root.special}`);
     }
 }

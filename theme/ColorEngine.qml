@@ -223,9 +223,6 @@ Singleton {
 
     onWallpaperBrightnessChanged: {
         root.isDark = root.wallpaperBrightness < 0.47;
-        console.log('-------------------- Color Engine Log --------------------')
-        console.log(`wallpaper brightness : ${root.wallpaperBrightness}`);
-        console.log(`is wallpaper dark : ${root.isDark}`);
     }
 
     Connections {
