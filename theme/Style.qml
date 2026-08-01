@@ -7,18 +7,18 @@ import "./themes/"
 QtObject {
     id: root
 
-    // ==========================================
-    // Helpers
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Helpers
+    //--------------------------------------------
 
     readonly property bool _isMonokai: Configs.theme === "monokai_fusion"
 
-    function withAlpha(baseColor, alpha) {
+    function withAlpha(baseColor, alpha): color {
         let c = Qt.color(baseColor);
         return Qt.rgba(c.r, c.g, c.b, alpha);
     }
 
-    function palette(colorName, shade) {
+    function palette(colorName, shade): color {
         if (_isMonokai) {
             return MonokaiFusion[colorName + shade] || MonokaiFusion.gray5;
         }
@@ -42,20 +42,20 @@ QtObject {
         return Qt.darker(base, 3.5);
     }
 
-    function _matugenColor(name) {
-        return MatugenService.colors[name] || MonokaiFusion.gray5;
+    function _matugenColor(name): color {
+        return Matugen.colors[name] || MonokaiFusion.gray5;
     }
 
-    // ==========================================
-    // Primary & Accent
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Primary
+    //--------------------------------------------
 
     readonly property color primary: _isMonokai ? MonokaiFusion.yellow5 : Style._matugenColor("primary")
     readonly property color textOnPrimary: _isMonokai ? MonokaiFusion.yellow9 : Style._matugenColor("colorOnPrimary")
 
-    // ==========================================
-    // Text Hierarchy
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Text Hierarchy
+    //--------------------------------------------
 
     readonly property color textPrimary: _isMonokai ? MonokaiFusion.white : Style._matugenColor("colorOnSurface")
     readonly property color textSecondary: _isMonokai ? MonokaiFusion.gray1 : Style._matugenColor("colorOnSurfaceVariant")
@@ -65,9 +65,9 @@ QtObject {
     readonly property color textOnWallpaper: ColorEngine.textOnWallpaper
     readonly property color accentOnWallpaper: ColorEngine.accentOnWallpaper
 
-    // ==========================================
-    // Surfaces & Backgrounds
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Surfaces & Backgrounds
+    //--------------------------------------------
 
     readonly property color background: _isMonokai ? MonokaiFusion.dark5 : Style._matugenColor("background")
     readonly property color surface: _isMonokai ? MonokaiFusion.dark4 : Style._matugenColor("surfaceContainerHigh")
@@ -76,17 +76,17 @@ QtObject {
     readonly property color overlay: _isMonokai ? MonokaiFusion.dark1 : Style._matugenColor("surfaceContainerLow")
     readonly property color trueBlack: _isMonokai ? MonokaiFusion.black : Style._matugenColor("shadow")
 
-    // ==========================================
-    // Borders & Dividers
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Borders & Dividers
+    //--------------------------------------------
 
     readonly property color border: _isMonokai ? MonokaiFusion.yellow5 : Style._matugenColor("primary")
     readonly property color borderDim: _isMonokai ? MonokaiFusion.gray4 : Style._matugenColor("outlineVariant")
     readonly property color divider: _isMonokai ? MonokaiFusion.dark1 : Style._matugenColor("outlineVariant")
 
-    // ==========================================
-    // Status: Error (Red)
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Status: Error (Red)
+    //--------------------------------------------
 
     readonly property color error: _isMonokai ? MonokaiFusion.red5 : Style._matugenColor("error")
     readonly property color errorHover: _isMonokai ? MonokaiFusion.red4 : Qt.lighter(error, 1.15)
@@ -94,9 +94,9 @@ QtObject {
     readonly property color errorContainer: _isMonokai ? MonokaiFusion.red8 : Style._matugenColor("errorContainer")
     readonly property color textOnError: _isMonokai ? MonokaiFusion.red9 : Style._matugenColor("colorOnError")
 
-    // ==========================================
-    // Status: Warning (Yellow)
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Status: Warning (Yellow)
+    //--------------------------------------------
 
     readonly property color warning: _isMonokai ? MonokaiFusion.yellow5 : Style._matugenColor("primary")
     readonly property color warningHover: _isMonokai ? MonokaiFusion.yellow4 : Qt.lighter(warning, 1.15)
@@ -105,9 +105,9 @@ QtObject {
     readonly property color warningContainer: _isMonokai ? MonokaiFusion.yellow8 : Qt.darker(warning, 2.5)
     readonly property color textOnWarning: _isMonokai ? MonokaiFusion.yellow9 : Qt.darker(warning, 3.5)
 
-    // ==========================================
-    // Status: Success (Green)
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Status: Success (Green)
+    //--------------------------------------------
 
     readonly property color success: _isMonokai ? MonokaiFusion.green5 : Qt.tint(Style._matugenColor("primary"), "#3000FF00")
     readonly property color successHover: _isMonokai ? MonokaiFusion.green4 : Qt.lighter(success, 1.15)
@@ -116,9 +116,9 @@ QtObject {
     readonly property color successContainer: _isMonokai ? MonokaiFusion.green8 : Qt.darker(success, 2.5)
     readonly property color textOnSuccess: _isMonokai ? MonokaiFusion.green9 : Qt.darker(success, 3.5)
 
-    // ==========================================
-    // Module: Info (Purple)
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Module: Info (Purple)
+    //--------------------------------------------
 
     readonly property color info: _isMonokai ? MonokaiFusion.purple5 : Style._matugenColor("tertiary")
     readonly property color infoHover: _isMonokai ? MonokaiFusion.purple4 : Qt.lighter(info, 1.15)
@@ -126,9 +126,9 @@ QtObject {
     readonly property color infoContainer: _isMonokai ? MonokaiFusion.purple9 : Style._matugenColor("tertiaryContainer")
     readonly property color textOnInfo: _isMonokai ? MonokaiFusion.purple9 : Style._matugenColor("colorOnTertiary")
 
-    // ==========================================
-    // Module: Feature (Blue)
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Module: Feature (Blue)
+    //--------------------------------------------
 
     readonly property color feature: _isMonokai ? MonokaiFusion.blue5 : Style._matugenColor("secondary")
     readonly property color featureHover: _isMonokai ? MonokaiFusion.blue4 : Qt.lighter(feature, 1.15)
@@ -136,9 +136,9 @@ QtObject {
     readonly property color featureContainer: _isMonokai ? MonokaiFusion.blue9 : Style._matugenColor("secondaryContainer")
     readonly property color textOnFeature: _isMonokai ? MonokaiFusion.blue9 : Style._matugenColor("colorOnSecondary")
 
-    // ==========================================
-    // Module: Notify (Orange)
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Module: Notify (Orange)
+    //--------------------------------------------
 
     readonly property color notify: _isMonokai ? MonokaiFusion.orange5 : Qt.tint(Style._matugenColor("tertiary"), "#30FF8800")
     readonly property color notifyHover: _isMonokai ? MonokaiFusion.orange4 : Qt.lighter(notify, 1.15)
@@ -146,18 +146,18 @@ QtObject {
     readonly property color notifyContainer: _isMonokai ? MonokaiFusion.orange8 : Qt.darker(notify, 2.5)
     readonly property color textOnNotify: _isMonokai ? MonokaiFusion.orange9 : Qt.darker(notify, 3.5)
 
-    // ==========================================
-    // Interactive States
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Interactive States
+    //--------------------------------------------
 
     readonly property color inactive: _isMonokai ? MonokaiFusion.gray6 : Style._matugenColor("surfaceVariant")
     readonly property color inactiveText: _isMonokai ? MonokaiFusion.gray3 : Style._matugenColor("colorOnSurfaceVariant")
     readonly property color inactiveBorder: _isMonokai ? MonokaiFusion.dark1 : Style._matugenColor("outlineVariant")
     readonly property color indicatorIdle: _isMonokai ? MonokaiFusion.gray5 : Style._matugenColor("surfaceContainerHighest")
 
-    // ==========================================
-    // Typography
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Typography
+    //--------------------------------------------
 
     readonly property int fontSizeSm: 12
     readonly property int fontSizeMd: 14
@@ -169,9 +169,9 @@ QtObject {
     readonly property string family: "SF Pro Rounded"
     readonly property string nerdFamily: "JetBrains Nerd Font"
 
-    // ==========================================
-    // Sizing & Spacing
-    // ==========================================
+    //--------------------------------------------
+    //  INFO: Sizing & Spacing
+    //--------------------------------------------
 
     readonly property int symbolSize: 15
     readonly property int symbolSizeXl: 18

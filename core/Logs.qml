@@ -7,17 +7,17 @@ import qs.theme
 Scope {
     id: root
 
-    function logStamped(message) {
+    function _logStamped(message): void {
         let timestamp = Qt.formatDateTime(new Date(), "yyyy-MM-dd - hh:mm:ss")
         console.log(`\u001b[32m[${timestamp}]\u001b[0m ${message}`)
     }
 
-    function logSection(title) {
+    function _logSection(title): void {
         let pad = "-".repeat(20)
         console.log(`\u001b[1;36m${pad} ${title} ${pad}\u001b[0m`)
     }
 
-    function formatValue(val) {
+    function _formatValue(val): string {
         return typeof val === "object" ? JSON.stringify(val) : val
     }
 
@@ -41,31 +41,42 @@ Scope {
 
     function logging() {
         //--------------------------------------------
-        //  INFO: Pywal
+        //  INFO: Matugen
         //--------------------------------------------
-        logSection("Pywal")
-        logStamped(`Wallpaper path : ${Pywal.wallpaper}`)
-        logStamped(`Colors         : ${formatValue(Pywal.colors)}`)
-        logStamped(`Special colors : ${formatValue(Pywal.special)}`)
+        _logSection("Matugen")
+        _logStamped(`Wallpaper path : ${Matugen.wallPath}`)
+        _logStamped(`Colors         : ${_formatValue(Matugen.colors)}`)
+        _logStamped(`Base16 : ${_formatValue(Matugen.base16)}`)
 
         console.log('')
 
         //--------------------------------------------
         //  INFO: Color Engine
         //--------------------------------------------
-        logSection("Color Engine")
-        logStamped(`Brightness     : ${ColorEngine.wallpaperBrightness}`)
-        logStamped(`Is Dark Mode   : ${ColorEngine.isDark}`)
+        _logSection("Color Engine")
+        _logStamped(`Brightness       : ${ColorEngine.wallpaperBrightness}`)
+        _logStamped(`Is Dark Mode     : ${ColorEngine.isDark}`)
 
         console.log("")
 
         //--------------------------------------------
         //  INFO: Keyboard service
         //--------------------------------------------
-        logSection("Keyboard Service")
-        logStamped(`Layout         : ${KbService.currentLayout} (${KbService.shortLayout})`)
-        logStamped(`Backlight      : Level ${KbService.backlightLevel}/${KbService.maxBacklightLevel} (${KbService.backlightPercent}%)`)
+        _logSection("Keyboard Service")
+        _logStamped(`Layout           : ${KbService.currentLayout} (${KbService.shortLayout})`)
+        _logStamped(`Backlight        : Level ${KbService.backlightLevel}/${KbService.maxBacklightLevel} (${KbService.backlightPercent}%)`)
 
+        console.log('')
+
+        //--------------------------------------------
+        //  INFO: Walli
+        //--------------------------------------------
+        _logSection("Walli")
+        _logStamped(`Current wall     : ${WalliService.currentWall}`)
+        _logStamped(`Current path     : ${WalliService.currentWallPath}`)
+        _logStamped(`Cache path       : ${Dirs.walliCacheFolder}`)
+        _logStamped(`Led strip color  : ${Matugen.colors.primary}`)
+        _logStamped(`Is loading       : ${WalliService.isLoading}`)
     }
 
     Component.onCompleted: {

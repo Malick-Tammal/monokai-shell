@@ -4,13 +4,10 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.core
 
 Singleton {
     id: root
-
-    // ==========================================
-    // Runtime Color Generation
-    // ==========================================
 
     property var colors: ({})
     property var base16: ({})
@@ -19,9 +16,7 @@ Singleton {
     property string wallPath
     property bool isDarkMode
 
-    readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/monokai-shell/"
-
-    function _delUnderscore(key) {
+    function _delUnderscore(key): void {
         let parts = key.split("_");
         let camel = parts[0] + parts.slice(1).map(function(p) {
                 return p.charAt(0).toUpperCase() + p.slice(1);
@@ -33,7 +28,7 @@ Singleton {
         return camel;
     }
 
-    function _applyColors(data) {
+    function _applyColors(data): void {
         let colors = data.colors;
         let base16 = data.base16;
 
@@ -53,7 +48,7 @@ Singleton {
         }
 
         root.colors = newColors;
-
+        root.base16 = data.base16;
         root.palettes = data.palettes;
         root.mode = data.mode;
         root.wallPath = data.image;
@@ -84,9 +79,18 @@ Singleton {
         }
     }
 
+    Connections {
+        target: WalliService
+
+        function onCurrentWallPathChanged() {
+            matugenRunner.command[2] = WalliService.currentWallPath
+            matugenRunner.running = true;
+        }
+    }
+
     FileView {
         id: matugenCacher
-        path: root.cacheFolder + "colors.json"
+        path: Dirs.cacheFolder + "colors.json"
         preload: true
 
         onLoaded: root._loadCached()
@@ -109,9 +113,5 @@ Singleton {
     function generateColors(wallpaperPath) {
         matugenRunner.command[2] = wallpaperPath;
         matugenRunner.running = true;
-    }
-
-    Component.onCompleted: {
-        Quickshell.execDetached(["mkdir", "-p", root.cacheFolder]);
     }
 }

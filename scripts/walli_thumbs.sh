@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WALLS_DIR="$HOME/Pictures/Wallpapers/"
-CACHE_DIR="$HOME/.cache/walli_thumbs/"
+CACHE_DIR="$HOME/.cache/monokai_shell/walli_thumbs/"
 
 mkdir -p "$CACHE_DIR"
 
@@ -38,7 +38,7 @@ generate_thumbs() {
     local lock_file
     count_file=$(mktemp)
     lock_file=$(mktemp)
-    echo 0 > "$count_file"
+    echo 0 >"$count_file"
 
     gen_one() {
         local img=$1

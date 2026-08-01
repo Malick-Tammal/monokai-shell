@@ -165,7 +165,7 @@ PanelWindow {
                 }
 
                 model: FolderListModel {
-                    folder: "file://" + WalliService.cacheFolder
+                    folder: "file://" + Dirs.walliCacheFolder
                     nameFilters: ["*.jpg", "*.png", "*.webp", "*.jpeg"]
                     showDirs: false
                     sortField: FolderListModel.Time

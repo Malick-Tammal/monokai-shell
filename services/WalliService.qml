@@ -16,17 +16,16 @@ Singleton {
     property bool isLoading: false
     property string loadingText: "Checking wallpapers..."
 
-    //  TIP: Animation Settings
-    property string animationType: "wipe"
-    property string animationPos: "0.1 , 0.5"
-    property string animationBezier: ".23,.86,.81,.07"
-    property int animationStep: 120
-    property int animationFps: 60
-    property int animationAngle: 15
-    property double animationDuration: 1.6
+    property int _queryRetries: 0
 
-    readonly property string wallsFolder: Quickshell.env("HOME") + "/Pictures/Wallpapers/"
-    readonly property string cacheFolder: Quickshell.env("HOME") + "/.cache/walli_thumbs/"
+    //  TIP: Awww Animation Settings
+    property string _animationType: "wipe"
+    property string _animationPos: "0.1 , 0.5"
+    property string _animationBezier: ".23,.86,.81,.07"
+    property int _animationStep: 120
+    property int _animationFps: 60
+    property int _animationAngle: 15
+    property double _animationDuration: 1.6
 
     IpcHandler {
         target: "walli"
@@ -57,22 +56,29 @@ Singleton {
     }
 
     Timer {
-        interval: 100
+        id: retryTimer
+        interval: 400
         repeat: false
-        running: true
         onTriggered: awwwQuery.running = true;
     }
 
-    function activateWall(name) {
-        const cache = root.cacheFolder + name
-        const full = root.wallsFolder + name
+    function _retryQuery(): void {
+        if (root._queryRetries < 10) {
+            root._queryRetries++;
+            retryTimer.restart();
+        }
+    }
+
+    function activateWall(name): void {
+        const cache = Dirs.walliCacheFolder + "walli_thumbs/" + name
+        const full = Dirs.wallsFolder + name
         const cleanName = name.replace(/\.[^/.]+$/, "")
 
         if (full !== root.currentWallPath) {
             root.currentWall = cleanName
             root.currentWallPath = full
 
-            MatugenService.generateColors(full)
+            Matugen.generateColors(full)
 
             awwwProc.command[2] = full
             sddmWall.command[1] = full
@@ -81,22 +87,17 @@ Singleton {
             sddmWall.running = true
 
             NotifyService.send("walli", cleanName, cache)
-
-            console.log('-------------------- Walli Log --------------------')
-            console.log(`cache : ${cache}`)
-            console.log(`active wallpaper : ${full}`)
         }
 
         GlobalStates.walliVisible = false
     }
 
     Connections {
-        target: MatugenService
+        target: Matugen
 
         function onWallPathChanged() {
-            ledStrip.command[2] = MatugenService.colors.primary;
+            ledStrip.command[2] = Matugen.colors.primary;
             ledStrip.running = true;
-            console.log(`ledstrip color : ${MatugenService.colors.primary}`);
         }
     }
 
@@ -131,7 +132,7 @@ Singleton {
     // Apply wallpaper
     Process {
         id: awwwProc
-        command: ["awww", "img", "", "--transition-type", root.animationType, "--transition-pos", root.animationPos, "--transition-step", root.animationStep, "--transition-fps", root.animationFps, "--transition-angle", root.animationAngle, "--transition-bezier", root.animationBezier, "--transition-duration", root.animationDuration]
+        command: ["awww", "img", "", "--transition-type", root._animationType, "--transition-pos", root._animationPos, "--transition-step", root._animationStep, "--transition-fps", root._animationFps, "--transition-angle", root._animationAngle, "--transition-bezier", root._animationBezier, "--transition-duration", root._animationDuration]
     }
 
     // Cache wallpaper for SDDM
@@ -140,14 +141,17 @@ Singleton {
         command: ["cp", "", "/usr/share/sddm/themes/sddm-modern/wallpaper.png"]
     }
 
-    // Active Wallpaper Query
+    // Active Wallpaper Query (retried at startup until the daemon socket is ready)
     Process {
         id: awwwQuery
         command: ["awww", "query", "-j"]
         stdout: StdioCollector {
             onStreamFinished: {
                 const output = this.text.trim();
-                if (!output) return;
+                if (!output) {
+                    root._retryQuery();
+                    return;
+                }
                 try {
                     const data = JSON.parse(output);
                     const monitors = data[""];
@@ -155,11 +159,15 @@ Singleton {
                         const fullPath = monitors[0].displaying.image;
                         const filename = fullPath.split("/").pop();
                         const cleanName = filename.replace(/\.[^/.]+$/, "");
+                        root._queryRetries = 0;
                         root.currentWall = cleanName;
                         root.currentWallPath = fullPath;
+                    } else {
+                        root._retryQuery();
                     }
                 } catch(e) {
                     console.error("Failed to parse awww query JSON: " + e);
+                    root._retryQuery();
                 }
             }
         }
@@ -169,4 +177,6 @@ Singleton {
         id: ledStrip
         command: [Quickshell.env("HOME") + "/.config/hypr/scripts/ELK.py", "color", ""]
     }
+
+    Component.onCompleted: awwwQuery.running = true;
 }
