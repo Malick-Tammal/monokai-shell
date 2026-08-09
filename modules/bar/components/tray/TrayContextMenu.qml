@@ -24,7 +24,7 @@ PopupWindow {
 
     onIsOpenChanged: {
         if (!rootContext)
-        return;
+            return;
         if (isOpen) {
             if (rootContext.activeMenu && rootContext.activeMenu !== customMenu) {
                 rootContext.activeMenu.isOpen = false;

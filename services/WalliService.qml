@@ -59,7 +59,7 @@ Singleton {
         id: retryTimer
         interval: 400
         repeat: false
-        onTriggered: awwwQuery.running = true;
+        onTriggered: awwwQuery.running = true
     }
 
     function _retryQuery(): void {
@@ -70,26 +70,26 @@ Singleton {
     }
 
     function activateWall(name): void {
-        const cache = Dirs.walliCacheFolder + "walli_thumbs/" + name
-        const full = Dirs.wallsFolder + name
-        const cleanName = name.replace(/\.[^/.]+$/, "")
+        const cache = Dirs.walliCacheFolder + "walli_thumbs/" + name;
+        const full = Dirs.wallsFolder + name;
+        const cleanName = name.replace(/\.[^/.]+$/, "");
 
         if (full !== root.currentWallPath) {
-            root.currentWall = cleanName
-            root.currentWallPath = full
+            root.currentWall = cleanName;
+            root.currentWallPath = full;
 
-            Matugen.generateColors(full)
+            Matugen.generateColors(full);
 
-            awwwProc.command[2] = full
-            sddmWall.command[1] = full
+            awwwProc.command[2] = full;
+            sddmWall.command[1] = full;
 
-            awwwProc.running = true
-            sddmWall.running = true
+            awwwProc.running = true;
+            sddmWall.running = true;
 
-            NotifyService.send("walli", cleanName, cache)
+            NotifyService.send("walli", cleanName, cache);
         }
 
-        GlobalStates.walliVisible = false
+        GlobalStates.walliVisible = false;
     }
 
     Connections {
@@ -165,7 +165,7 @@ Singleton {
                     } else {
                         root._retryQuery();
                     }
-                } catch(e) {
+                } catch (e) {
                     console.error("Failed to parse awww query JSON: " + e);
                     root._retryQuery();
                 }
@@ -178,5 +178,5 @@ Singleton {
         command: [Quickshell.env("HOME") + "/.config/hypr/scripts/ELK.py", "color", ""]
     }
 
-    Component.onCompleted: awwwQuery.running = true;
+    Component.onCompleted: awwwQuery.running = true
 }

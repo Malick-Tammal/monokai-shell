@@ -19,7 +19,7 @@ Item {
         border.color: Style.errorBorder
 
         Symbols {
-            icon : "mode_off_on"
+            icon: "mode_off_on"
             size: Style.symbolSize
             color: Style.textOnError
 

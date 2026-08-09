@@ -37,9 +37,9 @@ Text {
     font {
         family: {
             if (!root.filled) {
-                return root.weight >= 600 ? outlinedBold.name : outlinedRegular.name
+                return root.weight >= 600 ? outlinedBold.name : outlinedRegular.name;
             } else {
-                return root.weight >= 600 ? filledBold.name : filledRegular.name
+                return root.weight >= 600 ? filledBold.name : filledRegular.name;
             }
         }
 

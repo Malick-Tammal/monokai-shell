@@ -48,20 +48,20 @@ Item {
             Text {
                 text: {
                     if (Network.ethernet)
-                    return Network.interfaceName || "Ethernet";
+                        return Network.interfaceName || "Ethernet";
 
                     switch (Network.wifiStatus) {
-                        case "connected":
+                    case "connected":
                         return Network.networkName;
-                        case "connecting":
+                    case "connecting":
                         return "Connecting...";
-                        case "limited":
+                    case "limited":
                         return "Limited Access";
-                        case "disabled":
+                    case "disabled":
                         return "Off";
-                        case "disconnected":
+                    case "disconnected":
                         return "Disconnected";
-                        default:
+                    default:
                         return "Unknown";
                     }
                 }
@@ -79,7 +79,6 @@ Item {
                     pixelSize: Style.fontSizeMd
                     styleName: "Bold"
                 }
-
             }
         }
 

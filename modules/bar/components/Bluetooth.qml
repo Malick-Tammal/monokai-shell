@@ -24,7 +24,7 @@ Item {
 
         onClicked: mouse => {
             if (!Bluetooth.isAvailable)
-            return;
+                return;
 
             if (mouse.button === Qt.RightButton) {
                 Bluetooth.toggleBluetooth();
@@ -48,7 +48,7 @@ Item {
 
         color: {
             if (!Bluetooth.isAvailable)
-            return Style.inactive;
+                return Style.inactive;
             return hoverHandler.hovered ? Style.successHover : Style.success;
         }
         border.color: Bluetooth.isAvailable ? Style.successBorder : Style.inactiveBorder
@@ -108,9 +108,9 @@ Item {
             Text {
                 text: {
                     if (!Bluetooth.isAvailable)
-                    return "Unavailable";
+                        return "Unavailable";
                     if (Bluetooth.isDiscovering && Bluetooth.isManualScan)
-                    return "Scanning...";
+                        return "Scanning...";
                     return Bluetooth.currentDeviceName;
                 }
 

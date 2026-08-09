@@ -18,11 +18,11 @@ Singleton {
 
     property string symbol: {
         if (backlightLevel === 0) {
-            return "backlight_high_off"
+            return "backlight_high_off";
         } else if (backlightLevel === 1) {
-            return "backlight_low"
+            return "backlight_low";
         } else if (backlightLevel === 2) {
-            return "backlight_low"
+            return "backlight_low";
         }
     }
 
@@ -65,7 +65,8 @@ Singleton {
         command: ["brightnessctl", "-m", "-d", "*kbd_backlight*"]
         stdout: StdioCollector {
             onStreamFinished: {
-                if (!text) return;
+                if (!text)
+                    return;
 
                 const parts = text.trim().split(",");
 
@@ -100,13 +101,17 @@ Singleton {
     }
 
     Component.onCompleted: {
-        if (!getLayout.running) { getLayout.running = true }
-        if (!backlight.running) { backlight.running = true }
+        if (!getLayout.running) {
+            getLayout.running = true;
+        }
+        if (!backlight.running) {
+            backlight.running = true;
+        }
     }
 
     property var keys: ({
             "key_H": 43,
             "key_L": 46,
-            "key_K": 45,
-    })
+            "key_K": 45
+        })
 }

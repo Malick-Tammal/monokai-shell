@@ -13,13 +13,15 @@ Item {
     property int borderSize: 5
 
     function clearAndHide() {
-        passwordInput.text = ""
-        rowVisible = false
-        hideTimer.stop()
-        resetUI()
+        passwordInput.text = "";
+        rowVisible = false;
+        hideTimer.stop();
+        resetUI();
     }
 
-    ListModel { id: passwordChars }
+    ListModel {
+        id: passwordChars
+    }
 
     Timer {
         id: hideTimer
@@ -35,41 +37,40 @@ Item {
         running: false
         onTriggered: {
             if (LockScreenService.showFailure) {
-                passwordStatus.text = "Type your password..."
-                resetUI()
+                passwordStatus.text = "Type your password...";
+                resetUI();
             }
         }
     }
 
     function resetUI() {
-        passwordInput.readOnly = false
-        passwordStatus.text = "Type your password..."
-        passwordStatus.color = Style.textMuted
-        passwordContainer.border.color = Style.surfaceDim
-        passwordContainerMask.border.color = Style.surfaceDim
-        passwordContainer.color = Style.surface
+        passwordInput.readOnly = false;
+        passwordStatus.text = "Type your password...";
+        passwordStatus.color = Style.textMuted;
+        passwordContainer.border.color = Style.surfaceDim;
+        passwordContainerMask.border.color = Style.surfaceDim;
+        passwordContainer.color = Style.surface;
     }
 
     function updateUIState() {
         if (LockScreenService.unlockInProgress) {
-            passwordInput.readOnly = true
-            passwordStatus.text = "Unlocking..."
-            passwordStatus.color = Style.warning
-            passwordContainer.border.color = Style.warning
-            passwordContainerMask.border.color = Style.warning
-            passwordContainer.color = Style.warningContainer
-
+            passwordInput.readOnly = true;
+            passwordStatus.text = "Unlocking...";
+            passwordStatus.color = Style.warning;
+            passwordContainer.border.color = Style.warning;
+            passwordContainerMask.border.color = Style.warning;
+            passwordContainer.color = Style.warningContainer;
         } else if (LockScreenService.showFailure) {
-            passwordInput.readOnly = false
-            passwordStatus.text = "Wrong password"
-            passwordStatus.color = Style.error
-            passwordStatus.color = Style.error
-            passwordContainer.border.color = Style.error
-            passwordContainerMask.border.color = Style.error
-            passwordContainer.color = Style.errorContainer
-            resetFailed.start()
+            passwordInput.readOnly = false;
+            passwordStatus.text = "Wrong password";
+            passwordStatus.color = Style.error;
+            passwordStatus.color = Style.error;
+            passwordContainer.border.color = Style.error;
+            passwordContainerMask.border.color = Style.error;
+            passwordContainer.color = Style.errorContainer;
+            resetFailed.start();
         } else {
-            resetUI()
+            resetUI();
         }
     }
 
@@ -77,17 +78,18 @@ Item {
         target: LockScreenService
 
         function onUnlockInProgressChanged() {
-            if (LockScreenService.unlockInProgress) passwordInput.text = ""
-            updateUIState()
+            if (LockScreenService.unlockInProgress)
+                passwordInput.text = "";
+            updateUIState();
         }
 
         function onShowFailureChanged() {
             if (LockScreenService.showFailure) {
-                passwordInput.text = ""
-                LockScreenService.currentText = ""
-                shakeAnimation.start()
+                passwordInput.text = "";
+                LockScreenService.currentText = "";
+                shakeAnimation.start();
             }
-            updateUIState()
+            updateUIState();
         }
     }
 
@@ -117,13 +119,62 @@ Item {
         SequentialAnimation {
             id: shakeAnimation
 
-            NumberAnimation { target: rowTransform; property: "x"; to: -20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
-            NumberAnimation { target: rowTransform; property: "x"; to: 20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
-            NumberAnimation { target: rowTransform; property: "x"; to: -20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
-            NumberAnimation { target: rowTransform; property: "x"; to: 20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
-            NumberAnimation { target: rowTransform; property: "x"; to: -20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
-            NumberAnimation { target: rowTransform; property: "x"; to: 20; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
-            NumberAnimation { target: rowTransform; property: "x"; to: 0; duration: 100; easing.type: Easing.OutBack; easing.overshoot: 2 }
+            NumberAnimation {
+                target: rowTransform
+                property: "x"
+                to: -20
+                duration: 100
+                easing.type: Easing.OutBack
+                easing.overshoot: 2
+            }
+            NumberAnimation {
+                target: rowTransform
+                property: "x"
+                to: 20
+                duration: 100
+                easing.type: Easing.OutBack
+                easing.overshoot: 2
+            }
+            NumberAnimation {
+                target: rowTransform
+                property: "x"
+                to: -20
+                duration: 100
+                easing.type: Easing.OutBack
+                easing.overshoot: 2
+            }
+            NumberAnimation {
+                target: rowTransform
+                property: "x"
+                to: 20
+                duration: 100
+                easing.type: Easing.OutBack
+                easing.overshoot: 2
+            }
+            NumberAnimation {
+                target: rowTransform
+                property: "x"
+                to: -20
+                duration: 100
+                easing.type: Easing.OutBack
+                easing.overshoot: 2
+            }
+            NumberAnimation {
+                target: rowTransform
+                property: "x"
+                to: 20
+                duration: 100
+                easing.type: Easing.OutBack
+                easing.overshoot: 2
+            }
+            NumberAnimation {
+                target: rowTransform
+                property: "x"
+                to: 0
+                duration: 100
+                easing.type: Easing.OutBack
+                easing.overshoot: 2
+            }
         }
 
         //  INFO: Left corner
@@ -131,7 +182,7 @@ Item {
             rounding: 30
             anchors.bottom: parent.bottom
             rotation: 90
-            roundingColor:  Style.background
+            roundingColor: Style.background
         }
 
         Rectangle {
@@ -153,7 +204,7 @@ Item {
                     rightMargin: 10
                     bottomMargin: 5
                 }
-                color:  Style.surface
+                color: Style.surface
                 border.color: Style.surfaceDim
                 border.width: root.borderSize
                 radius: 9999
@@ -162,7 +213,11 @@ Item {
 
                 property int currentBorderIndex: 1
 
-                Behavior on border.color { ColorAnimation { duration: 120 } }
+                Behavior on border.color {
+                    ColorAnimation {
+                        duration: 120
+                    }
+                }
 
                 TextInput {
                     id: passwordInput
@@ -176,34 +231,49 @@ Item {
                     opacity: 0
 
                     onTextChanged: {
-                        while (passwordChars.count < this.text.length) passwordChars.append({});
-                        while (passwordChars.count > this.text.length) passwordChars.remove(passwordChars.count - 1);
+                        while (passwordChars.count < this.text.length)
+                            passwordChars.append({});
+                        while (passwordChars.count > this.text.length)
+                            passwordChars.remove(passwordChars.count - 1);
 
                         if (passwordInput.text.length > 0) {
-                            root.rowVisible = true
-                            hideTimer.restart()
-                            passwordContainer.currentBorderIndex = (passwordContainer.currentBorderIndex + 1) % 4
-                            resetUI()
+                            root.rowVisible = true;
+                            hideTimer.restart();
+                            passwordContainer.currentBorderIndex = (passwordContainer.currentBorderIndex + 1) % 4;
+                            resetUI();
 
                             if (this.text.length === LockScreenService.pinLength) {
-                                LockScreenService.currentText = this.text
-                                this.text = ""
+                                LockScreenService.currentText = this.text;
+                                this.text = "";
                             }
                         } else {
-                            passwordContainer.currentBorderIndex = 5
+                            passwordContainer.currentBorderIndex = 5;
                         }
                     }
 
-                    cursorDelegate: Component { Item { width: 0; height: 0; visible: false } }
-                    font { family: Style.family; pixelSize: 30; weight: Font.Medium; styleName: "Medium"; letterSpacing: 5 }
+                    cursorDelegate: Component {
+                        Item {
+                            width: 0
+                            height: 0
+                            visible: false
+                        }
+                    }
+                    font {
+                        family: Style.family
+                        pixelSize: 30
+                        weight: Font.Medium
+                        styleName: "Medium"
+                        letterSpacing: 5
+                    }
 
                     Keys.onEscapePressed: root.clearAndHide()
 
                     onAccepted: {
-                        if (this.text.length === 0) return
-                        LockScreenService.currentText = this.text
-                        this.text = ""
-                        LockScreenService.tryUnlock()
+                        if (this.text.length === 0)
+                            return;
+                        LockScreenService.currentText = this.text;
+                        this.text = "";
+                        LockScreenService.tryUnlock();
                     }
                 }
 
@@ -214,7 +284,11 @@ Item {
 
                     anchors.centerIn: parent
                     opacity: passwordInput.text ? 0 : 1
-                    Behavior on opacity { NumberAnimation { duration: 300 } }
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 300
+                        }
+                    }
 
                     transform: Translate {
                         y: passwordInput.text ? 200 : 0
@@ -253,7 +327,12 @@ Item {
                     property int itemsWidth: passwordChars.count > 0 ? (passwordChars.count * 30 + (passwordChars.count - 1) * spacing) : 0
 
                     contentX: Math.max(0, itemsWidth - width + 20)
-                    Behavior on contentX { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
+                    Behavior on contentX {
+                        NumberAnimation {
+                            duration: 150
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
 
                     anchors.horizontalCenter: parent.horizontalCenter
 
@@ -270,14 +349,30 @@ Item {
 
                     add: Transition {
                         ParallelAnimation {
-                            NumberAnimation { property: "y"; from: 30; to: 0; duration: 150; easing.type: Easing.OutBack; easing.overshoot: 2 }
-                            NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 100 }
+                            NumberAnimation {
+                                property: "y"
+                                from: 30
+                                to: 0
+                                duration: 150
+                                easing.type: Easing.OutBack
+                                easing.overshoot: 2
+                            }
+                            NumberAnimation {
+                                property: "opacity"
+                                from: 0
+                                to: 1
+                                duration: 100
+                            }
                         }
                     }
 
                     remove: Transition {
                         ParallelAnimation {
-                            NumberAnimation { property: "opacity"; to: 0; duration: 150 }
+                            NumberAnimation {
+                                property: "opacity"
+                                to: 0
+                                duration: 150
+                            }
                         }
                     }
                 }
@@ -289,16 +384,20 @@ Item {
                     radius: passwordContainer.radius
                     color: "transparent"
                     z: 10
-                    border.color:  Style.surfaceDim
+                    border.color: Style.surfaceDim
                     border.width: root.borderSize
-                    Behavior on border.color { ColorAnimation { duration: 120 } }
+                    Behavior on border.color {
+                        ColorAnimation {
+                            duration: 120
+                        }
+                    }
 
                     Rectangle {
                         width: parent.width + 14
                         height: parent.height + 14
                         radius: passwordContainer.radius
                         color: "transparent"
-                        border.color:  Style.background
+                        border.color: Style.background
                         border.width: 7
                         anchors.centerIn: parent
                     }
@@ -403,7 +502,7 @@ Item {
 
                         radius: 9999
                         color: "transparent"
-                        border.color:  Style.warning
+                        border.color: Style.warning
                         border.width: root.borderSize
 
                         anchors {

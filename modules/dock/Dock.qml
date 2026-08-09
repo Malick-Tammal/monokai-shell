@@ -28,13 +28,7 @@ PanelWindow {
 
     readonly property bool isHovered: gapBridge.containsMouse || dockMouseArea.containsMouse || activatorMouseArea.containsMouse || hoveredIconCount > 0
 
-    readonly property bool shouldHide: Intellihide.shouldHide(
-        root.screen,
-        Intellihide.Edge.Bottom,
-        dock.width,
-        dock.height,
-        15
-    ) && !activeHover
+    readonly property bool shouldHide: Intellihide.shouldHide(root.screen, Intellihide.Edge.Bottom, dock.width, dock.height, 15) && !activeHover
 
     Timer {
         id: hoverGraceTimer
@@ -61,9 +55,9 @@ PanelWindow {
             const hiddenY = root.implicitHeight - trigger.height;
             const dockAreaY = root.implicitHeight - dock.height - 20;
             if (root.shouldHide)
-            return Math.min(dockTranslate.y, hiddenY);
+                return Math.min(dockTranslate.y, hiddenY);
             if (root.hoveredIconCount > 0)
-            return Math.min(dockTranslate.y, 0);
+                return Math.min(dockTranslate.y, 0);
             return Math.min(dockTranslate.y, dockAreaY);
         }
         height: root.implicitHeight - y
@@ -115,7 +109,10 @@ PanelWindow {
 
         opacity: DockService.isReady ? 1 : 0
         Behavior on opacity {
-            NumberAnimation { duration: 300; easing.type: Easing.OutCubic }
+            NumberAnimation {
+                duration: 300
+                easing.type: Easing.OutCubic
+            }
         }
 
         anchors {
@@ -155,9 +152,9 @@ PanelWindow {
 
                     onIconHoverChanged: hovered => {
                         if (hovered)
-                        root.hoveredIconCount++;
+                            root.hoveredIconCount++;
                         else
-                        root.hoveredIconCount--;
+                            root.hoveredIconCount--;
                     }
 
                     onIconMouseMoved: mappedX => {
@@ -174,25 +171,43 @@ PanelWindow {
         }
 
         states: [
-        State {
-            name: "visible"
-            PropertyChanges { target: dockTranslate; y: 0 }
-        },
-        State {
-            name: "hidden"
-            PropertyChanges { target: dockTranslate; y: root.implicitHeight }
-        }
+            State {
+                name: "visible"
+                PropertyChanges {
+                    target: dockTranslate
+                    y: 0
+                }
+            },
+            State {
+                name: "hidden"
+                PropertyChanges {
+                    target: dockTranslate
+                    y: root.implicitHeight
+                }
+            }
         ]
 
         transitions: [
-        Transition {
-            to: "visible"
-            SpringAnimation { target: dockTranslate; property: "y"; spring: 10; damping: 0.5; mass: 1.5 }
-        },
-        Transition {
-            to: "hidden"
-            SpringAnimation { target: dockTranslate; property: "y"; spring: 5; damping: 0.2; mass: 1.1 }
-        }
+            Transition {
+                to: "visible"
+                SpringAnimation {
+                    target: dockTranslate
+                    property: "y"
+                    spring: 10
+                    damping: 0.5
+                    mass: 1.5
+                }
+            },
+            Transition {
+                to: "hidden"
+                SpringAnimation {
+                    target: dockTranslate
+                    property: "y"
+                    spring: 5
+                    damping: 0.2
+                    mass: 1.1
+                }
+            }
         ]
     }
 

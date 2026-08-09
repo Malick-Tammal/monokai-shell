@@ -49,6 +49,5 @@ Item {
                 letterSpacing: 1
             }
         }
-
     }
 }

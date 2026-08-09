@@ -56,7 +56,7 @@ PanelWindow {
             if (root.inConfirmation) {
                 root.inConfirmation = false;
                 if (root.lastActiveItem)
-                root.lastActiveItem.forceActiveFocus();
+                    root.lastActiveItem.forceActiveFocus();
             } else {
                 GlobalStates.powerMenuVisible = false;
             }
@@ -92,7 +92,7 @@ PanelWindow {
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: (GlobalStates.isBarHovered || GlobalStates.barVisible) ? BarService.barHeight + Style.globalPadding * 2 :Style.globalPadding
+            topMargin: (GlobalStates.isBarHovered || GlobalStates.barVisible) ? BarService.barHeight + Style.globalPadding * 2 : Style.globalPadding
             rightMargin: Style.globalPadding
 
             Behavior on topMargin {
@@ -161,11 +161,11 @@ PanelWindow {
                         nextItem: reboot
                         focus: true
 
-                        activeColor:  Style.error
+                        activeColor: Style.error
                         activeBorderColor: Style.errorBorder
                         iconName: "power_settings_new"
                         iconColor: Style.textTertiary
-                        activeIconColor:  Style.textOnError
+                        activeIconColor: Style.textOnError
 
                         onActivated: requestExecute("systemctl poweroff", poweroff)
                     }
@@ -193,7 +193,7 @@ PanelWindow {
                         activeBorderColor: Style.warningBorder
                         iconName: "bedtime"
                         iconColor: Style.textTertiary
-                        activeIconColor:  Style.textOnWarning
+                        activeIconColor: Style.textOnWarning
 
                         onActivated: requestExecute("systemctl suspend", sleep)
                     }
@@ -242,7 +242,7 @@ PanelWindow {
                 onCancel: {
                     root.inConfirmation = false;
                     if (root.lastActiveItem)
-                    root.lastActiveItem.forceActiveFocus();
+                        root.lastActiveItem.forceActiveFocus();
                 }
             }
         }

@@ -12,7 +12,7 @@ Singleton {
 
     property bool isDark: false
     property real wallpaperBrightness: 0.0
-    property color textOnWallpaper : isDark ? Qt.lighter(Matugen.colors.primary, wallpaperBrightness * 8) :  Qt.lighter(Matugen.colors.primary, wallpaperBrightness * 4)
+    property color textOnWallpaper: isDark ? Qt.lighter(Matugen.colors.primary, wallpaperBrightness * 8) : Qt.lighter(Matugen.colors.primary, wallpaperBrightness * 4)
     property color accentOnWallpaper: Qt.lighter(Matugen.colors.primary, ((isDark ? 1.2 : (1 + wallpaperBrightness))))
 
     function withAlpha(baseColor, alpha) {

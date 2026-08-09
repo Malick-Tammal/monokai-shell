@@ -22,7 +22,7 @@ Item {
         anchors.fill: parent
         radius: 6
         color: Style.textPrimary
-        opacity: trayMouseArea.containsMouse ? 0.3: 0.0
+        opacity: trayMouseArea.containsMouse ? 0.3 : 0.0
         Behavior on opacity {
             NumberAnimation {
                 duration: 150
@@ -56,7 +56,7 @@ Item {
 
         onClicked: mouse => {
             if (!trayItemRoot.trayItem)
-            return;
+                return;
             if (mouse.button === Qt.LeftButton) {
                 trayItemRoot.trayItem.activate();
             } else if (mouse.button === Qt.RightButton) {

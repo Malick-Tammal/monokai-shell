@@ -71,7 +71,7 @@ PanelWindow {
 
             Rectangle {
                 id: icon
-        color: Style.notify
+                color: Style.notify
                 width: symbol.width + 35
                 height: parent.height
                 topLeftRadius: 15

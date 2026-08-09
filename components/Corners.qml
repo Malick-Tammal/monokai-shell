@@ -17,26 +17,26 @@ Item {
 
         Repeater {
             model: [
-            {
-                anchorTop: true,
-                anchorRight: true,
-                rot: 0
-            },
-            {
-                anchorTop: true,
-                anchorLeft: true,
-                rot: -90
-            },
-            {
-                anchorBottom: true,
-                anchorRight: true,
-                rot: 90
-            },
-            {
-                anchorBottom: true,
-                anchorLeft: true,
-                rot: -180
-            }
+                {
+                    anchorTop: true,
+                    anchorRight: true,
+                    rot: 0
+                },
+                {
+                    anchorTop: true,
+                    anchorLeft: true,
+                    rot: -90
+                },
+                {
+                    anchorBottom: true,
+                    anchorRight: true,
+                    rot: 90
+                },
+                {
+                    anchorBottom: true,
+                    anchorLeft: true,
+                    rot: -180
+                }
             ]
 
             delegate: InvertedCorner {

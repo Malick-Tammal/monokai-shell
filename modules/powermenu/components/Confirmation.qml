@@ -150,7 +150,6 @@ Item {
                             root.confirm();
                         }
                     }
-
                 }
 
                 Rectangle {

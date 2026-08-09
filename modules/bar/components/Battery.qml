@@ -86,10 +86,10 @@ Item {
                 }
 
                 onOpacityChanged: if (!Battery.isPluggedIn)
-                opacity = 1.0
+                    opacity = 1.0
 
                 onXChanged: if (Math.round(Battery.percentage) >= 0.15 || Battery.isPluggedIn)
-                x = 0
+                    x = 0
 
                 Behavior on color {
                     ColorAnimation {
@@ -131,9 +131,9 @@ Item {
 
                 color: {
                     if (Battery.isPluggedIn)
-                    return Style.textOnSuccess;
+                        return Style.textOnSuccess;
                     if (Battery.percentage <= 0.15)
-                    return Style.textOnError;
+                        return Style.textOnError;
                     return Style.textOnNotify;
                 }
 
@@ -141,34 +141,34 @@ Item {
 
                 state: {
                     if (Battery.isPluggedIn)
-                    return "charging";
+                        return "charging";
                     if (Battery.percentage <= 0.15)
-                    return "low";
+                        return "low";
                     return "discharging";
                 }
 
                 states: [
-                State {
-                    name: "charging"
-                    PropertyChanges {
-                        target: batteryIcon
-                        icon: "electric_bolt"
+                    State {
+                        name: "charging"
+                        PropertyChanges {
+                            target: batteryIcon
+                            icon: "electric_bolt"
+                        }
+                    },
+                    State {
+                        name: "discharging"
+                        PropertyChanges {
+                            target: batteryIcon
+                            icon: "battery_android_full"
+                        }
+                    },
+                    State {
+                        name: "low"
+                        PropertyChanges {
+                            target: batteryIcon
+                            icon: "warning"
+                        }
                     }
-                },
-                State {
-                    name: "discharging"
-                    PropertyChanges {
-                        target: batteryIcon
-                        icon: "battery_android_full"
-                    }
-                },
-                State {
-                    name: "low"
-                    PropertyChanges {
-                        target: batteryIcon
-                        icon: "warning"
-                    }
-                }
                 ]
 
                 transitions: Transition {
@@ -226,9 +226,9 @@ Item {
                 text: Math.round(Battery.percentage * 100)
                 color: {
                     if (Battery.isPluggedIn)
-                    return Style.textOnSuccess;
+                        return Style.textOnSuccess;
                     if (Battery.percentage <= 0.15)
-                    return Style.textOnError;
+                        return Style.textOnError;
                     return Style.textOnNotify;
                 }
                 renderType: Text.NativeRendering
@@ -249,10 +249,10 @@ Item {
             anchors.fill: parent
             color: "transparent"
             border.color: {
-                if(Battery.isPluggedIn) {
+                if (Battery.isPluggedIn) {
                     return Style.successBorder;
                 }
-                if(Battery.percentage <= 0.15) {
+                if (Battery.percentage <= 0.15) {
                     return Style.errorBorder;
                 }
                 return Style.notifyBorder;

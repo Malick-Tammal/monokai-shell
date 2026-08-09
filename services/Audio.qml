@@ -9,7 +9,7 @@ import Quickshell.Services.Pipewire
 Singleton {
     id: root
 
-    signal interactionTriggered()
+    signal interactionTriggered
 
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var source: Pipewire.defaultAudioSource
@@ -21,7 +21,7 @@ Singleton {
     readonly property bool isMicMuted: source?.audio?.muted ?? false
     readonly property bool isBluetooth: {
         if (!sink)
-        return false;
+            return false;
         let info = (sink.name + " " + sink.description + " " + sink.nickname).toLowerCase();
         return info.includes("bluez") || info.includes("bluetooth");
     }
@@ -32,39 +32,39 @@ Singleton {
     IpcHandler {
         target: "volume"
 
-        function increase(){
-            incrementVolume()
-            interactionTriggered()
+        function increase() {
+            incrementVolume();
+            interactionTriggered();
         }
 
-        function decrease(){
-            decrementVolume()
-            interactionTriggered()
+        function decrease() {
+            decrementVolume();
+            interactionTriggered();
         }
 
-        function mute(){
-            toggleMute()
-            interactionTriggered()
+        function mute() {
+            toggleMute();
+            interactionTriggered();
         }
     }
 
     IpcHandler {
         target: "mic"
 
-        function mute(){
-            toggleMicMute()
+        function mute() {
+            toggleMicMute();
         }
     }
 
     function friendlyDeviceName(node): string {
         if (!node)
-        return "Unknown";
+            return "Unknown";
         return node.nickname || node.description || "Unknown";
     }
 
     function appNodeDisplayName(node): string {
         if (!node)
-        return "Unknown";
+            return "Unknown";
         return node.properties["application.name"] || node.description || node.name || "Unknown";
     }
 
@@ -76,33 +76,33 @@ Singleton {
 
     readonly property string materialSymbol: {
         if (isMuted || volume === 0)
-        return "volume_off";
+            return "volume_off";
 
         if (isBluetooth)
-        return "bluetooth_audio";
+            return "bluetooth_audio";
 
         if (volume < 0.33)
-        return "volume_mute";
+            return "volume_mute";
 
         if (volume < 0.67)
-        return "volume_down";
+            return "volume_down";
 
         return "volume_up";
     }
 
     function toggleMute(): void {
         if (sink?.audio)
-        sink.audio.muted = !sink.audio.muted;
+            sink.audio.muted = !sink.audio.muted;
     }
 
     function toggleMicMute(): void {
         if (source?.audio)
-        source.audio.muted = !source.audio.muted;
+            source.audio.muted = !source.audio.muted;
     }
 
     function changeVolume(amount): void {
         if (!sink?.audio)
-        return;
+            return;
 
         let newVolume = sink.audio.volume + amount;
         sink.audio.volume = Math.max(0.0, Math.min(hardMaxValue, newVolume));
@@ -118,12 +118,12 @@ Singleton {
 
     function setDefaultSink(node): void {
         if (node)
-        Pipewire.preferredDefaultAudioSink = node;
+            Pipewire.preferredDefaultAudioSink = node;
     }
 
     function setDefaultSource(node): void {
         if (node)
-        Pipewire.preferredDefaultAudioSource = node;
+            Pipewire.preferredDefaultAudioSource = node;
     }
 
     function playSystemSound(soundName): void {

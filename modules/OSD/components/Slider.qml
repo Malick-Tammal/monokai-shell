@@ -41,9 +41,7 @@ Item {
     Rectangle {
         id: thumb
         width: parent.width - 8
-        height: root.allowEmpty
-        ? _trackHeight * (root.value ?? 0)
-        : Math.max(20, _trackHeight * (root.value ?? 0))
+        height: root.allowEmpty ? _trackHeight * (root.value ?? 0) : Math.max(20, _trackHeight * (root.value ?? 0))
         color: root.thumbColor
         antialiasing: true
         radius: 12
@@ -123,37 +121,37 @@ Item {
             cursorShape: Qt.SizeVerCursor
 
             onActiveChanged: {
-                root._dragging = active
+                root._dragging = active;
                 if (active) {
-                    const v = 1.0 - Math.max(0.0, Math.min(1.0, centroid.position.y / root._trackHeight))
-                    root.valueChangeRequested(v)
+                    const v = 1.0 - Math.max(0.0, Math.min(1.0, centroid.position.y / root._trackHeight));
+                    root.valueChangeRequested(v);
                 }
             }
 
             onCentroidChanged: {
                 if (active) {
-                    const v = 1.0 - Math.max(0.0, Math.min(1.0, centroid.position.y / root._trackHeight))
-                    root.valueChangeRequested(v)
+                    const v = 1.0 - Math.max(0.0, Math.min(1.0, centroid.position.y / root._trackHeight));
+                    root.valueChangeRequested(v);
                 }
             }
         }
 
         TapHandler {
-            onTapped: (eventPoint) => {
-                const y = track.mapFromGlobal(eventPoint.scenePosition.x, eventPoint.scenePosition.y).y
-                const v = 1.0 - Math.max(0.0, Math.min(1.0, y / root._trackHeight))
-                root.valueChangeRequested(v)
+            onTapped: eventPoint => {
+                const y = track.mapFromGlobal(eventPoint.scenePosition.x, eventPoint.scenePosition.y).y;
+                const v = 1.0 - Math.max(0.0, Math.min(1.0, y / root._trackHeight));
+                root.valueChangeRequested(v);
             }
         }
 
         WheelHandler {
             target: null
             acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-            onWheel: (event) => {
-                const step = 0.05
-                const delta = event.angleDelta.y > 0 ? step : -step
-                const v = Math.max(0.0, Math.min(1.0, root.value + delta))
-                root.valueChangeRequested(v)
+            onWheel: event => {
+                const step = 0.05;
+                const delta = event.angleDelta.y > 0 ? step : -step;
+                const v = Math.max(0.0, Math.min(1.0, root.value + delta));
+                root.valueChangeRequested(v);
             }
         }
     }

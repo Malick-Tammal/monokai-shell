@@ -25,5 +25,4 @@ Item {
 
         screen: root.screen
     }
-
 }

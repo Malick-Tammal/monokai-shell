@@ -24,7 +24,7 @@ PanelWindow {
 
     onVisibleChanged: {
         if (visible && !hideTimer.running)
-        hideTimer.restart();
+            hideTimer.restart();
     }
 
     Connections {
@@ -66,15 +66,15 @@ PanelWindow {
             foreground: Style.textOnInfo
             thumbColor: Style.info
 
-            onValueChangeRequested: (v) => {
-                BrightnessService.setBrightness(v)
+            onValueChangeRequested: v => {
+                BrightnessService.setBrightness(v);
             }
 
             on_DraggingChanged: {
                 if (_dragging)
-                hideTimer.stop()
+                    hideTimer.stop();
                 else
-                hideTimer.restart()
+                    hideTimer.restart();
             }
         }
     }

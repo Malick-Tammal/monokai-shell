@@ -8,7 +8,7 @@ import qs.services
 import "./components/"
 
 Rectangle {
-    id : root
+    id: root
 
     required property var context
     property int borderWidth: 20
@@ -29,7 +29,7 @@ Rectangle {
         fillMode: Image.PreserveAspectCrop
         sourceSize.width: parent.width > 0 ? parent.width : 1920
         sourceSize.height: parent.height > 0 ? parent.height : 1080
-        visible : false
+        visible: false
         z: 0
     }
 
@@ -62,41 +62,41 @@ Rectangle {
 
         Repeater {
             model: [
-            // Top right
-            {
-                anchorTop: true,
-                anchorRight: true,
-                rot: 0,
-                x: -root.borderWidth,
-                y: root.borderWidth,
-            },
+                // Top right
+                {
+                    anchorTop: true,
+                    anchorRight: true,
+                    rot: 0,
+                    x: -root.borderWidth,
+                    y: root.borderWidth
+                },
 
-            // Top left
-            {
-                anchorTop: true,
-                anchorLeft: true,
-                rot: -90,
-                x: root.borderWidth,
-                y: root.borderWidth,
-            },
+                // Top left
+                {
+                    anchorTop: true,
+                    anchorLeft: true,
+                    rot: -90,
+                    x: root.borderWidth,
+                    y: root.borderWidth
+                },
 
-            // Bottom right
-            {
-                anchorBottom: true,
-                anchorRight: true,
-                rot: 90,
-                x: -root.borderWidth,
-                y: -root.borderWidth,
-            },
+                // Bottom right
+                {
+                    anchorBottom: true,
+                    anchorRight: true,
+                    rot: 90,
+                    x: -root.borderWidth,
+                    y: -root.borderWidth
+                },
 
-            // Bottom left
-            {
-                anchorBottom: true,
-                anchorLeft: true,
-                rot: -180,
-                x: root.borderWidth,
-                y: -root.borderWidth,
-            }
+                // Bottom left
+                {
+                    anchorBottom: true,
+                    anchorLeft: true,
+                    rot: -180,
+                    x: root.borderWidth,
+                    y: -root.borderWidth
+                }
             ]
 
             delegate: InvertedCorner {
@@ -142,7 +142,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: root.borderWidth
-        z:4
+        z: 4
     }
 
     //  INFO: Handy for testing

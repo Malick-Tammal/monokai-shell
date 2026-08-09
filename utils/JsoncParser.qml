@@ -11,7 +11,7 @@ Singleton {
         let jsonStr = text;
         jsonStr = jsonStr.replace(/\/\/.*/g, '');
         jsonStr = jsonStr.replace(/\/\*[\s\S]*?\*\//g, '');
-            jsonStr = jsonStr.replace(/,(\s*[}\]])/g, '$1');
+        jsonStr = jsonStr.replace(/,(\s*[}\]])/g, '$1');
         return JSON.parse(jsonStr);
     }
 }

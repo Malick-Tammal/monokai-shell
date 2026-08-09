@@ -18,8 +18,8 @@ Singleton {
 
     function _delUnderscore(key): void {
         let parts = key.split("_");
-        let camel = parts[0] + parts.slice(1).map(function(p) {
-                return p.charAt(0).toUpperCase() + p.slice(1);
+        let camel = parts[0] + parts.slice(1).map(function (p) {
+            return p.charAt(0).toUpperCase() + p.slice(1);
         }).join("");
 
         if (key.startsWith("on_")) {
@@ -61,12 +61,13 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                if (!text.trim()) return;
+                if (!text.trim())
+                    return;
                 try {
                     let data = JSON.parse(text);
                     root._applyColors(data);
                     matugenCacher.setText(text);
-                } catch(e) {
+                } catch (e) {
                     console.error("Matugen JSON parsing failed: " + e);
                 }
             }
@@ -83,7 +84,7 @@ Singleton {
         target: WalliService
 
         function onCurrentWallPathChanged() {
-            matugenRunner.command[2] = WalliService.currentWallPath
+            matugenRunner.command[2] = WalliService.currentWallPath;
             matugenRunner.running = true;
         }
     }
@@ -101,7 +102,8 @@ Singleton {
 
     function _loadCached() {
         const text = matugenCacher.text();
-        if (!text.trim()) return;
+        if (!text.trim())
+            return;
         try {
             root._applyColors(JSON.parse(text));
             // console.log("Matugen: applied cached colors from " + matugenCacher.path);

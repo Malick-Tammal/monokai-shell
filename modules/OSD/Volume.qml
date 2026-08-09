@@ -69,26 +69,24 @@ PanelWindow {
             surface: Style.textOnSuccess
             accent: Style.success
             foreground: Style.textOnSuccess
-            thumbColor: root.mode === "mic"
-            ? (Audio.isMicMuted ? Style.successContainer : Style.success)
-            : (Audio.isMuted ? Style.successContainer : Style.success)
+            thumbColor: root.mode === "mic" ? (Audio.isMicMuted ? Style.successContainer : Style.success) : (Audio.isMuted ? Style.successContainer : Style.success)
             allowEmpty: root.mode === "mic"
 
-            onValueChangeRequested: (v) => {
+            onValueChangeRequested: v => {
                 if (root.mode === "mic") {
                     if (Audio.source?.audio)
-                    Audio.source.audio.volume = v
+                        Audio.source.audio.volume = v;
                 } else {
                     if (Audio.sink?.audio)
-                    Audio.sink.audio.volume = Math.min(v, Audio.hardMaxValue)
+                        Audio.sink.audio.volume = Math.min(v, Audio.hardMaxValue);
                 }
             }
 
             on_DraggingChanged: {
                 if (_dragging)
-                hideTimer.stop()
+                    hideTimer.stop();
                 else
-                hideTimer.restart()
+                    hideTimer.restart();
             }
         }
     }

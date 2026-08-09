@@ -12,7 +12,8 @@ Singleton {
     readonly property var batteryDevice: {
         const devices = UPower.devices.values;
         for (let i = 0; i < devices.length; i++) {
-            if (devices[i].isLaptopBattery) return devices[i];
+            if (devices[i].isLaptopBattery)
+                return devices[i];
         }
         return UPower.displayDevice;
     }
@@ -24,9 +25,7 @@ Singleton {
     readonly property string percentageText: `${Math.round(percentage * 100)}%`
 
     readonly property bool isCharging: chargeState == UPowerDeviceState.Charging
-    readonly property bool isPluggedIn: isCharging
-    || chargeState == UPowerDeviceState.PendingCharge
-    || chargeState == UPowerDeviceState.FullyCharged
+    readonly property bool isPluggedIn: isCharging || chargeState == UPowerDeviceState.PendingCharge || chargeState == UPowerDeviceState.FullyCharged
 
     readonly property bool isLow: available && (percentage <= 0.2)
     readonly property bool isCritical: available && (percentage <= 0.05)

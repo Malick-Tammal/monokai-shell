@@ -40,7 +40,7 @@ Singleton {
             root.pinnedApps = rawData.map(app => ({
                         class: app.class,
                         exec: app.exec || ""
-            }));
+                    }));
             root.updateAppList();
             root.isReady = true;
         } catch (e) {
@@ -50,7 +50,7 @@ Singleton {
 
     function getDisplayName(className) {
         if (!className)
-        return "Unknown";
+            return "Unknown";
         const lower = className.toLowerCase();
 
         const nameOverrides = {
@@ -65,13 +65,13 @@ Singleton {
         };
 
         if (nameOverrides[lower])
-        return nameOverrides[lower];
+            return nameOverrides[lower];
 
         try {
             if (typeof DesktopEntries !== "undefined" && typeof DesktopEntries.heuristicLookup === "function") {
                 const entry = DesktopEntries.heuristicLookup(className);
                 if (entry && entry.name)
-                return entry.name;
+                    return entry.name;
             }
         } catch (e) {
             console.warn("Display name lookup failed for " + className);
@@ -107,18 +107,19 @@ Singleton {
 
     function getCachedIconName(className) {
         if (!className)
-        return "unknown";
+            return "unknown";
         const lower = className.toLowerCase();
 
         if (root._iconCache[lower] !== undefined)
-        return root._iconCache[lower];
+            return root._iconCache[lower];
 
         return "";
     }
 
     function getIconName(className) {
         let cached = getCachedIconName(className);
-        if (cached !== "") return cached;
+        if (cached !== "")
+            return cached;
 
         const lower = className.toLowerCase();
 
@@ -159,47 +160,47 @@ Singleton {
         let runningMap = {};
 
         clients.forEach(win => {
-                if (!win.class)
+            if (!win.class)
                 return;
-                let cls = win.class.toLowerCase();
+            let cls = win.class.toLowerCase();
 
-                if (!runningMap[cls]) {
-                    runningMap[cls] = {
-                        class: win.class,
-                        count: 0,
-                        windows: []
-                    };
-                }
-                runningMap[cls].windows.push(win);
-                runningMap[cls].count++;
+            if (!runningMap[cls]) {
+                runningMap[cls] = {
+                    class: win.class,
+                    count: 0,
+                    windows: []
+                };
+            }
+            runningMap[cls].windows.push(win);
+            runningMap[cls].count++;
         });
 
         let mergedList = [];
 
         root.pinnedApps.forEach(pinned => {
-                let cls = pinned.class.toLowerCase();
-                let isRunning = runningMap[cls] !== undefined;
+            let cls = pinned.class.toLowerCase();
+            let isRunning = runningMap[cls] !== undefined;
 
-                mergedList.push({
-                        class: pinned.class,
-                        exec: pinned.exec,
-                        isPinned: true,
-                        count: isRunning ? runningMap[cls].count : 0,
-                        windows: isRunning ? runningMap[cls].windows : []
-                });
+            mergedList.push({
+                class: pinned.class,
+                exec: pinned.exec,
+                isPinned: true,
+                count: isRunning ? runningMap[cls].count : 0,
+                windows: isRunning ? runningMap[cls].windows : []
+            });
 
-                if (isRunning)
+            if (isRunning)
                 delete runningMap[cls];
         });
 
         Object.values(runningMap).forEach(app => {
-                mergedList.push({
-                        class: app.class,
-                        exec: "",
-                        isPinned: false,
-                        count: app.count,
-                        windows: app.windows
-                });
+            mergedList.push({
+                class: app.class,
+                exec: "",
+                isPinned: false,
+                count: app.count,
+                windows: app.windows
+            });
         });
 
         root.appList = mergedList;

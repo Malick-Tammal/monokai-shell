@@ -47,13 +47,14 @@ Rectangle {
         var forceUpdate = updateTrigger;
         if (isRoot) {
             if (!targetItem)
-            return 0;
+                return 0;
             var globalPos = targetItem.mapToGlobal(0, 0);
             if (!globalPos)
-            return 0;
+                return 0;
             return globalPos.x - (implicitWidth / 2) + (targetItem.width / 2);
         } else {
-            if (!targetItem || !panel.parent) return -implicitWidth - 10;
+            if (!targetItem || !panel.parent)
+                return -implicitWidth - 10;
             var mappedPos = targetItem.mapToItem(panel.parent, 0, 0);
             return mappedPos.x - implicitWidth - 10;
         }
@@ -63,13 +64,14 @@ Rectangle {
         var forceUpdate = updateTrigger;
         if (isRoot) {
             if (!targetItem)
-            return 55;
+                return 55;
             var globalPos = targetItem.mapToGlobal(0, 0);
             if (!globalPos)
-            return 55;
+                return 55;
             return globalPos.y + targetItem.height + 20;
         } else {
-            if (!targetItem || !panel.parent) return -5;
+            if (!targetItem || !panel.parent)
+                return -5;
             var mappedPos = targetItem.mapToItem(panel.parent, 0, 0);
             return mappedPos.y - 5;
         }
@@ -112,11 +114,11 @@ Rectangle {
                         var comp = Qt.createComponent("TrayMenuPanel.qml");
                         if (comp.status === Component.Ready) {
                             subMenuPanel = comp.createObject(panel, {
-                                    "menuData": delegateRect.menuItem,
-                                    "targetItem": delegateRect,
-                                    "rootMenuWindow": panel.rootMenuWindow,
-                                    "isRoot": false,
-                                    "isOpen": false,
+                                "menuData": delegateRect.menuItem,
+                                "targetItem": delegateRect,
+                                "rootMenuWindow": panel.rootMenuWindow,
+                                "isRoot": false,
+                                "isOpen": false
                             });
                         } else {
                             console.error("Failed to load submenu panel:", comp.errorString());
@@ -124,7 +126,7 @@ Rectangle {
                         }
                     }
                     Qt.callLater(() => {
-                            if (subMenuPanel)
+                        if (subMenuPanel)
                             subMenuPanel.isOpen = true;
                     });
                     panel.activeSubMenuDelegate = delegateRect;

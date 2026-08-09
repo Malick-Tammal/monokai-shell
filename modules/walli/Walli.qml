@@ -55,7 +55,7 @@ PanelWindow {
 
     function findAndSelect(cleanName) {
         if (wallpapers.count === 0)
-        return;
+            return;
 
         for (let i = 0; i < wallpapers.count; i++) {
             let file = wallpapers.model.get(i, "fileName");
@@ -86,7 +86,7 @@ PanelWindow {
             right: parent.right
             horizontalCenter: parent.horizontalCenter
             leftMargin: Style.globalPadding
-            rightMargin:Style.globalPadding
+            rightMargin: Style.globalPadding
             topMargin: (GlobalStates.isBarHovered || GlobalStates.barVisible) ? BarService.barHeight + Style.globalPadding * 2 : Style.globalPadding
 
             Behavior on topMargin {
@@ -120,7 +120,7 @@ PanelWindow {
             ListView {
                 id: wallpapers
 
-                property int visibleWallpaperCount : 6
+                property int visibleWallpaperCount: 6
 
                 orientation: ListView.Horizontal
                 spacing: 10

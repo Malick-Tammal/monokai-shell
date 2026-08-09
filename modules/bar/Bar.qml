@@ -53,13 +53,13 @@ PanelWindow {
         }
 
         function onRevealRequested(targetScreenName) {
-            if(root.screen.name === targetScreenName) {
+            if (root.screen.name === targetScreenName) {
                 GlobalStates.barVisible = true;
             }
         }
 
         function onHideRequested(targetScreenName) {
-            if(root.screen.name === targetScreenName) {
+            if (root.screen.name === targetScreenName) {
                 GlobalStates.barVisible = false;
             }
         }
@@ -84,25 +84,43 @@ PanelWindow {
         }
 
         states: [
-        State {
-            name: "visible"
-            PropertyChanges { target: barTranslate; y: 0 }
-        },
-        State {
-            name: "hidden"
-            PropertyChanges { target: barTranslate; y: -BarService.barHeight * 2 }
-        }
+            State {
+                name: "visible"
+                PropertyChanges {
+                    target: barTranslate
+                    y: 0
+                }
+            },
+            State {
+                name: "hidden"
+                PropertyChanges {
+                    target: barTranslate
+                    y: -BarService.barHeight * 2
+                }
+            }
         ]
 
         transitions: [
-        Transition {
-            to: "visible"
-            SpringAnimation { target: barTranslate; property: "y"; spring: 10; damping: 0.5; mass: 1.5 }
-        },
-        Transition {
-            to: "hidden"
-            SpringAnimation { target: barTranslate; property: "y"; spring: 5; damping: 0.2; mass: 1.1 }
-        }
+            Transition {
+                to: "visible"
+                SpringAnimation {
+                    target: barTranslate
+                    property: "y"
+                    spring: 10
+                    damping: 0.5
+                    mass: 1.5
+                }
+            },
+            Transition {
+                to: "hidden"
+                SpringAnimation {
+                    target: barTranslate
+                    property: "y"
+                    spring: 5
+                    damping: 0.2
+                    mass: 1.1
+                }
+            }
         ]
 
         HoverHandler {
@@ -114,7 +132,7 @@ PanelWindow {
             left: parent.left
             right: parent.right
             topMargin: Style.globalPadding + 1
-            leftMargin:Style.globalPadding
+            leftMargin: Style.globalPadding
             rightMargin: Style.globalPadding
         }
 

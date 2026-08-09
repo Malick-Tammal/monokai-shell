@@ -27,7 +27,8 @@ Singleton {
     }
 
     function tryUnlock() {
-        if (currentText === "") return;
+        if (currentText === "")
+            return;
 
         root.unlockInProgress = true;
         pam.start();

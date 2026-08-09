@@ -78,10 +78,30 @@ Item {
 
                     SequentialAnimation {
                         id: flashAnim
-                        NumberAnimation { target: ws; property: "opacity"; to: 0.3; duration: 120 }
-                        NumberAnimation { target: ws; property: "opacity"; to: 1.0; duration: 120 }
-                        NumberAnimation { target: ws; property: "opacity"; to: 0.3; duration: 120 }
-                        NumberAnimation { target: ws; property: "opacity"; to: 1.0; duration: 120 }
+                        NumberAnimation {
+                            target: ws
+                            property: "opacity"
+                            to: 0.3
+                            duration: 120
+                        }
+                        NumberAnimation {
+                            target: ws
+                            property: "opacity"
+                            to: 1.0
+                            duration: 120
+                        }
+                        NumberAnimation {
+                            target: ws
+                            property: "opacity"
+                            to: 0.3
+                            duration: 120
+                        }
+                        NumberAnimation {
+                            target: ws
+                            property: "opacity"
+                            to: 1.0
+                            duration: 120
+                        }
                     }
 
                     HoverHandler {
