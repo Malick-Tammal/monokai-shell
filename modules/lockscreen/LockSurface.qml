@@ -21,27 +21,44 @@ Rectangle {
         z: 99
     }
 
-    // Background
-    Image {
-        id: background
+    // Wallpaper
+    Item {
+        id: wallpaper
         anchors.fill: parent
-        source: WalliService.currentWallPath
-        fillMode: Image.PreserveAspectCrop
-        sourceSize.width: parent.width > 0 ? parent.width : 1920
-        sourceSize.height: parent.height > 0 ? parent.height : 1080
-        visible: false
-        z: 0
+
+        layer.enabled: true
+        layer.effect: MultiEffect {
+            autoPaddingEnabled: false
+            blurEnabled: true
+            blur: 1
+            blurMax: 80
+            blurMultiplier: 2
+            contrast: 0.2
+
+            colorization: 0.25
+            colorizationColor: Style.background
+        }
+
+        Image {
+            id: background
+            anchors.fill: parent
+            source: WalliService.currentWallPath
+            asynchronous: true
+            fillMode: Image.PreserveAspectCrop
+            sourceSize.width: parent.width > 0 ? parent.width : 1920
+            sourceSize.height: parent.height > 0 ? parent.height : 1080
+            visible: true
+            z: 0
+        }
     }
 
-    MultiEffect {
-        source: background
+    Image {
+        id: noiseOverlay
         anchors.fill: parent
-        blurEnabled: true
-        autoPaddingEnabled: false
-        blur: 0.85
-        blurMax: 64
-        blurMultiplier: 0.15
-        brightness: -0.05
+        source: "../../assets/grain.png"
+        fillMode: Image.Tile
+        opacity: 0.05
+        z: 1
     }
 
     // Border with rounded corners

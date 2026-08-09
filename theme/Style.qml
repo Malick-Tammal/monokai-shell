@@ -11,16 +11,15 @@ QtObject {
     //  INFO: Helpers
     //--------------------------------------------
 
-    readonly property bool _isMonokai: Configs.theme === "monokai_fusion"
-
-    function withAlpha(baseColor, alpha): color {
-        let c = Qt.color(baseColor);
-        return Qt.rgba(c.r, c.g, c.b, alpha);
+    readonly property QtObject _activeTheme: {
+        if (Configs.theme === "monokai-fusion")
+            return MonokaiFusion;
+        return MonokaiFusion;
     }
 
     function palette(colorName, shade): color {
-        if (_isMonokai) {
-            return MonokaiFusion[colorName + shade] || MonokaiFusion.gray5;
+        if (!Configs.autoGenColors) {
+            return _activeTheme[colorName + shade] || _activeTheme.gray5;
         }
 
         let baseMap = {
@@ -47,25 +46,25 @@ QtObject {
     }
 
     function _matugenColor(name): color {
-        return Matugen.colors[name] || MonokaiFusion.gray5;
+        return Matugen.colors[name] || _activeTheme.gray5;
     }
 
     //--------------------------------------------
     //  INFO: Primary
     //--------------------------------------------
 
-    readonly property color primary: _isMonokai ? MonokaiFusion.yellow5 : Style._matugenColor("primary")
-    readonly property color textOnPrimary: _isMonokai ? MonokaiFusion.yellow9 : Style._matugenColor("colorOnPrimary")
+    readonly property color primary: Configs.autoGenColors ? Style._matugenColor("primary") : _activeTheme.yellow5
+    readonly property color textOnPrimary: Configs.autoGenColors ? Style._matugenColor("colorOnPrimary") : _activeTheme.yellow9
 
     //--------------------------------------------
     //  INFO: Text Hierarchy
     //--------------------------------------------
 
-    readonly property color textPrimary: _isMonokai ? MonokaiFusion.white : Style._matugenColor("colorOnSurface")
-    readonly property color textSecondary: _isMonokai ? MonokaiFusion.gray1 : Style._matugenColor("colorOnSurfaceVariant")
-    readonly property color textTertiary: _isMonokai ? MonokaiFusion.gray2 : Style._matugenColor("outline")
-    readonly property color textMuted: _isMonokai ? MonokaiFusion.dark1 : Style._matugenColor("outlineVariant")
-    readonly property color textDisabled: _isMonokai ? MonokaiFusion.gray3 : Style._matugenColor("outline")
+    readonly property color textPrimary: Configs.autoGenColors ? Style._matugenColor("colorOnSurface") : _activeTheme.white
+    readonly property color textSecondary: Configs.autoGenColors ? Style._matugenColor("colorOnSurfaceVariant") : _activeTheme.gray1
+    readonly property color textTertiary: Configs.autoGenColors ? Style._matugenColor("outline") : _activeTheme.gray2
+    readonly property color textMuted: Configs.autoGenColors ? Style._matugenColor("outlineVariant") : _activeTheme.dark1
+    readonly property color textDisabled: Configs.autoGenColors ? Style._matugenColor("outline") : _activeTheme.gray3
     readonly property color textOnWallpaper: ColorEngine.textOnWallpaper
     readonly property color accentOnWallpaper: ColorEngine.accentOnWallpaper
 
@@ -73,91 +72,91 @@ QtObject {
     //  INFO: Surfaces & Backgrounds
     //--------------------------------------------
 
-    readonly property color background: _isMonokai ? MonokaiFusion.dark5 : Style._matugenColor("background")
-    readonly property color surface: _isMonokai ? MonokaiFusion.dark4 : Style._matugenColor("surfaceContainerHigh")
-    readonly property color surfaceAlt: _isMonokai ? MonokaiFusion.dark3 : Style._matugenColor("surfaceContainerHighest")
-    readonly property color surfaceDim: _isMonokai ? MonokaiFusion.dark2 : Style._matugenColor("surfaceContainer")
-    readonly property color overlay: _isMonokai ? MonokaiFusion.dark1 : Style._matugenColor("surfaceContainerLow")
-    readonly property color trueBlack: _isMonokai ? MonokaiFusion.black : Style._matugenColor("shadow")
+    readonly property color background: Configs.autoGenColors ? Style._matugenColor("background") : _activeTheme.dark5
+    readonly property color surface: Configs.autoGenColors ? Style._matugenColor("surfaceContainerHigh") : _activeTheme.dark4
+    readonly property color surfaceAlt: Configs.autoGenColors ? Style._matugenColor("surfaceContainerHighest") : _activeTheme.dark3
+    readonly property color surfaceDim: Configs.autoGenColors ? Style._matugenColor("surfaceContainer") : _activeTheme.dark2
+    readonly property color overlay: Configs.autoGenColors ? Style._matugenColor("surfaceContainerLow") : _activeTheme.dark1
+    readonly property color trueBlack: Configs.autoGenColors ? Style._matugenColor("shadow") : _activeTheme.black
 
     //--------------------------------------------
     //  INFO: Borders & Dividers
     //--------------------------------------------
 
-    readonly property color border: _isMonokai ? MonokaiFusion.yellow5 : Style._matugenColor("primary")
-    readonly property color borderDim: _isMonokai ? MonokaiFusion.gray4 : Style._matugenColor("outlineVariant")
-    readonly property color divider: _isMonokai ? MonokaiFusion.dark1 : Style._matugenColor("outlineVariant")
+    readonly property color border: Configs.autoGenColors ? Style._matugenColor("primary") : _activeTheme.yellow5
+    readonly property color borderDim: Configs.autoGenColors ? Style._matugenColor("outlineVariant") : _activeTheme.gray4
+    readonly property color divider: Configs.autoGenColors ? Style._matugenColor("outlineVariant") : _activeTheme.dark1
 
     //--------------------------------------------
     //  INFO: Status: Error (Red)
     //--------------------------------------------
 
-    readonly property color error: _isMonokai ? MonokaiFusion.red5 : Style._matugenColor("error")
-    readonly property color errorHover: _isMonokai ? MonokaiFusion.red4 : Qt.lighter(error, 1.15)
-    readonly property color errorBorder: _isMonokai ? MonokaiFusion.red3 : Qt.lighter(error, 1.3)
-    readonly property color errorContainer: _isMonokai ? MonokaiFusion.red8 : Style._matugenColor("errorContainer")
-    readonly property color textOnError: _isMonokai ? MonokaiFusion.red9 : Style._matugenColor("colorOnError")
+    readonly property color error: Configs.autoGenColors ? Style._matugenColor("error") : _activeTheme.red5
+    readonly property color errorHover: Configs.autoGenColors ? Qt.lighter(error, 1.15) : _activeTheme.red4
+    readonly property color errorBorder: Configs.autoGenColors ? Qt.lighter(error, 1.3) : _activeTheme.red3
+    readonly property color errorContainer: Configs.autoGenColors ? Style._matugenColor("errorContainer") : _activeTheme.red8
+    readonly property color textOnError: Configs.autoGenColors ? Style._matugenColor("colorOnError") : _activeTheme.red9
 
     //--------------------------------------------
     //  INFO: Status: Warning (Yellow)
     //--------------------------------------------
 
-    readonly property color warning: _isMonokai ? MonokaiFusion.yellow5 : Style._matugenColor("primary")
-    readonly property color warningHover: _isMonokai ? MonokaiFusion.yellow4 : Qt.lighter(warning, 1.15)
-    readonly property color warningLight: _isMonokai ? MonokaiFusion.yellow2 : Qt.lighter(warning, 1.5)
-    readonly property color warningBorder: _isMonokai ? MonokaiFusion.yellow3 : Qt.lighter(warning, 1.3)
-    readonly property color warningContainer: _isMonokai ? MonokaiFusion.yellow8 : Qt.darker(warning, 2.5)
-    readonly property color textOnWarning: _isMonokai ? MonokaiFusion.yellow9 : Qt.darker(warning, 3.5)
+    readonly property color warning: Configs.autoGenColors ? Style._matugenColor("primary") : _activeTheme.yellow5
+    readonly property color warningHover: Configs.autoGenColors ? Qt.lighter(warning, 1.15) : _activeTheme.yellow4
+    readonly property color warningLight: Configs.autoGenColors ? Qt.lighter(warning, 1.5) : _activeTheme.yellow2
+    readonly property color warningBorder: Configs.autoGenColors ? Qt.lighter(warning, 1.3) : _activeTheme.yellow3
+    readonly property color warningContainer: Configs.autoGenColors ? Qt.darker(warning, 2.5) : _activeTheme.yellow8
+    readonly property color textOnWarning: Configs.autoGenColors ? Qt.darker(warning, 3.5) : _activeTheme.yellow9
 
     //--------------------------------------------
     //  INFO: Status: Success (Green)
     //--------------------------------------------
 
-    readonly property color success: _isMonokai ? MonokaiFusion.green5 : Qt.tint(Style._matugenColor("primary"), "#3000FF00")
-    readonly property color successHover: _isMonokai ? MonokaiFusion.green4 : Qt.lighter(success, 1.15)
-    readonly property color successMuted: _isMonokai ? MonokaiFusion.green7 : Qt.darker(success, 1.5)
-    readonly property color successBorder: _isMonokai ? MonokaiFusion.green3 : Qt.lighter(success, 1.3)
-    readonly property color successContainer: _isMonokai ? MonokaiFusion.green8 : Qt.darker(success, 2.5)
-    readonly property color textOnSuccess: _isMonokai ? MonokaiFusion.green9 : Qt.darker(success, 3.5)
+    readonly property color success: Configs.autoGenColors ? Qt.tint(Style._matugenColor("primary"), "#3000FF00") : _activeTheme.green5
+    readonly property color successHover: Configs.autoGenColors ? Qt.lighter(success, 1.15) : _activeTheme.green4
+    readonly property color successMuted: Configs.autoGenColors ? Qt.darker(success, 1.5) : _activeTheme.green7
+    readonly property color successBorder: Configs.autoGenColors ? Qt.lighter(success, 1.3) : _activeTheme.green3
+    readonly property color successContainer: Configs.autoGenColors ? Qt.darker(success, 2.5) : _activeTheme.green8
+    readonly property color textOnSuccess: Configs.autoGenColors ? Qt.darker(success, 3.5) : _activeTheme.green9
 
     //--------------------------------------------
     //  INFO: Module: Info (Purple)
     //--------------------------------------------
 
-    readonly property color info: _isMonokai ? MonokaiFusion.purple5 : Style._matugenColor("tertiary")
-    readonly property color infoHover: _isMonokai ? MonokaiFusion.purple4 : Qt.lighter(info, 1.15)
-    readonly property color infoBorder: _isMonokai ? MonokaiFusion.purple2 : Qt.lighter(info, 1.5)
-    readonly property color infoContainer: _isMonokai ? MonokaiFusion.purple9 : Style._matugenColor("tertiaryContainer")
-    readonly property color textOnInfo: _isMonokai ? MonokaiFusion.purple9 : Style._matugenColor("colorOnTertiary")
+    readonly property color info: Configs.autoGenColors ? Style._matugenColor("tertiary") : _activeTheme.purple5
+    readonly property color infoHover: Configs.autoGenColors ? Qt.lighter(info, 1.15) : _activeTheme.purple4
+    readonly property color infoBorder: Configs.autoGenColors ? Qt.lighter(info, 1.5) : _activeTheme.purple2
+    readonly property color infoContainer: Configs.autoGenColors ? Style._matugenColor("tertiaryContainer") : _activeTheme.purple9
+    readonly property color textOnInfo: Configs.autoGenColors ? Style._matugenColor("colorOnTertiary") : _activeTheme.purple9
 
     //--------------------------------------------
     //  INFO: Module: Feature (Blue)
     //--------------------------------------------
 
-    readonly property color feature: _isMonokai ? MonokaiFusion.blue5 : Style._matugenColor("secondary")
-    readonly property color featureHover: _isMonokai ? MonokaiFusion.blue4 : Qt.lighter(feature, 1.15)
-    readonly property color featureBorder: _isMonokai ? MonokaiFusion.blue2 : Qt.lighter(feature, 1.5)
-    readonly property color featureContainer: _isMonokai ? MonokaiFusion.blue9 : Style._matugenColor("secondaryContainer")
-    readonly property color textOnFeature: _isMonokai ? MonokaiFusion.blue9 : Style._matugenColor("colorOnSecondary")
+    readonly property color feature: Configs.autoGenColors ? Style._matugenColor("secondary") : _activeTheme.blue5
+    readonly property color featureHover: Configs.autoGenColors ? Qt.lighter(feature, 1.15) : _activeTheme.blue4
+    readonly property color featureBorder: Configs.autoGenColors ? Qt.lighter(feature, 1.5) : _activeTheme.blue2
+    readonly property color featureContainer: Configs.autoGenColors ? Style._matugenColor("secondaryContainer") : _activeTheme.blue9
+    readonly property color textOnFeature: Configs.autoGenColors ? Style._matugenColor("colorOnSecondary") : _activeTheme.blue9
 
     //--------------------------------------------
     //  INFO: Module: Notify (Orange)
     //--------------------------------------------
 
-    readonly property color notify: _isMonokai ? MonokaiFusion.orange5 : Qt.tint(Style._matugenColor("tertiary"), "#30FF8800")
-    readonly property color notifyHover: _isMonokai ? MonokaiFusion.orange4 : Qt.lighter(notify, 1.15)
-    readonly property color notifyBorder: _isMonokai ? MonokaiFusion.orange2 : Qt.lighter(notify, 1.5)
-    readonly property color notifyContainer: _isMonokai ? MonokaiFusion.orange8 : Qt.darker(notify, 2.5)
-    readonly property color textOnNotify: _isMonokai ? MonokaiFusion.orange9 : Qt.darker(notify, 3.5)
+    readonly property color notify: Configs.autoGenColors ? Qt.tint(Style._matugenColor("tertiary"), "#30FF8800") : _activeTheme.orange5
+    readonly property color notifyHover: Configs.autoGenColors ? Qt.lighter(notify, 1.15) : _activeTheme.orange4
+    readonly property color notifyBorder: Configs.autoGenColors ? Qt.lighter(notify, 1.5) : _activeTheme.orange2
+    readonly property color notifyContainer: Configs.autoGenColors ? Qt.darker(notify, 2.5) : _activeTheme.orange8
+    readonly property color textOnNotify: Configs.autoGenColors ? Qt.darker(notify, 3.5) : _activeTheme.orange9
 
     //--------------------------------------------
     //  INFO: Interactive States
     //--------------------------------------------
 
-    readonly property color inactive: _isMonokai ? MonokaiFusion.gray6 : Style._matugenColor("surfaceVariant")
-    readonly property color inactiveText: _isMonokai ? MonokaiFusion.gray3 : Style._matugenColor("colorOnSurfaceVariant")
-    readonly property color inactiveBorder: _isMonokai ? MonokaiFusion.dark1 : Style._matugenColor("outlineVariant")
-    readonly property color indicatorIdle: _isMonokai ? MonokaiFusion.gray5 : Style._matugenColor("surfaceContainerHighest")
+    readonly property color inactive: Configs.autoGenColors ? Style._matugenColor("surfaceVariant") : _activeTheme.gray6
+    readonly property color inactiveText: Configs.autoGenColors ? Style._matugenColor("colorOnSurfaceVariant") : _activeTheme.gray3
+    readonly property color inactiveBorder: Configs.autoGenColors ? Style._matugenColor("outlineVariant") : _activeTheme.dark1
+    readonly property color indicatorIdle: Configs.autoGenColors ? Style._matugenColor("surfaceContainerHighest") : _activeTheme.gray5
 
     //--------------------------------------------
     //  INFO: Typography

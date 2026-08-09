@@ -8,5 +8,6 @@ Singleton {
     id: root
 
     property bool logs: false
-    property string theme: "monokai_fusion"  // TIP: (Options) monokai_fusion | matugen
+    property bool autoGenColors: true
+    property string theme: "monokai-fusion"
 }

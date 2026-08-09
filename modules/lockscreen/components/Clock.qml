@@ -14,13 +14,13 @@ Item {
 
         Column {
             id: column
-            spacing: -50
+            spacing: -60
             anchors.horizontalCenter: parent.horizontalCenter
 
             Sliding {
                 text: DateTime.hours
                 size: 200
-                textColor: Style.textPrimary
+                textColor: Style.textOnWallpaper
                 weight: Font.Black
                 styleName: "Black"
                 anchors.horizontalCenter: parent.horizontalCenter

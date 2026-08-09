@@ -5,6 +5,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.services
+import qs.theme
 import "./themes/"
 
 Singleton {
@@ -12,13 +13,8 @@ Singleton {
 
     property bool isDark: false
     property real wallpaperBrightness: 0.0
-    property color textOnWallpaper: isDark ? Qt.lighter(Matugen.colors.primary, wallpaperBrightness * 8) : Qt.lighter(Matugen.colors.primary, wallpaperBrightness * 4)
-    property color accentOnWallpaper: Qt.lighter(Matugen.colors.primary, ((isDark ? 1.2 : (1 + wallpaperBrightness))))
-
-    function withAlpha(baseColor, alpha) {
-        let c = Qt.color(baseColor);
-        return Qt.rgba(c.r, c.g, c.b, alpha);
-    }
+    property color textOnWallpaper: isDark ? Qt.lighter(Style.textPrimary, 1) : Qt.lighter(Style.textPrimary, 1)
+    property color accentOnWallpaper: Qt.lighter(Style.primary, ((isDark ? 1.2 : (1 + wallpaperBrightness - 0.3))))
 
     Process {
         id: brightnessProc
@@ -37,13 +33,21 @@ Singleton {
 
     function analyzeWallpaper(path) {
         if (path) {
-            brightnessProc.command = ["magick", path, "-resize", "1x1!", "-format", "%[fx:mean]", "info:"];
+            brightnessProc.command = ["magick", path, "-gravity", "center", "-crop", "40x40%+0+0", "+repage", "-resize", "1x1!", "-format", "%[fx:mean]", "info:"];
             brightnessProc.running = true;
         }
     }
 
+    function withAlpha(baseColor, alpha): color {
+        let c = Qt.color(baseColor);
+        return Qt.rgba(c.r, c.g, c.b, alpha);
+    }
+
     onWallpaperBrightnessChanged: {
-        root.isDark = root.wallpaperBrightness < 0.47;
+        root.isDark = root.wallpaperBrightness < 0.5;
+
+        console.log("wallpaper brightness: " + root.wallpaperBrightness);
+        console.log("isDark: " + root.isDark);
     }
 
     Connections {

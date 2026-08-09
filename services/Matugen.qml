@@ -16,7 +16,7 @@ Singleton {
     property string wallPath
     property bool isDarkMode
 
-    function _delUnderscore(key): void {
+    function _delUnderscore(key): string {
         let parts = key.split("_");
         let camel = parts[0] + parts.slice(1).map(function (p) {
             return p.charAt(0).toUpperCase() + p.slice(1);
@@ -38,12 +38,17 @@ Singleton {
         }
 
         let newColors = {};
+        let parseDark = data.is_dark_mode !== undefined ? data.is_dark_mode : true;
 
         for (let key in colors) {
             let entry = colors[key];
-            if (entry && entry.dark && entry.dark.color) {
+            if (entry) {
                 let propName = _delUnderscore(key);
-                newColors[propName] = entry.dark.color;
+                let colorNode = parseDark ? entry.dark : entry.light;
+                
+                if (colorNode && colorNode.color) {
+                    newColors[propName] = colorNode.color;
+                }
             }
         }
 
@@ -52,7 +57,9 @@ Singleton {
         root.palettes = data.palettes;
         root.mode = data.mode;
         root.wallPath = data.image;
-        root.isDarkMode = data.is_dark_mode;
+        if (data.is_dark_mode !== undefined) {
+            root.isDarkMode = data.is_dark_mode;
+        }
     }
 
     Process {
