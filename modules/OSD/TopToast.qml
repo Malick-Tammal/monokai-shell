@@ -17,21 +17,32 @@ PanelWindow {
 
     readonly property var toastData: {
         switch (root._mode) {
-            case "keyboard": return {
+        case "keyboard":
+            return {
                 icon: "language_chinese_array",
                 text: KbService.shortLayout,
                 accent: Style.primary,
                 surface: Style.textOnPrimary,
                 lightSurface: Style.warningLight
             };
-            case "ac": return {
+        case "ac":
+            return {
                 icon: "electrical_services",
                 text: Battery.isPluggedIn ? "Connected" : "Disconnected",
                 accent: Style.error,
                 surface: Style.textOnError,
                 lightSurface: Style.errorBorder
             };
-            default: return {
+        case "game":
+            return {
+                icon: "gamepad",
+                text: GameMode.enabled ? "ON" : "OFF",
+                accent: Style.info,
+                surface: Style.textOnInfo,
+                lightSurface: Style.infoBorder
+            };
+        default:
+            return {
                 icon: "",
                 text: "",
                 accent: "transparent",
@@ -66,6 +77,16 @@ PanelWindow {
 
         function onIsPluggedInChanged() {
             root._mode = "ac";
+            GlobalStates.showToast = true;
+            hideTimer.restart();
+        }
+    }
+
+    Connections {
+        target: GameMode
+
+        function onEnabledChanged() {
+            root._mode = "game";
             GlobalStates.showToast = true;
             hideTimer.restart();
         }

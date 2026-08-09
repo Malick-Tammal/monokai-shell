@@ -8,20 +8,12 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    signal interactionTriggered()
+    signal interactionTriggered
 
     property real brightness: 0.5
     readonly property real step: 0.10
 
     readonly property string symbol: {
-        // if (brightness > 0.5) {
-        //     return "brightness_7";
-        // } else if (brightness <= 0.5) {
-        //     return "brightness_6";
-        // } else if (brightness < 0.25) {
-        //     return "brightness_4";
-        // }
-
         if (brightness <= 0.25) {
             return "brightness_4";
         } else if (brightness <= 0.5) {
@@ -49,13 +41,12 @@ Singleton {
         value = Math.round(Math.max(0.01, Math.min(1.0, value)) * 100) / 100;
 
         if (root.brightness === value)
-        return;
+            return;
 
         root.brightness = value;
 
         const percent = Math.round(value * 100);
         Quickshell.execDetached(["brightnessctl", "s", `${percent}%`]);
-
     }
 
     function increaseBrightness(): void {

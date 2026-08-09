@@ -5,6 +5,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
+import qs.utils
 
 Singleton {
     id: root
@@ -34,7 +35,7 @@ Singleton {
 
     readonly property bool isWorkspaceEmpty: {
         if (!root.windowList || root.windowList.length === 0)
-        return true;
+            return true;
 
         const currentWsId = Hyprland.focusedWorkspace?.id ?? -999;
         return !root.windowList.some(win => win.workspace.id === currentWsId);
@@ -43,7 +44,7 @@ Singleton {
     property bool hyprbars: true
 
     function getWorkspace(id) {
-        return Hyprland.workspaces.values.find(w => w.id === id) || null
+        return Hyprland.workspaces.values.find(w => w.id === id) || null;
     }
 
     function isUrgent(id) {
@@ -57,6 +58,11 @@ Singleton {
 
     function focusWorkspace(id): void {
         Hyprland.dispatch(`hl.dsp.focus({workspace = ${id}})`);
+    }
+
+    function applyConfig(config: var): void {
+        const parsed = LuaHyprParser.parse(config);
+        hyprctlProc.run(["hyprctl", "eval", parsed]);
     }
 
     Process {
@@ -96,7 +102,7 @@ Singleton {
 
                     if (foundPlugin) {
                         if (currentLine.trim() === "")
-                        continue;
+                            continue;
 
                         if (currentLine.includes("enabled: true")) {
                             isEnabled = true;
@@ -107,6 +113,14 @@ Singleton {
 
                 root.hyprbars = isEnabled;
             }
+        }
+    }
+
+    Process {
+        id: hyprctlProc
+        function run(args: list<string>): void {
+            command = args;
+            running = true;
         }
     }
 

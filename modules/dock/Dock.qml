@@ -109,7 +109,7 @@ PanelWindow {
         color: Style.background
         border.color: Style.border
         border.width: 1
-        radius: 15
+        radius: 20
         antialiasing: true
         clip: false
 

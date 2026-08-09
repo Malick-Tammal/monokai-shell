@@ -4,26 +4,28 @@
 //@ pragma Env QT_SCALE_FACTOR=1
 //@ pragma Env QT_SCALE_FACTOR_ROUNDING_POLICY=PassThrough
 
-import Quickshell
-import QtQuick
-import Quickshell.Wayland
-import Quickshell.Io
-import qs.services
-import qs.core
-import qs.theme
 import "./modules/lockscreen/"
+import QtQuick
+import Quickshell
+import Quickshell.Io
+import Quickshell.Wayland
+import qs.core
+import qs.services
+import qs.theme
 
 ShellRoot {
     id: root
 
     Loader {
         id: popupsLoader
+
         sourceComponent: undefined
         asynchronous: true
     }
 
     Loader {
         id: logsLoader
+
         sourceComponent: undefined
         asynchronous: true
         active: Configs.logs
@@ -49,8 +51,10 @@ ShellRoot {
 
     Instantiator {
         model: Quickshell.screens
+
         delegate: Main {
             required property var modelData
+
             screen: modelData
         }
     }

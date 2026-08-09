@@ -35,10 +35,14 @@ QtObject {
 
         let base = baseMap[colorName] || root.inactive;
 
-        if (shade <= 2) return Qt.lighter(base, 1.5);
-        if (shade <= 4) return Qt.lighter(base, 1.15);
-        if (shade === 5) return base;
-        if (shade <= 7) return Qt.darker(base, 1.5);
+        if (shade <= 2)
+            return Qt.lighter(base, 1.5);
+        if (shade <= 4)
+            return Qt.lighter(base, 1.15);
+        if (shade === 5)
+            return base;
+        if (shade <= 7)
+            return Qt.darker(base, 1.5);
         return Qt.darker(base, 3.5);
     }
 
