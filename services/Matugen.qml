@@ -45,7 +45,7 @@ Singleton {
             if (entry) {
                 let propName = _delUnderscore(key);
                 let colorNode = parseDark ? entry.dark : entry.light;
-                
+
                 if (colorNode && colorNode.color) {
                     newColors[propName] = colorNode.color;
                 }
@@ -71,11 +71,13 @@ Singleton {
                 if (!text.trim())
                     return;
                 try {
-                    let data = JSON.parse(text);
+                    const cleanData = text.replace(/\s*ok\s*$/i, '');
+                    let data = JSON.parse(cleanData);
                     root._applyColors(data);
-                    matugenCacher.setText(text);
+                    matugenCacher.setText(JSON.stringify(data));
                 } catch (e) {
                     console.error("Matugen JSON parsing failed: " + e);
+                    console.log(data);
                 }
             }
         }
@@ -113,7 +115,6 @@ Singleton {
             return;
         try {
             root._applyColors(JSON.parse(text));
-            // console.log("Matugen: applied cached colors from " + matugenCacher.path);
         } catch (e) {
             console.error("Matugen: cached JSON parsing failed: " + e);
         }

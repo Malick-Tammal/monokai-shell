@@ -8,6 +8,6 @@ Singleton {
     id: root
 
     property bool logs: false
-    property bool autoGenColors: false
+    property bool autoGenColors: true
     property string theme: "monokai-fusion"
 }
