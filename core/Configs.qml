@@ -8,7 +8,7 @@ Singleton {
     id: root
 
     property bool logs: false
-    property bool autoGenColors: true
+    property bool autoGenColors: false
     property string theme: "monokai-fusion"
     property int dockIconSize: 57
     property bool tintedDockIcons: true
