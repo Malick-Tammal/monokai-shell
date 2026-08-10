@@ -38,9 +38,9 @@ Singleton {
         }
     }
 
-    function withAlpha(baseColor, alpha): color {
+    function withAlpha(baseColor, alpha = 1): color {
         let c = Qt.color(baseColor);
-        return Qt.rgba(c.r, c.g, c.b, alpha);
+        return Qt.rgba(c.r, c.g, c.b, c.a * (1 - alpha));
     }
 
     onWallpaperBrightnessChanged: {

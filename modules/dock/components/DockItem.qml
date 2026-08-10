@@ -1,3 +1,5 @@
+import Qt5Compat.GraphicalEffects
+
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Widgets
@@ -6,11 +8,12 @@ import QtQuick
 import QtQuick.Layouts
 import qs.theme
 import qs.services
+import qs.core
 
 Row {
     id: root
 
-    height: parent.height
+    height: Configs.dockIconSize
     spacing: separator.visible ? 8 : 0
 
     required property var modelData
@@ -101,9 +104,11 @@ Row {
             id: iconPlaceholder
             width: parent.width * 0.9
             height: parent.width * 0.9
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: parent.width * 0.05
+            anchors {
+                bottom: parent.bottom
+                horizontalCenter: parent.horizontalCenter
+                bottomMargin: parent.width * 0.05
+            }
             radius: width / 4
             color: Style.surfaceAlt
             opacity: iconSlot.isIconReady ? 0 : 1
@@ -116,14 +121,12 @@ Row {
             }
         }
 
-        IconImage {
-            id: actualIcon
-            source: Quickshell.iconPath(iconSlot.resolvedIconName === "" ? "unknown" : iconSlot.resolvedIconName, true)
+        Loader {
+            active: iconSlot.isIconReady
             width: parent.width
             height: parent.width
             anchors.bottom: parent.bottom
-            transformOrigin: Item.Bottom
-            opacity: iconSlot.isIconReady ? 1 : 0
+            opacity: iconSlot.isIconReady ? 1 : 1
 
             onStatusChanged: {
                 if (status === Image.Ready && !iconSlot.isIconReady) {
@@ -137,58 +140,92 @@ Row {
                 }
             }
 
-            scale: {
-                if (iconMouseArea.pressed)
-                    return 0.9;
-                if (root.dockMouseX < 0)
-                    return 1.0;
+            sourceComponent: Item {
+                anchors.fill: parent
+                transformOrigin: Item.Bottom
 
-                const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
-                const radius = 100;
-                const maxScale = 1.3;
+                scale: {
+                    if (iconMouseArea.pressed)
+                        return 0.9;
+                    if (root.dockMouseX < 0)
+                        return 1.0;
 
-                if (pixelDist >= radius)
-                    return 1.0;
+                    const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
+                    const radius = 100;
+                    const maxScale = 1.3;
 
-                return 1.0 + (maxScale - 1.0) * (1 + Math.cos(Math.PI * pixelDist / radius)) / 1.5;
-            }
+                    if (pixelDist >= radius)
+                        return 1.0;
 
-            Behavior on scale {
-                SpringAnimation {
-                    spring: 10
-                    damping: 0.5
-                    mass: 1.5
+                    return 1.0 + (maxScale - 1.0) * (1 + Math.cos(Math.PI * pixelDist / radius)) / 1.5;
                 }
-            }
 
-            transform: [
-                Translate {
-                    y: {
-                        if (iconMouseArea.pressed)
-                            return 2;
-                        if (root.dockMouseX < 0)
-                            return 0;
-
-                        const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
-                        const radius = 120;
-                        const maxLift = -8;
-
-                        if (pixelDist >= radius)
-                            return 0;
-
-                        return maxLift * (1 + Math.cos(Math.PI * pixelDist / radius)) / 2;
+                Behavior on scale {
+                    SpringAnimation {
+                        spring: 10
+                        damping: 0.5
+                        mass: 1.5
                     }
+                }
 
-                    Behavior on y {
-                        SmoothedAnimation {
-                            velocity: 100
+                transform: [
+                    Translate {
+                        y: {
+                            if (iconMouseArea.pressed)
+                                return 2;
+                            if (root.dockMouseX < 0)
+                                return 0;
+
+                            const pixelDist = Math.abs(root.dockMouseX - iconSlot.iconCenterX);
+                            const radius = 120;
+                            const maxLift = -8;
+
+                            if (pixelDist >= radius)
+                                return 0;
+
+                            return maxLift * (1 + Math.cos(Math.PI * pixelDist / radius)) / 2;
+                        }
+
+                        Behavior on y {
+                            SmoothedAnimation {
+                                velocity: 100
+                            }
+                        }
+                    },
+                    Translate {
+                        y: root.bounceOffset
+                    }
+                ]
+
+                Loader {
+                    id: iconLoader
+                    anchors.fill: parent
+                    sourceComponent: IconImage {
+                        id: actualIcon
+                        source: Quickshell.iconPath(iconSlot.resolvedIconName === "" ? "unknown" : iconSlot.resolvedIconName, true)
+                    }
+                }
+
+                Loader {
+                    id: overlayLoader
+                    active: Configs.tintedDockIcons
+                    anchors.fill: iconLoader
+                    sourceComponent: Item {
+                        Desaturate {
+                            id: desaturatedIcon
+                            desaturation: 0.5
+                            source: iconLoader
+                            anchors.fill: parent
+                            visible: false
+                        }
+                        ColorOverlay {
+                            source: desaturatedIcon
+                            color: ColorEngine.withAlpha(Style.primary, 0.8)
+                            anchors.fill: desaturatedIcon
                         }
                     }
-                },
-                Translate {
-                    y: root.bounceOffset
                 }
-            ]
+            }
         }
 
         RowLayout {

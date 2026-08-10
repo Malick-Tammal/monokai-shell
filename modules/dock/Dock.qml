@@ -98,7 +98,7 @@ PanelWindow {
 
     Rectangle {
         id: dock
-        height: 70
+        height: row.implicitHeight + 16
         width: row.implicitWidth + 16
         color: Style.background
         border.color: Style.border

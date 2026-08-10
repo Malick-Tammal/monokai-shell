@@ -10,4 +10,6 @@ Singleton {
     property bool logs: false
     property bool autoGenColors: true
     property string theme: "monokai-fusion"
+    property int dockIconSize: 57
+    property bool tintedDockIcons: true
 }
