@@ -66,6 +66,13 @@ Singleton {
         if (root._queryRetries < 10) {
             root._queryRetries++;
             retryTimer.restart();
+        } else {
+            console.warn("WalliService: awww query failed after 10 retries. Applying fallback.");
+            if (root.currentWallPath === "") {
+                root.currentWallPath = Dirs.wallsFolder + "Courtside-Sunset.png";
+                root.currentWall = "Courtside-Sunset";
+                Matugen.generateColors(root.currentWallPath);
+            }
         }
     }
 
@@ -154,7 +161,9 @@ Singleton {
                 }
                 try {
                     const data = JSON.parse(output);
-                    const monitors = data[""];
+                    const keys = Object.keys(data);
+                    const firstKey = keys.length > 0 ? keys[0] : "";
+                    const monitors = data[firstKey];
                     if (monitors && monitors.length > 0 && monitors[0].displaying && monitors[0].displaying.image) {
                         const fullPath = monitors[0].displaying.image;
                         const filename = fullPath.split("/").pop();

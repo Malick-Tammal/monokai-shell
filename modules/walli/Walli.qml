@@ -31,6 +31,9 @@ PanelWindow {
     onVisibleChanged: {
         if (visible && !WalliService.isLoading) {
             wallpapers.forceActiveFocus();
+            if (WalliService.currentWall !== "") {
+                window.findAndSelect(WalliService.currentWall);
+            }
         }
     }
 
@@ -53,6 +56,19 @@ PanelWindow {
         onActivated: GlobalStates.walliVisible = false
     }
 
+    Timer {
+        id: scrollTimer
+        interval: 20
+        repeat: false
+        onTriggered: {
+            if (wallpapers.currentIndex >= 0) {
+                wallpapers.positionViewAtIndex(wallpapers.currentIndex, ListView.Center);
+            } else {
+                wallpapers.positionViewAtBeginning();
+            }
+        }
+    }
+
     function findAndSelect(cleanName) {
         if (wallpapers.count === 0)
             return;
@@ -61,12 +77,12 @@ PanelWindow {
             let file = wallpapers.model.get(i, "fileName");
             if (file.includes(cleanName)) {
                 wallpapers.currentIndex = i;
-                wallpapers.positionViewAtIndex(i, ListView.Center);
+                scrollTimer.restart();
                 return;
             }
         }
         wallpapers.currentIndex = 0;
-        wallpapers.positionViewAtBeginning();
+        scrollTimer.restart();
     }
 
     MouseArea {
@@ -121,6 +137,12 @@ PanelWindow {
                 id: wallpapers
 
                 property int visibleWallpaperCount: 6
+
+                onCountChanged: {
+                    if (window.visible && WalliService.currentWall !== "") {
+                        window.findAndSelect(WalliService.currentWall);
+                    }
+                }
 
                 orientation: ListView.Horizontal
                 spacing: 10
