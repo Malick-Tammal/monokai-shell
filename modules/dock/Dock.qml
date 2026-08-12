@@ -18,7 +18,7 @@ PanelWindow {
         bottom: true
     }
 
-    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.layer: GameMode.enabled ? WlrLayer.Top : WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
     WlrLayershell.namespace: "dock"
 
@@ -28,7 +28,7 @@ PanelWindow {
 
     readonly property bool isHovered: gapBridge.containsMouse || dockMouseArea.containsMouse || activatorMouseArea.containsMouse || hoveredIconCount > 0
 
-    readonly property bool shouldHide: Intellihide.shouldHide(root.screen, Intellihide.Edge.Bottom, dock.width, dock.height, 15) && !activeHover
+    readonly property bool shouldHide: Intellihide.shouldHide(root.screen, Intellihide.Edge.Bottom, dock.width, dock.height, 15) && !activeHover || GameMode.enabled
 
     Timer {
         id: hoverGraceTimer

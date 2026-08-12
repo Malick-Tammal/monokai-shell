@@ -220,7 +220,7 @@ Row {
                         }
                         ColorOverlay {
                             source: desaturatedIcon
-                            color: ColorEngine.withAlpha(Style.primary, 0.8)
+                            color: ColorEngine.withAlpha(Style.primary, 0.9)
                             anchors.fill: desaturatedIcon
                         }
                     }
@@ -249,7 +249,8 @@ Row {
                     height: 4
                     radius: 20
                     antialiasing: true
-                    color: Style.warning
+                    color: Style.primary
+                    visible: root.modelData.windows[index]?.workspace?.name !== "special:hidden"
                 }
             }
         }
@@ -284,11 +285,14 @@ Row {
 
             onClicked: mouse => {
                 if (mouse.button === Qt.LeftButton) {
-                    if (root.modelData.count > 0) {
-                        const winAddress = root.modelData.windows[0].address;
+                    const firstWin = root.modelData.count > 0 ? root.modelData.windows[0] : null;
+                    const isSpecialHidden = firstWin?.workspace?.name === "special:hidden";
+
+                    if (firstWin && !isSpecialHidden) {
+                        const winAddress = firstWin.address;
                         Hyprland.dispatch(`hl.dsp.focus({window = "address:${winAddress}"})`);
                         Hyprland.dispatch(`hl.dsp.window.bring_to_top({window = "address:${winAddress}"})`);
-                    } else if (root.modelData.isPinned) {
+                    } else if (root.modelData.isPinned || isSpecialHidden) {
                         if (root.isLaunching)
                             return;
                         root.isLaunching = true;

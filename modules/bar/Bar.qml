@@ -9,8 +9,8 @@ import qs.utils
 
 PanelWindow {
     id: root
-    color: "transparent"
-    implicitHeight: BarService.barHeight + Style.globalPadding * 3
+    color: GameMode.enabled ? Style.background : "transparent"
+    implicitHeight: BarService.barHeight + Style.globalPadding * (GameMode.enabled ? 2 : 3)
 
     anchors {
         top: true
@@ -18,13 +18,13 @@ PanelWindow {
         right: true
     }
 
-    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.layer: GameMode.enabled ? WlrLayer.Top : WlrLayer.Overlay
     WlrLayershell.namespace: "bar"
-    exclusiveZone: GlobalStates.barVisible ? (BarService.barHeight + Style.globalPadding) : 0
+    exclusiveZone: GlobalStates.barVisible || GameMode.enabled ? (BarService.barHeight + Style.globalPadding) : 0
 
     property bool isIntentionallyHovered: false
     readonly property bool rawHovered: triggerHover.hovered || containerHover.hovered || gapBridge.containsMouse
-    readonly property bool isHovered: !Intellihide.shouldHide(root.screen, Intellihide.Edge.Top, root.screen.width, BarService.barHeight, Style.globalPadding) || isIntentionallyHovered
+    readonly property bool isHovered: !Intellihide.shouldHide(root.screen, Intellihide.Edge.Top, root.screen.width, BarService.barHeight, Style.globalPadding) || isIntentionallyHovered || GameMode.enabled
 
     onIsHoveredChanged: GlobalStates.isBarHovered = isHovered
 
