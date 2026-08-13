@@ -45,9 +45,6 @@ Singleton {
 
     onWallpaperBrightnessChanged: {
         root.isDark = root.wallpaperBrightness < 0.5;
-
-        console.log("wallpaper brightness: " + root.wallpaperBrightness);
-        console.log("isDark: " + root.isDark);
     }
 
     Connections {

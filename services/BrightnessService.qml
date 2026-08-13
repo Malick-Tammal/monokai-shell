@@ -4,6 +4,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.core
 
 Singleton {
     id: root
@@ -47,6 +48,8 @@ Singleton {
 
         const percent = Math.round(value * 100);
         Quickshell.execDetached(["brightnessctl", "s", `${percent}%`]);
+
+        Configs.syncELKWithBrightness === true ? ElkService.setBrightness(percent) : null;
     }
 
     function increaseBrightness(): void {

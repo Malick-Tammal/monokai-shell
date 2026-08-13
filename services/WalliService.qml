@@ -103,8 +103,7 @@ Singleton {
         target: Matugen
 
         function onWallPathChanged() {
-            ledStrip.command[2] = Matugen.colors.primary;
-            ledStrip.running = true;
+            Configs.syncELKWithMatugen === true ? ElkService.setColor(Matugen.colors.primary) : null;
         }
     }
 
@@ -148,7 +147,7 @@ Singleton {
         command: ["cp", "", "/usr/share/sddm/themes/sddm-modern/wallpaper.png"]
     }
 
-    // Active Wallpaper Query (retried at startup until the daemon socket is ready)
+    // Active Wallpaper Query
     Process {
         id: awwwQuery
         command: ["awww", "query", "-j"]
@@ -180,11 +179,6 @@ Singleton {
                 }
             }
         }
-    }
-
-    Process {
-        id: ledStrip
-        command: [Quickshell.env("HOME") + "/.config/hypr/scripts/ELK.py", "color", ""]
     }
 
     Component.onCompleted: awwwQuery.running = true
