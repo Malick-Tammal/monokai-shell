@@ -18,12 +18,16 @@ Singleton {
     property bool brightnessPending: false
 
     function setColor(newColor: color): void {
-        if (!Configs.enableELK || !root.isInstalled)
+        if (!Configs.enableELK) {
             return;
+        }
 
         pendingColor = newColor;
         colorPending = true;
-        colorDebounceTimer.restart();
+
+        if (root.isInstalled) {
+            colorDebounceTimer.restart();
+        }
     }
 
     function turnOn(): void {
@@ -41,13 +45,15 @@ Singleton {
     }
 
     function setBrightness(brightness: int): void {
-        if (!Configs.enableELK || !root.isInstalled)
+        if (!Configs.enableELK)
             return;
 
         if (brightness > 0 && brightness <= 100) {
             pendingBrightness = brightness;
             brightnessPending = true;
-            brightnessDebounceTimer.restart();
+            if (root.isInstalled) {
+                brightnessDebounceTimer.restart();
+            }
         } else {
             console.log("brightness: " + brightness);
             console.log("Invalid range");
@@ -132,8 +138,15 @@ Singleton {
         onExited: function (code) {
             if (code === 0) {
                 root.isInstalled = true;
+                if (root.colorPending) {
+                    colorDebounceTimer.restart();
+                }
+                if (root.brightnessPending) {
+                    brightnessDebounceTimer.restart();
+                }
             } else {
-                console.log("elk-js not found in PATH. ElkService disabled.");
+                root.colorPending = false;
+                root.brightnessPending = false;
             }
         }
     }
